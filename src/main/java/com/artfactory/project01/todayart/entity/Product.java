@@ -38,15 +38,14 @@ public class Product {
     @Column(name = "is_delete")
     private Integer is_delete;
 
-    @Column(name = "delete_dated")
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "delete_dated", nullable = true)
     private Date delete_dated;
 
-    @Column(name = "enroll_dated")
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "enroll_dated", nullable = true)
     private Date enroll_dated;
+
+    @Column(name = "update_dated", nullable = true)
+    private Date update_dated;
 
     @Column(name = "category")
     private Integer category;
@@ -185,6 +184,14 @@ public class Product {
 
     public void setShipping_fee(Integer shipping_fee) {
         this.shipping_fee = shipping_fee;
+    }
+
+    public Date getUpdate_dated() {
+        return update_dated;
+    }
+
+    public void setUpdate_dated(Date update_dated) {
+        this.update_dated = update_dated;
     }
 }
 
