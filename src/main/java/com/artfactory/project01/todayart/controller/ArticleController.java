@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/article")
+@CrossOrigin
+@ResponseStatus(HttpStatus.OK)
 public class ArticleController {
 
     @Autowired
@@ -54,41 +57,42 @@ public class ArticleController {
 
     @RequestMapping(
             path = "/{article_id}",
+            method = RequestMethod.GET,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public ArticleVO retrieve(@PathVariable("article_id") Integer id) {
+        return articleService.itemOfArticle(id).get();
+    }
+
+    @RequestMapping(
+            path = "/{article_id}",
             method = RequestMethod.PATCH,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
     )
     public ArticleVO update(@PathVariable("article_id") Integer id, @RequestBody ArticleVO articleVO) {
         articleVO.getArticle_id(id);
         return articleService.updateArticle(id, articleVO);
     }
-//
-//    @PreAuthorize("hasAnyAuthority('WRITE_TODO')")
-//    @RequestMapping(
-//            path = "/{id}",
-//            method = RequestMethod.PATCH,
-//            produces = {
-//                    MediaType.APPLICATION_JSON_UTF8_VALUE,
-//                    MediaType.APPLICATION_XML_VALUE
-//            }
-//    )
-//    public Todo update(@PathVariable("id") String id, @RequestBody Todo todo) {
-//        return todoService.updateTodo(id, todo);
-//    }
-//
-//    @PreAuthorize("hasAnyAuthority('WRITE_TODO')")
-//    @RequestMapping(
-//            path = "/{id}",
-//            method = RequestMethod.DELETE,
-//            produces = {
-//                    MediaType.APPLICATION_JSON_UTF8_VALUE,
-//                    MediaType.APPLICATION_XML_VALUE
-//            }
-//    )
-//    public Todo delete(@PathVariable("id") String id) {
-//        todoService.deleteTodo(id);
-//
-//        Todo todo = new Todo();
-//        todo.setId(id);
-//        return todo;
-//    }
+
+    @RequestMapping(
+            path = "/{article_id}",
+            method = RequestMethod.DELETE,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public ArticleVO delete(@PathVariable("article_id") Integer id) {
+        articleService.deleteArticle(id);
+
+        ArticleVO articleVO = new ArticleVO();
+        articleVO.setArticle_id(id);
+        return articleVO;
+    }
 }
