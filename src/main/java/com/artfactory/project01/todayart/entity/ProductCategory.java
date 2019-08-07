@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "category")
+@DynamicInsert
+@DynamicUpdate
 public class ProductCategory {
 
 

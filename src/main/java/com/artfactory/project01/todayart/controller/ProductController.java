@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -48,9 +49,25 @@ public class ProductController {
             method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product update(@PathVariable("product_id") Integer id, @RequestBody Product product) {
-        product.setProduct_id(id);
-        return productService.updateProduct(id, product);
+    public Product update(@PathVariable("product_id") Integer product_id, @RequestBody Product product) {
+//        Optional<Product> product1 = productService.findProduct(product_id);
+//        product = product1.get();
+        product.setProduct_id(product_id);
+
+        return productService.updateProduct(product_id, product);
+    }
+
+    @RequestMapping(
+            path = "/{product_id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public Product delete(@PathVariable("product_id") Integer product_id) {
+        productService.deleteProduct(product_id);
+
+        Product product = new Product();
+        product.setProduct_id(product_id);
+        return product;
     }
 
 

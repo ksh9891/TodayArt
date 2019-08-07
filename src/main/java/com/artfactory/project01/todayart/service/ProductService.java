@@ -4,12 +4,11 @@ package com.artfactory.project01.todayart.service;
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -32,9 +31,19 @@ public class ProductService {
 
     @Transactional
     public Product updateProduct(Integer id, Product product) {
-//        productRepository.findById(product_id);
+        product = productRepository.findById(id).get();
+
+
 
         return productRepository.save(product);
     }
+
+    @Transactional
+    public void deleteProduct(Integer id) {
+        productRepository.deleteById(id);
+    }
+
+
+
 
 }

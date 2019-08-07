@@ -4,14 +4,15 @@ package com.artfactory.project01.todayart.entity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "product")
-@DynamicUpdate
 @DynamicInsert
+@DynamicUpdate
 public class Product {
 
     @Id
@@ -21,7 +22,7 @@ public class Product {
     @Column(name = "product_name")
     private String product_name;
 
-    @Column(name = "artist_id")
+    @Column(name = "artist_id", updatable = false)
     private Integer artist_id;
 
 
@@ -39,12 +40,15 @@ public class Product {
     private Integer is_delete;
 
     @Column(name = "delete_dated", nullable = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date delete_dated;
 
-    @Column(name = "enroll_dated", nullable = true)
+    @Column(name = "enroll_dated", nullable = true, updatable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date enroll_dated;
 
     @Column(name = "update_dated", nullable = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date update_dated;
 
     @Column(name = "category")
