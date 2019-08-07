@@ -90,7 +90,7 @@ CREATE TABLE `order` (
 	`shipping_fee` int not null,
 	`cart_id` int not null,
     `shipping_id` int not null
-    
+
 );
 
 /* 배송 */
@@ -132,7 +132,7 @@ CREATE TABLE `article` (
     `is_reply` int not null default 0 comment '0:미답변, 1:답변',
     `views` int not null default 0,
     `product_id` int null
-	
+
 );
 /* 찜하기 */
 CREATE TABLE `wishlist` (
@@ -157,7 +157,7 @@ CREATE TABLE `order_detail` (
 	`product_id` int not null,
 	`product_price` int not null,
 	`quantity`	int	not null,
-	`status` varchar(255) not null	
+	`status` varchar(255) not null
 );
 
 /* 판매대금명세 */
@@ -195,7 +195,7 @@ CREATE TABLE `payment` (
 	`pay_dated` datetime not null default now(),
 	`pay_method` varchar(255) not null,
 	`card_number` varchar(255) null,
-	`pay_price`	int	null,	
+	`pay_price`	int	null,
 	`total_price` int null,
 	`status` char(13) null
 );
@@ -205,7 +205,7 @@ CREATE TABLE `cart` (
 	`cart_id` int not null,
 	`member_id` int	not null,
 	`product_id` int not null,
-	`enroll_dated` datetime null,		
+	`enroll_dated` datetime null,
 	`is_stock` int not null default 1 comment '0:재고없음, 1:재고있음'
 );
 
