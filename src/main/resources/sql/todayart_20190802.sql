@@ -266,3 +266,54 @@ CREATE TABLE IF not exists `file` (
     `file_ip` varchar(255) null,
     `member_id` int not null
 );
+
+/*필요값 추가*/
+-- CREATE TABLE IF not exists `article` (
+-- 	`article_id` int not null,
+-- 	`board_id` int not null,
+-- 	`writter_id` int not null,
+-- 	`write_dated` datetime not null default now(),
+-- 	`update_dated` datetime null,
+-- 	`title` varchar(255) not null,
+-- 	`content` text not null,
+-- 	`group` int null,
+--     `depth` int not null default 0,
+-- 	`reply_order` int null,
+-- 	`is_deleted` int not null default 0 comment "0:미삭제, 1:삭제",
+-- 	`delete_dated` datetime null,
+-- 	`is_hidden`	int not null default 0 comment "0:공개글, 1:비밀글",
+--     `password` varchar(255) null,
+--     `is_reply` int not null default 0 comment "0:미답변, 1:답변",
+--     `views` int not null default 0,
+--     `product_id` int null
+--
+-- );
+-- /* 게시판 카테고리 */
+-- CREATE TABLE IF not exists `board_category` (
+-- 	`board_id` int not null,
+-- 	`board_name` varchar(255) null
+-- );
+
+INSERT INTO `board_category`
+VALUES ( 1, '상품게시판');
+INSERT INTO `article`
+VALUES(1,1,987,now(),null,'제목1',"이 편지는 영국에서 시작되었습니다.",null,0,null,0,null,0,null,0,0,null);
+
+-- (
+-- article_id,
+-- board_id,
+-- writter_id,
+-- write_dated,
+-- update_dated,
+-- title,
+-- content,
+-- group,
+-- depth,
+-- reply_order,
+-- is_deleted,
+-- delete_dated,
+-- is_hidden,
+-- password,
+-- is_reply,
+-- views,
+-- product_id)

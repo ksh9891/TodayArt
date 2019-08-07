@@ -3,6 +3,7 @@ package com.artfactory.project01.todayart.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name = "article")
 @DynamicInsert
+@DynamicUpdate
 public class ArticleVO implements Serializable {
 
 //    `article_id` int not null, `board_id` int not null, `writter_id` int not null, `write_dated` datetime not null default now(),
@@ -21,14 +23,13 @@ public class ArticleVO implements Serializable {
 
     @Id
     @Column(columnDefinition = "INT", name = "article_id", updatable = false, nullable = false)
-    private int article_id;
+    private Integer article_id;
 
     @Column(name = "board_id", nullable = false)
-    private int board_id;
-
+    private Integer board_id;
 
     @Column(name = "writter_id", updatable = false, nullable = false)
-    private int writter_id;
+    private Integer writter_id;
 
     @Column(name = "write_dated", updatable = false, nullable = false)
     @CreationTimestamp
@@ -47,16 +48,16 @@ public class ArticleVO implements Serializable {
     private String content;
 
     @Column(name = "group")
-    private int group;
+    private Integer group;
 
     @Column(name = "depth")
-    private int depth;
+    private Integer depth;
 
     @Column(name = "reply_order")
-    private int reply_order;
+    private Integer reply_order;
 
     @Column(name = "is_deleted")
-    private int is_deleted;
+    private Integer is_deleted;
 
     @Column(name = "delete_dated")
     @CreationTimestamp
@@ -64,41 +65,41 @@ public class ArticleVO implements Serializable {
     private Date deleted_dated;
 
     @Column(name = "is_hidden")
-    private int is_hidden;
+    private Integer is_hidden;
 
     @Column(name = "password")
     private String password;
 
     @Column(name = "is_reply")
-    private int is_reply;
+    private Integer is_reply;
 
     @Column(name = "views")
-    private int views;
+    private Integer views;
 
     @Column(name = "product_id")
-    private int product_id;
+    private Integer product_id;
 
-    public int getArticle_id() {
+    public Integer getArticle_id(Integer id) {
         return article_id;
     }
 
-    public void setArticle_id(int article_id) {
+    public void setArticle_id(Integer article_id) {
         this.article_id = article_id;
     }
 
-    public int getBoard_id() {
+    public Integer getBoard_id() {
         return board_id;
     }
 
-    public void setBoard_id(int board_id) {
+    public void setBoard_id(Integer board_id) {
         this.board_id = board_id;
     }
 
-    public int getWritter_id() {
+    public Integer getWritter_id() {
         return writter_id;
     }
 
-    public void setWritter_id(int writter_id) {
+    public void setWritter_id(Integer writter_id) {
         this.writter_id = writter_id;
     }
 
@@ -134,35 +135,35 @@ public class ArticleVO implements Serializable {
         this.content = content;
     }
 
-    public int getGroup() {
+    public Integer getGroup() {
         return group;
     }
 
-    public void setGroup(int group) {
+    public void setGroup(Integer group) {
         this.group = group;
     }
 
-    public int getDepth() {
+    public Integer getDepth() {
         return depth;
     }
 
-    public void setDepth(int depth) {
+    public void setDepth(Integer depth) {
         this.depth = depth;
     }
 
-    public int getReply_order() {
+    public Integer getReply_order() {
         return reply_order;
     }
 
-    public void setReply_order(int reply_order) {
+    public void setReply_order(Integer reply_order) {
         this.reply_order = reply_order;
     }
 
-    public int getIs_deleted() {
+    public Integer getIs_deleted() {
         return is_deleted;
     }
 
-    public void setIs_deleted(int is_deleted) {
+    public void setIs_deleted(Integer is_deleted) {
         this.is_deleted = is_deleted;
     }
 
@@ -174,11 +175,11 @@ public class ArticleVO implements Serializable {
         this.deleted_dated = deleted_dated;
     }
 
-    public int getIs_hidden() {
+    public Integer getIs_hidden() {
         return is_hidden;
     }
 
-    public void setIs_hidden(int is_hidden) {
+    public void setIs_hidden(Integer is_hidden) {
         this.is_hidden = is_hidden;
     }
 
@@ -190,27 +191,27 @@ public class ArticleVO implements Serializable {
         this.password = password;
     }
 
-    public int getIs_reply() {
+    public Integer getIs_reply() {
         return is_reply;
     }
 
-    public void setIs_reply(int is_reply) {
+    public void setIs_reply(Integer is_reply) {
         this.is_reply = is_reply;
     }
 
-    public int getViews() {
+    public Integer getViews() {
         return views;
     }
 
-    public void setViews(int views) {
+    public void setViews(Integer views) {
         this.views = views;
     }
 
-    public int getProduct_id() {
+    public Integer getProduct_id() {
         return product_id;
     }
 
-    public void setProduct_id(int product_id) {
+    public void setProduct_id(Integer product_id) {
         this.product_id = product_id;
     }
 }
