@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.stream.Collectors;
-
+//fetch로 read 는 성공
 @RestController
 @RequestMapping("/article")
 @CrossOrigin
@@ -76,7 +76,7 @@ public class ArticleController {
             }
     )
     public ArticleVO update(@PathVariable("article_id") Integer id, @RequestBody ArticleVO articleVO) {
-        articleVO.getArticle_id(id);
+        articleVO.setArticle_id(id);
         return articleService.updateArticle(id, articleVO);
     }
 

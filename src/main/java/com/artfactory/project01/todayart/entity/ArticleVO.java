@@ -1,6 +1,7 @@
 package com.artfactory.project01.todayart.entity;
 
 
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -36,7 +37,7 @@ public class ArticleVO implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date write_dated;
 
-    @Column(name = "update_dated")
+    @Column(name = "update_dated",updatable = true, nullable = true)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date update_dated;
@@ -59,7 +60,7 @@ public class ArticleVO implements Serializable {
     @Column(name = "is_deleted")
     private Integer is_deleted;
 
-    @Column(name = "delete_dated")
+    @Column(name = "delete_dated",updatable = true, nullable = true)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date deleted_dated;
@@ -79,7 +80,7 @@ public class ArticleVO implements Serializable {
     @Column(name = "product_id")
     private Integer product_id;
 
-    public Integer getArticle_id(Integer id) {
+    public Integer getArticle_id() {
         return article_id;
     }
 
