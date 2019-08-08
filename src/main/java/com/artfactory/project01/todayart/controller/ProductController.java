@@ -2,16 +2,17 @@ package com.artfactory.project01.todayart.controller;
 
 
 import com.artfactory.project01.todayart.entity.Product;
-import com.artfactory.project01.todayart.model.ResultItems;
+import com.artfactory.project01.todayart.model.ProductForm;
+
 import com.artfactory.project01.todayart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping(value = "/product")
@@ -49,12 +50,21 @@ public class ProductController {
             method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product update(@PathVariable("product_id") Integer product_id, @RequestBody Product product) {
-//        Optional<Product> product1 = productService.findProduct(product_id);
-//        product = product1.get();
-        product.setProduct_id(product_id);
+    public Product update(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {
+        //productForm.setProduct_id(product_id);
+        System.out.println("aa = " + productForm.getUpdate_dated());
+        return productService.updateProduct(product_id, productForm);
+    }
 
-        return productService.updateProduct(product_id, product);
+
+    @RequestMapping(
+            path = "/deleted{product_id}",
+            method = RequestMethod.PATCH,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public Product delete(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {
+
+        return productService.deleteProduct(product_id, productForm);
     }
 
     @RequestMapping(
@@ -62,8 +72,8 @@ public class ProductController {
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product delete(@PathVariable("product_id") Integer product_id) {
-        productService.deleteProduct(product_id);
+    public Product deleteReal(@PathVariable("product_id") Integer product_id) {
+        productService.deleteProductReal(product_id);
 
         Product product = new Product();
         product.setProduct_id(product_id);

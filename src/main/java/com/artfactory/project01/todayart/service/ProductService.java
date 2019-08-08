@@ -2,6 +2,7 @@ package com.artfactory.project01.todayart.service;
 
 
 import com.artfactory.project01.todayart.entity.Product;
+import com.artfactory.project01.todayart.model.ProductForm;
 import com.artfactory.project01.todayart.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,16 +31,29 @@ public class ProductService {
 
 
     @Transactional
-    public Product updateProduct(Integer id, Product product) {
-        product = productRepository.findById(id).get();
+    public Product updateProduct(Integer id, ProductForm productForm) {
+        Product product = productRepository.findById(id).get();
 
+        productForm.setProduct(product);
 
 
         return productRepository.save(product);
     }
 
+
     @Transactional
-    public void deleteProduct(Integer id) {
+    public Product deleteProduct(Integer id, ProductForm productForm){
+        Product product = productRepository.findById(id).get();
+        productForm.setDelete(product);
+
+
+        return productRepository.save(product);
+
+    }
+
+
+    @Transactional
+    public void deleteProductReal(Integer id) {
         productRepository.deleteById(id);
     }
 

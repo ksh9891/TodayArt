@@ -1,12 +1,15 @@
 package com.artfactory.project01.todayart.entity;
 
 
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.annotations.UpdateTimestamp;
+
 
 import javax.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -39,16 +42,18 @@ public class Product {
     @Column(name = "is_delete")
     private Integer is_delete;
 
+
     @Column(name = "delete_dated", nullable = true)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @UpdateTimestamp
     private Date delete_dated;
 
     @Column(name = "enroll_dated", nullable = true, updatable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date enroll_dated;
 
     @Column(name = "update_dated", nullable = true)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @UpdateTimestamp
     private Date update_dated;
 
     @Column(name = "category")
@@ -126,21 +131,6 @@ public class Product {
         this.is_delete = is_delete;
     }
 
-    public Date getDelete_dated() {
-        return delete_dated;
-    }
-
-    public void setDelete_dated(Date delete_dated) {
-        this.delete_dated = delete_dated;
-    }
-
-    public Date getEnroll_dated() {
-        return enroll_dated;
-    }
-
-    public void setEnroll_dated(Date enroll_dated) {
-        this.enroll_dated = enroll_dated;
-    }
 
     public Integer getCategory() {
         return category;
@@ -188,6 +178,22 @@ public class Product {
 
     public void setShipping_fee(Integer shipping_fee) {
         this.shipping_fee = shipping_fee;
+    }
+
+    public Date getDelete_dated() {
+        return delete_dated;
+    }
+
+    public void setDelete_dated(Date delete_dated) {
+        this.delete_dated = delete_dated;
+    }
+
+    public Date getEnroll_dated() {
+        return enroll_dated;
+    }
+
+    public void setEnroll_dated(Date enroll_dated) {
+        this.enroll_dated = enroll_dated;
     }
 
     public Date getUpdate_dated() {
