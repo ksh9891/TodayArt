@@ -1,11 +1,11 @@
 package com.artfactory.project01.todayart.model;
 
-import com.artfactory.project01.todayart.entity.OrderDetail;
+import com.artfactory.project01.todayart.entity.OrderedDetail;
 
 public class OrderDetailForm {
     private int productId;
-    private int productPrice;
     private int quantity;
+    private int productPrice;
 
     public int getProductId() {
         return productId;
@@ -31,12 +31,11 @@ public class OrderDetailForm {
         this.quantity = quantity;
     }
 
-    public OrderDetail setOrderDetail(int orderId){
-        OrderDetail orderDetail= new OrderDetail();
-        orderDetail.setOrderDetailId(orderId, productId);
-        orderDetail.setProductPrice(productPrice);
-        orderDetail.setQuantity(quantity);
-        orderDetail.setTotalPrice(productPrice*quantity);
-        return orderDetail;
+    public OrderedDetail setOrderDetail(int orderId){
+        OrderedDetail orderedDetail = new OrderedDetail();
+        orderedDetail.setProductPrice(productPrice);
+        orderedDetail.setQuantity(quantity);
+        orderedDetail.setTotalPrice(productPrice*quantity);
+        return orderedDetail;
     }
 }

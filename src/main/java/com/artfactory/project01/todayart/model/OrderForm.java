@@ -1,17 +1,16 @@
 package com.artfactory.project01.todayart.model;
 
-import com.artfactory.project01.todayart.entity.Order;
-import com.artfactory.project01.todayart.entity.OrderDetail;
-import org.springframework.lang.Nullable;
+import com.artfactory.project01.todayart.entity.Ordered;
+import com.artfactory.project01.todayart.entity.OrderedDetail;
 
 import java.util.List;
 
 public class OrderForm {
     private int memberId;
+    private Integer cartId;
     private int totalPrice;
     private Integer shippingFee;
-    private Integer cartId;
-    private List<OrderDetailForm> orderDetail;
+    private List<OrderedDetail> orderDetail;
 
 
     public int getMemberId() {
@@ -46,20 +45,20 @@ public class OrderForm {
         this.cartId = cartId;
     }
 
-    public List<OrderDetailForm> getOrderDetail() {
+    public List<OrderedDetail> getOrderDetail() {
         return orderDetail;
     }
 
-    public void setOrderDetail(List<OrderDetailForm> orderDetail) {
+    public void setOrderDetail(List<OrderedDetail> orderDetail) {
         this.orderDetail = orderDetail;
     }
 
-    public Order setOrder(){
-        Order order = new Order();
-        order.setMemberId(memberId);
-        order.setTotalPrice(totalPrice);
-        order.setShippingFee(shippingFee);
-        order.setCartId(cartId);
-        return order;
+    public Ordered setOrder(){
+        Ordered ordered = new Ordered();
+        ordered.setMemberId(memberId);
+        ordered.setTotalPrice(totalPrice);
+        ordered.setShippingFee(shippingFee);
+        ordered.setCartId(cartId);
+        return ordered;
     }
 }

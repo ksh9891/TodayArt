@@ -82,7 +82,7 @@ CREATE TABLE `Product` (
 );
 
 /* 주문 */
-CREATE TABLE `order` (
+CREATE TABLE `ordered` (
 	`order_id` int not null,
 	`member_id` int not null,
 	`order_dated` datetime not null default now(),

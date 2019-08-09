@@ -43,8 +43,8 @@ public class Member implements UserDetails, Serializable {
     @Column(name="phone")
     private String Phone;
 
-    @Column(name="authority")
-    private Integer authority;
+    @Column(name="role")
+    private String role;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="last_connect_dated")
@@ -76,6 +76,7 @@ public class Member implements UserDetails, Serializable {
         this.email = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -92,6 +93,7 @@ public class Member implements UserDetails, Serializable {
         this.nickname = nickname;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
@@ -116,12 +118,12 @@ public class Member implements UserDetails, Serializable {
         Phone = phone;
     }
 
-    public Integer getAuthority() {
-        return authority;
+    public String getRole() {
+        return role;
     }
 
-    public void setAuthority(Integer authority) {
-        this.authority = authority;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Date getLastConnectDated() {
@@ -156,31 +158,13 @@ public class Member implements UserDetails, Serializable {
         this.emailChecked = emailChecked;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "member_role",
-            joinColumns = @JoinColumn(name = "m_id"),
-            inverseJoinColumns = @JoinColumn(name = "r_id")
-    )
-    private Set<Role> roles;
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
 
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        for(Role role : getRoles()){
-            GrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
+            GrantedAuthority authority = new SimpleGrantedAuthority(role);
             authorities.add(authority);
-//            authorities.addAll(role.getPrivileges());
-        }
         return authorities;
     }
 
@@ -204,11 +188,4 @@ public class Member implements UserDetails, Serializable {
         return true;
     }
 
-    public static Member from(Principal principal) {
-        if (principal instanceof OAuth2Authentication) {
-        } else if (principal instanceof UsernamePasswordAuthenticationToken) {
-
-        }
-        return null;
-    }
 }

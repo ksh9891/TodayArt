@@ -3,6 +3,7 @@ package com.artfactory.project01.todayart.entity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,9 +13,9 @@ import java.util.Date;
 @Table(name="ordered")
 @DynamicInsert
 @DynamicUpdate
-public class Order implements Serializable {
+public class Ordered implements Serializable {
     @Id
-    @Column(name = "order_id", updatable = false, nullable = false)
+    @Column(name = "ordered_id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderId;
 
@@ -26,6 +27,7 @@ public class Order implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 
+
     @Column(name = "total_price")
     private Integer totalPrice;
 
@@ -35,8 +37,10 @@ public class Order implements Serializable {
     @Column(name = "cart_id")
     private Integer cartId;
 
-    @Column(name = "shipping_id")
-    private Integer shippingId;
+    @Column(name="hidden")
+    private int hidden;
+
+    /* OrderedDetail 과 join하기 */
 
     public Integer getOrderId() {
         return orderId;
@@ -86,11 +90,11 @@ public class Order implements Serializable {
         this.cartId = cartId;
     }
 
-    public Integer getShippingId() {
-        return shippingId;
+    public int getHidden() {
+        return hidden;
     }
 
-    public void setShippingId(Integer shippingId) {
-        this.shippingId = shippingId;
+    public void setHidden(int hidden) {
+        this.hidden = hidden;
     }
 }
