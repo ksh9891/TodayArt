@@ -36,31 +36,34 @@ DROP TABLE IF EXISTS `account`;
 DROP TABLE IF EXISTS `file`;
 
 /* 회원 테이블 */
-CREATE TABLE IF not exists `member` (
-	`member_id` int not null,
-	`email` varchar(255) not null,
-	`password` varchar(255) not null,
-	`nickname` varchar(255) not null,
-	`username` varchar(255) null,
-	`reg_dated`	datetime not null default now(),
-	`phone`	varchar(255) null,
-	`authority`	int(1) not null default 0 comment "0: 일반, 1: 판매자, 2: 관리자",
-	`last_connect_dated` datetime null,
-	`expired` int(1) not null default 0 comment "0: 미탈퇴, 1: 탈퇴",
-	`expired_dated`	date null,
-	`email_checked`	int not null default 0 comment "0: 미인증, 1: 인증"
+CREATE TABLE IF NOT EXISTS `member` (
+	`member_id` INT AUTO_INCREMENT,
+	`email` VARCHAR(255) NOT NULL,
+	`password` VARCHAR(255) NOT NULL,
+	`nickname` VARCHAR(255) NOT NULL,
+	`username` VARCHAR(255) NULL,
+	`reg_dated`	DATETIME NOT NULL DEFAULT NOW(),
+	`phone`	VARCHAR(255) NULL,
+	`authority`	INT(1) NOT NULL DEFAULT 0 COMMENT "0: 일반, 1: 판매자, 2: 관리자",
+	`last_connect_dated` DATETIME NULL,
+	`expired` INT(1) NOT NULL DEFAULT 0 COMMENT "0: 미탈퇴, 1: 탈퇴",
+	`expired_dated`	DATETIME NULL,
+	`email_checked`	INT(1) NOT NULL DEFAULT 0 COMMENT "0: 미인증, 1: 인증",
+    CONSTRAINT member_pk_id PRIMARY KEY(member_id),
+    CONSTRAINT member_uk_email UNIQUE KEY(email)
 );
 
 /* 작가회원 */
-CREATE TABLE IF not exists `artist` (
-	`artist_id` int not null,
-	`member_id` int not null,
-	`artist_desc` text not null,
-    `profile_id` int null,
-	`file_id` int not null,
-	`adm_product_desc` text not null,
-	`adm_check`	int(1) not null default 0 comment "0: 미승인, 1: 승인",
-	`artist_level_id` int not null
+CREATE TABLE IF NOT EXISTS `artist` (
+	`artist_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`member_id` INT NOT NULL,
+	`artist_desc` TEXT NOT NULL,
+    `profile_id` INT NULL,
+	`file_id` INT NOT NULL,
+	`adm_product_desc` TEXT NOT NULL,
+	`adm_check`	INT(1) NOT NULL DEFAULT 0 COMMENT "0: 미승인, 1: 승인",
+	`artist_level_id` INT NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 
 /* 작가등급 */
@@ -266,3 +269,5 @@ CREATE TABLE IF not exists `file` (
     `file_ip` varchar(255) null,
     `member_id` int not null
 );
+
+select * from member;
