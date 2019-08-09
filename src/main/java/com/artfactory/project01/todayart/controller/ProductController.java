@@ -61,13 +61,20 @@ public class ProductController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public List<Product> productList(@RequestBody Search search) {
+    public List<Product> productSearchByName(@RequestBody Search search) {
 
-//        String temp = "%"+product_name+"%";
-//        product_name = temp;
+        return productService.searchByProductName(search);
+    }
 
+    // 상품 이름으로 검색(read/get)
+    @RequestMapping(
+            path = "/category",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public List<Product> productSearchByCategory(@RequestBody Search search) {
 
-        return productService.listByProductName(search);
+        return productService.searchByCategory(search);
     }
 
 

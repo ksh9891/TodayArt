@@ -222,16 +222,16 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `todayart`.`category`
+-- Table `todayart`.`category_id`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `todayart`.`category` (
+CREATE TABLE IF NOT EXISTS `todayart`.`category_id` (
   `category_id` INT(11) NOT NULL AUTO_INCREMENT,
   `category_name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`category_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `todayart`.`category` VALUE(1, '그림');
+INSERT INTO `todayart`.`category_id` VALUE(1, '그림');
 
 -- -----------------------------------------------------
 -- Table `todayart`.`product`
@@ -264,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `todayart`.`product` (
     ON UPDATE CASCADE,
   CONSTRAINT `fk_product_category`
     FOREIGN KEY (`category_id`)
-    REFERENCES `todayart`.`category` (`category_id`)
+    REFERENCES `todayart`.`category_id` (`category_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_product_file`

@@ -47,12 +47,21 @@ public class ProductService {
 
     // 상품 이름 검색
     @Transactional(readOnly = true)
-    public List<Product> listByProductName(Search search) {
+    public List<Product> searchByProductName(Search search) {
         String product_name = search.getProduct_name();
         String temp = "%"+product_name+"%";
         product_name = temp;
         return productRepository.findByProduct_nameLike(product_name);
     }
+
+
+    // 상품 이름 검색
+    @Transactional(readOnly = true)
+    public List<Product> searchByCategory(Search search) {
+       Integer category_id = search.getCategory_id();
+        return productRepository.findByCategory(category_id);
+    }
+
 
 
     // PATCH ===========================================

@@ -14,7 +14,7 @@ public class ProductForm implements Serializable {
     private String product_size;
     private Integer product_price;
     private Integer thumbnail_id;
-    private Integer category;
+    private Integer category_id;
     private Integer remain;
     private Integer shipping_fee;
     private Integer is_sold_out;
@@ -53,8 +53,8 @@ public class ProductForm implements Serializable {
         if(thumbnail_id != null){
             product.setThumbnail_id(this.thumbnail_id);
         }
-        if(category!= null){
-            product.setCategory_id(this.category);
+        if(category_id != null){
+            product.setCategory_id(this.category_id);
         }
         if(remain!= null){
             product.setRemain(this.remain);
@@ -114,12 +114,12 @@ public class ProductForm implements Serializable {
         this.thumbnail_id = thumbnail_id;
     }
 
-    public Integer getCategory() {
-        return category;
+    public Integer getCategory_id() {
+        return category_id;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setCategory_id(Integer category_id) {
+        this.category_id = category_id;
     }
 
     public Integer getRemain() {
