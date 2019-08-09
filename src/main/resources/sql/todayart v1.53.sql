@@ -1,4 +1,4 @@
-# Todayart v1.52
+# Todayart v1.53
 /*
 [v1.3]
     - 모든 테이블에 default now() -> default current_timestamp로 변경
@@ -31,6 +31,8 @@
 	  - mileage_invoice : 컬럼추가
         > `is_delete` INT(11) NOT NULL DEFAULT 0 COMMENT '0: 미삭제, 1: 삭제'
       - 더미데이터 추가
+[V1.53]
+	- ordered 에 감추기용 isHidden 컬럼 추가(DELETE 기능 대신)
 */
 
 -- MySQL Workbench Forward Engineering
@@ -357,6 +359,7 @@ CREATE TABLE IF NOT EXISTS `todayart`.`ordered` (
   `order_dated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `total_price` INT(11) NOT NULL,
   `shipping_fee` INT(11) NULL DEFAULT NULL,
+  `isHidden` INT NOT NULL DEFAULT 0 COMMENT "0:보이기 1:감추기",
   PRIMARY KEY (`ordered_id`),
   INDEX `fk_ordered_member_idx` (`member_id` ASC) VISIBLE,
   INDEX `fk_ordered_cart_idx` (`cart_id` ASC) VISIBLE,

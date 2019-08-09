@@ -2,15 +2,16 @@ package com.artfactory.project01.todayart.entity;
 
 
 
-import org.hibernate.annotations.CreationTimestamp;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
+
 
 
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.Locale;
 
 @Entity
 @Table(name = "product")
@@ -19,6 +20,7 @@ import java.util.Date;
 public class Product {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(columnDefinition = "int", name = "product_id", nullable = false, updatable = false)
     private Integer product_id;
 
@@ -44,20 +46,17 @@ public class Product {
 
 
     @Column(name = "delete_dated", nullable = true)
-    @UpdateTimestamp
     private Date delete_dated;
 
     @Column(name = "enroll_dated", nullable = true, updatable = false)
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     private Date enroll_dated;
 
     @Column(name = "update_dated", nullable = true)
-    @UpdateTimestamp
     private Date update_dated;
 
-    @Column(name = "category")
-    private Integer category;
+
+    @Column(name = "category_id")
+    private Integer category_id;
 
     @Column(name = "is_sold_out")
     private Integer is_sold_out;
@@ -65,10 +64,10 @@ public class Product {
     @Column(name = "remain")
     private Integer remain;
 
-    @Column(name = "count_cart")
+    @Column(name = "count_cart", nullable = true)
     private Integer count_cart;
 
-    @Column(name = "count_wishlist")
+    @Column(name = "count_wishlist", nullable = true)
     private Integer count_wishlist;
 
     @Column(name = "shipping_fee")
@@ -131,13 +130,12 @@ public class Product {
         this.is_delete = is_delete;
     }
 
-
-    public Integer getCategory() {
-        return category;
+    public Integer getCategory_id() {
+        return category_id;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setCategory_id(Integer category_id) {
+        this.category_id = category_id;
     }
 
     public Integer getIs_sold_out() {
