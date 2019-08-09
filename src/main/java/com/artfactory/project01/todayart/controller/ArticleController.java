@@ -2,6 +2,7 @@ package com.artfactory.project01.todayart.controller;
 
 
 import com.artfactory.project01.todayart.entity.ArticleVO;
+import com.artfactory.project01.todayart.model.ArticleForm;
 import com.artfactory.project01.todayart.model.ResultItems;
 import com.artfactory.project01.todayart.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.stream.Collectors;
-//fetch로 read 는 성공
+
 @RestController
 @RequestMapping("/article")
 @CrossOrigin
@@ -75,9 +76,9 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ArticleVO update(@PathVariable("article_id") Integer id, @RequestBody ArticleVO articleVO) {
-        articleVO.setArticle_id(id);
-        return articleService.updateArticle(id, articleVO);
+    public ArticleVO update(@PathVariable("article_id") Integer id, @RequestBody ArticleForm articleForm) {
+//        articleVO.setArticle_id(id);
+        return articleService.updateArticle(id, articleForm);
     }
 
     @RequestMapping(

@@ -1,82 +1,35 @@
-package com.artfactory.project01.todayart.entity;
+package com.artfactory.project01.todayart.model;
 
+import com.artfactory.project01.todayart.entity.ArticleVO;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@Table(name = "article")
-@DynamicInsert
-@DynamicUpdate
-public class ArticleVO implements Serializable {
+public class ArticleForm implements Serializable {
 
-//    `article_id` int not null, `board_id` int not null, `writter_id` int not null, `write_dated` datetime not null default now(),
-//	`update_dated` datetime null, `title` varchar(255) not null, `content` text not null, `group` int null, `depth` int not null default 0,
-//   `reply_order` int null,`is_deleted` int not null default 0 comment "0:미삭제, 1:삭제", `delete_dated` datetime null,
-//    `is_hidden`	int not null default 0 comment "0:공개글, 1:비밀글", `password` varchar(255) null, `is_reply` int not null default 0 comment "0:미답변, 1:답변",
-//   `views` int not null default 0, `product_id` int null
-
-    @Id
-    @Column(columnDefinition = "INT", name = "article_id", updatable = false, nullable = false)
     private Integer article_id;
-
-    @Column(name = "board_id", nullable = false)
     private Integer board_id;
-
-    @Column(name = "writter_id", updatable = false, nullable = false)
     private Integer writter_id;
-
-    @Column(name = "write_dated", updatable = false, nullable = false)
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     private Date write_dated;
-
-    @Column(name = "update_dated", nullable = true)
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     private Date update_dated;
-
-    @Column(name = "title", nullable = false)
     private String title;
-
-    @Column(name = "content", nullable = false)
     private String content;
-
-    @Column(name = "group")
     private Integer group;
-
-    @Column(name = "depth")
     private Integer depth;
-
-    @Column(name = "reply_order")
     private Integer reply_order;
-
-    @Column(name = "is_deleted")
     private Integer is_deleted;
-
-    @Column(name = "delete_dated", nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
     private Date deleted_dated;
-
-    @Column(name = "is_hidden")
     private Integer is_hidden;
-
-    @Column(name = "password")
     private String password;
-
-    @Column(name = "is_reply")
     private Integer is_reply;
-
-    @Column(name = "views")
     private Integer views;
-
-    @Column(name = "product_id")
     private Integer product_id;
+    private ArticleVO articleVO;
 
     public Integer getArticle_id() {
         return article_id;
@@ -212,5 +165,48 @@ public class ArticleVO implements Serializable {
 
     public void setProduct_id(Integer product_id) {
         this.product_id = product_id;
+    }
+
+    public ArticleVO getArticleVO() {
+        return articleVO;
+    }
+
+    public void setArticleVO(ArticleVO articleVO) {
+        if(article_id != null){
+            articleVO.setArticle_id(this.article_id);
+        }else if(board_id != null){
+            articleVO.setBoard_id(this.board_id);
+        }else if(writter_id != null){
+            articleVO.setWritter_id(this.writter_id);
+        }else if(write_dated != null){
+            articleVO.setWrite_dated(this.write_dated);
+        }else if(update_dated != null){
+            articleVO.setUpdate_dated(new Date());
+        }else if(title != null){
+            articleVO.setTitle(this.title);
+        }else if(content != null){
+            articleVO.setContent(this.content);
+        }else if(group != null){
+            articleVO.setGroup(this.group);
+        }else if(depth != null){
+            articleVO.setDepth(this.depth);
+        }else if(reply_order != null){
+            articleVO.setReply_order(this.reply_order);
+        }else if(is_deleted != null){
+            articleVO.setIs_deleted(this.is_deleted);
+        }else if(deleted_dated != null){
+            articleVO.setDeleted_dated(this.deleted_dated);
+        }else if(is_hidden != null){
+            articleVO.setIs_hidden(this.is_hidden);
+        }else if(password != null){
+            articleVO.setPassword(this.password);
+        }else if(is_reply != null){
+            articleVO.setIs_reply(this.is_reply);
+        }else if(views != null){
+            articleVO.setViews(this.views);
+        }else if(product_id != null){
+            articleVO.setProduct_id(this.product_id);
+        }
+        this.articleVO = articleVO;
     }
 }
