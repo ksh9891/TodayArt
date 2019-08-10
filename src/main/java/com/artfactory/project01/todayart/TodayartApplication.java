@@ -10,7 +10,8 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TodayartApplication implements ApplicationRunner {
+//public class TodayartApplication implements ApplicationRunner {
+public class TodayartApplication {
 
     @Autowired
     private EmailService emailService;
@@ -19,15 +20,15 @@ public class TodayartApplication implements ApplicationRunner {
         SpringApplication.run(TodayartApplication.class, args);
     }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        Mail mail = new Mail();
-
-        mail.setFrom("bit.todayart@gmail.com");
-        mail.setTo("zxcvbnm1436@naver.com");
-        mail.setSubject("테스트 메일입니다.");
-        mail.setContent("테스트 콘텐츠입니다.");
-
-        emailService.sendSimpleMessage(mail);
-    }
+//    @Override
+//    public void run(ApplicationArguments args) throws Exception {
+//        Mail mail = new Mail();
+//
+//        mail.setFrom("bit.todayart@gmail.com");
+//        mail.setTo("zxcvbnm1436@naver.com");
+//        mail.setSubject("테스트 메일입니다.");
+//        mail.setContent("테스트 콘텐츠입니다.");
+//
+//        emailService.sendSimpleMessage(mail);
+//    }
 }
