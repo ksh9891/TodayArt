@@ -20,7 +20,7 @@ public class MileageService {
     private MileageInvoiceRepository mileageInvoiceRepository;
 
     @Transactional(readOnly = true)
-    public List<MileageStatement> findAllMileageStatement() {
+    public List<MileageStatement> retrieveMileageStatement() {
         return mileageStatementRepository.findAll();
     }
 
@@ -37,7 +37,7 @@ public class MileageService {
     }
 
     @Transactional(readOnly = true)
-    public List<MileageInvoice> findAllMileageInvoice() {
+    public List<MileageInvoice> retrieveMileageInvoice() {
         return mileageInvoiceRepository.findAll();
     }
 
