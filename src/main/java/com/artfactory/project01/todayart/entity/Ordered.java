@@ -3,11 +3,11 @@ package com.artfactory.project01.todayart.entity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="ordered")
@@ -37,8 +37,12 @@ public class Ordered implements Serializable {
     @Column(name = "cart_id")
     private Integer cartId;
 
-    @Column(name="hidden")
-    private int hidden;
+    @Column(name="isHidden")
+    private int isHidden;
+
+    @OneToMany
+    @JoinColumn(name="ordered_id")
+    private List<OrderedDetail> orderDetails;
 
     /* OrderedDetail 과 join하기 */
 
@@ -90,11 +94,19 @@ public class Ordered implements Serializable {
         this.cartId = cartId;
     }
 
-    public int getHidden() {
-        return hidden;
+    public int getIsHidden() {
+        return isHidden;
     }
 
-    public void setHidden(int hidden) {
-        this.hidden = hidden;
+    public void setIsHidden(int hidden) {
+        this.isHidden = isHidden;
+    }
+
+    public List<OrderedDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderedDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }

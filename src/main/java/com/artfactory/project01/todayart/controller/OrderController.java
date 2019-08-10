@@ -25,28 +25,45 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+    private Member member;
+    private static Member getMember(Principal principal){
+        return (Member) PrincipalUtil.from(principal);
+    }
+
+
+    // POST =========================================
+
     // 주문 생성
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Ordered createOrder(@RequestBody OrderForm orderForm, Principal principal){
-        Member member = (Member) PrincipalUtil.from(principal);
+        member = getMember(principal);
         orderForm.setMemberId(member.getMemberId());
         return orderService.createOrder(orderForm);
     }
 
+    // GET =========================================
+
     // (관리자는 모든 주문, 주문자는 자신의) 모든 주문 확인
     // - 이름/가격/날짜/배송정보/주문상태
+    //  주문 아이템 상태로 조회
+    // 결제완료, 배송준비, 배송중, 배송완료, 주문확정, 주문취소, 반품, 환불
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ArrayList<OrderFormReturn> listOf(Principal principal){
-        Member member = (Member) PrincipalUtil.from(principal);
+    public ArrayList<OrderFormReturn> listOf(@RequestParam(value = "type", required = false)String type, Principal principal){
+        member = getMember(principal);
         int id = member.getMemberId();
+        if(type==null){
         String role = member.getRole();
-        return ((role.equals("ROLE_ADMIN"))?orderService.getOrders():orderService.getOrdersByUser(id));
+        return ((role.equals("ROLE_ADMIN"))?orderService.getOrders():orderService.getOrdersByUser(id));}
+        else{
+            return orderService.getOrdersByStatus(id, type);
+        }
     }
 
     @RequestMapping(path="/period", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ArrayList<OrderFormReturn> listOfOrderWithPeriod(@RequestBody Period period, Principal principal){
-        Member member = (Member) PrincipalUtil.from(principal);
+        member = getMember(principal);
         String role = member.getRole();
         if(role.equals("ROLE_ADMIN")){
             return orderService.getOrdersWithTerm(period);
@@ -71,7 +88,7 @@ public class OrderController {
     // -주문일자/주문번호/(영수증 발급내역)/상품주문번호/상품정보/상품금액(수량)/배송비/판매자/주문진행상태/주문(상품)금액
     @RequestMapping(path="/{id}/detail", method = RequestMethod.GET, produces ={MediaType.APPLICATION_JSON_UTF8_VALUE})
     public List<OrderedDetail> retrieveOrderDetail(@PathVariable("id") int orderId, Principal principal){
-        Member member = (Member) PrincipalUtil.from(principal);
+        member = getMember(principal);
         String role = member.getRole();
         return ((role.equals("ROLE_ADMIN"))?orderService.getOrderDetailForAdmin(orderId):orderService.getOrderDetail(orderId, member));
     }
@@ -88,10 +105,19 @@ public class OrderController {
 
 
 
-    @RequestMapping(path="/{id}/{price}", method=RequestMethod.PATCH, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Ordered patchOrder(@PathVariable("id") Integer orderId, @PathVariable("price") Integer price){
-        return orderService.patchOrder(orderId, price);
-    }
+/*    //  주문 아이템 상태로 조회
+    // 결제완료, 배송준비, 배송중, 배송완료, 주문확정, 주문취소, 반품, 환불
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
+    @RequestMapping(method=RequestMethod.GET, produces={MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ArrayList<OrderFormReturn> listOfOrdersByStatus(@RequestParam("type")String type, String status, Principal principal){
+        member = getMember(principal);
+        return orderService.getOrdersByStatus(member, status);
+
+
+    }*/
+
+
+    // PATCH =========================================
 
 
     // 주문자 : 상태변경 (주문취소)
@@ -101,11 +127,13 @@ public class OrderController {
     @RequestMapping(method=RequestMethod.PATCH, produces ={MediaType.APPLICATION_JSON_UTF8_VALUE})
     public OrderedDetail changeStatus(@RequestBody ChangeOrderDetail changeList,
                                 Principal principal){
-        Member member = (Member) PrincipalUtil.from(principal);
+        member = getMember(principal);
         return orderService.changeStatus(member, changeList);
 
     }
 
+
+    // DELETE =========================================
 
     // 주문내역 감추기(실제 삭제 X)
     @RequestMapping(path="/{id}", method=RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})

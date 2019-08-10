@@ -10,6 +10,7 @@ import com.artfactory.project01.todayart.model.Period;
 import com.artfactory.project01.todayart.repository.OrderedDetailRepository;
 import com.artfactory.project01.todayart.repository.OrderedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,21 +50,28 @@ public class OrderService {
     @Transactional
     public ArrayList<OrderFormReturn> getOrders(){
         List<Ordered> orders = orderedRepository.findAll();
-        return getOrderForm(orders);
+        return getOrderForm(orders, null);
     }
 
     @Transactional
     public ArrayList<OrderFormReturn> getOrdersByUser(int id){
         List<Ordered> orders = orderedRepository.findByMemberId(id);
-        return getOrderForm(orders);
+        return getOrderForm(orders, null);
     }
 
-    @Transactional ArrayList<OrderFormReturn> getOrderForm(List<Ordered> orders){
+    @Transactional ArrayList<OrderFormReturn> getOrderForm(List<Ordered> orders, @Nullable String type){
         ArrayList<OrderFormReturn> orderList= new ArrayList<>();
         for(Ordered order : orders){
-            List<OrderedDetail> itemDetail = orderedDetailRepository.findAllByOrderId(order.getOrderId());
+            List<OrderedDetail> itemDetail;
+            if(type==null){
+                itemDetail= orderedDetailRepository.findAllByOrderId(order.getOrderId());
+            }
+            else{
+                itemDetail= orderedDetailRepository.findAllByOrderIdAndStatus(order.getOrderId(), type);
+            }
             for(OrderedDetail detail : itemDetail){
                 OrderFormReturn item = new OrderFormReturn();
+                item.setOrderId(detail.getOrderId());
                 item.setOrderDate(order.getOrderDate());
                 item.setProductName(detail.getProductName());
                 item.setProductPrice(detail.getProductPrice());
@@ -81,7 +89,7 @@ public class OrderService {
         Date startDate = period.getStartDate();
         Date endDate = period.getEndDate();
         List<Ordered> orderedList = orderedRepository.findByMemberIdWithTerm(startDate, endDate);
-        return getOrderForm(orderedList);
+        return getOrderForm(orderedList, null);
     }
 
 
@@ -90,7 +98,7 @@ public class OrderService {
         Date startDate = period.getStartDate();
         Date endDate = period.getEndDate();
         List<Ordered> orderedList = orderedRepository.findByMemberIdWithTerm(id, startDate, endDate);
-        return getOrderForm(orderedList);
+        return getOrderForm(orderedList, null);
     }
 
 
@@ -101,6 +109,7 @@ public class OrderService {
     }
 
 
+    /*
     @Transactional
     public Ordered getOrder(int orderId, Member member){
         Ordered ordered = orderedRepository.findById(orderId).get();
@@ -116,12 +125,14 @@ public class OrderService {
         return orderedRepository.findById(orderId).get();
 
     }
+    */
+
     // 구매자용 특정 주문정보디테일 보기
     @Transactional
     public List<OrderedDetail> getOrderDetail(int orderId, Member member){
-        Optional<Ordered> order = orderedRepository.findById(orderId);
         int memberId = member.getMemberId();
-        if(order.get().getMemberId()==memberId){
+        Ordered order = orderedRepository.findByOrderIdAndMemberId(orderId,memberId);
+        if(order!=null){
             List<OrderedDetail> orderedDetailList = orderedDetailRepository.findAllByOrderId(orderId);
             return orderedDetailList;
         }else{
@@ -132,10 +143,16 @@ public class OrderService {
     @Transactional
     public List<OrderedDetail> getOrderDetailForAdmin(int orderId){
 
-        Optional<Ordered> order = orderedRepository.findById(orderId);
+       // Optional<Ordered> order = orderedRepository.findById(orderId);
             List<OrderedDetail> orderedDetailList = orderedDetailRepository.findAllByOrderId(orderId);
             return orderedDetailList;
 
+    }
+
+    @Transactional
+    public ArrayList<OrderFormReturn> getOrdersByStatus(int memberId, String status){
+        List<Ordered> orderedList = orderedRepository.findByMemberId(memberId);
+        return getOrderForm(orderedList, status);
     }
 
     // PATCH =========================================
@@ -186,7 +203,7 @@ public class OrderService {
     @Transactional
     public void hiddenOrders(int orderedId){
         Ordered ordered = orderedRepository.findByOrderId(orderedId);
-        ordered.setHidden(1);
+        ordered.setIsHidden(1);
         orderedRepository.save(ordered);
     }
 

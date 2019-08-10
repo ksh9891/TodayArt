@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface OrderedRepository extends JpaRepository<Ordered, Integer> {
+    @Query(value = "SELECT * FROM ordered WHERE member_id = ?1 and isHidden = 0", nativeQuery = true)
     List<Ordered> findByMemberId(Integer memberId);
 
     @Query(value = "SELECT * FROM ordered WHERE member_id = ?1 and order_dated BETWEEN ?2 AND DATE_ADD(?3, INTERVAL 1 DAY)", nativeQuery = true)
@@ -19,5 +20,8 @@ public interface OrderedRepository extends JpaRepository<Ordered, Integer> {
     List<Ordered> findByMemberIdWithTerm(Date startDate, Date endDate);
 
     Ordered findByOrderId(int orderId);
+
+    Ordered findByOrderIdAndMemberId(int orderId, int memberId);
+
 
 }

@@ -4,11 +4,20 @@ import java.util.Date;
 
 public class OrderFormReturn {
     //- 이름/가격/날짜/배송정보/주문상태
+    private int orderId;
     private String productName;
     private int productPrice;
     private Date orderDate;
     private String trackingNumber;
     private String status;
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
 
     public String getProductName() {
         return productName;
