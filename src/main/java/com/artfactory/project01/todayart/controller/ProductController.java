@@ -1,6 +1,4 @@
 package com.artfactory.project01.todayart.controller;
-
-
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.model.ProductForm;
 import com.artfactory.project01.todayart.model.Search;
@@ -9,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
-
 @RestController
 @RequestMapping(value = "/product")
 public class ProductController {
 
     @Autowired
     ProductService productService;
+
 
     // 상품 등록(create/post)
     @RequestMapping(
@@ -25,9 +22,9 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public Product create(@RequestBody Product product) {
-
         return productService.createProduct(product);
     }
+
 
 
     // 상품 전체 리스트 출력 (read/get)
@@ -37,9 +34,9 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public List<Product> productList() {
-
         return productService.listProduct();
     }
+
 
 
     // 상품 아이디별 조회(상품 상세 페이지, read/get)
@@ -49,9 +46,9 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public Product productList(@PathVariable("product_id") Integer product_id) {
-
         return productService.listProductdetail(product_id);
     }
+
 
 
 
@@ -61,21 +58,23 @@ public class ProductController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public List<Product> productSearchByName(@RequestBody Search search) {
-
-        return productService.searchByProductName(search);
+    public List<Product> productList(@RequestBody Search search) {
+        return productService.SearchByProductName(search);
     }
 
-    // 상품 이름으로 검색(read/get)
+
+
+
+    // 상품 카테고리별 검색(read/get)
     @RequestMapping(
             path = "/category",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public List<Product> productSearchByCategory(@RequestBody Search search) {
-
-        return productService.searchByCategory(search);
+    public List<Product> productListByCategory(@RequestBody Search search) {
+        return productService.SearchByCategory(search);
     }
+
 
 
 
@@ -87,9 +86,9 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public Product update(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {
-
         return productService.updateProduct(product_id, productForm);
     }
+
 
 
 
@@ -100,9 +99,11 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public Product delete(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {
-
         return productService.deleteProduct(product_id, productForm);
     }
+
+
+
 
 
     // 상품 삭제 : 실제 DB에서 삭제됨(delete/delete)
@@ -113,14 +114,8 @@ public class ProductController {
     )
     public Product deleteReal(@PathVariable("product_id") Integer product_id) {
         productService.deleteProductReal(product_id);
-
         Product product = new Product();
-        product.setProduct_id(product_id);
+        product.setProductId(product_id);
         return product;
     }
-
-
-
-
-
 }

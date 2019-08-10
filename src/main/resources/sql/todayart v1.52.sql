@@ -1,4 +1,4 @@
-# Todayart v1.53
+# Todayart v1.52
 /*
 [v1.3]
     - 모든 테이블에 default now() -> default current_timestamp로 변경
@@ -6,7 +6,7 @@
     - member_role, role : 테이블 삭제
     - member : authority 컬럼 삭제, role 컬럼 추가
     - ordered_detail : 컬럼 추가
-        > `product_name` varchar(255) not null
+        > `productName` varchar(255) not null
         > `product_size` varchar(255) not null
         > `shipping_fee` int not null
     - payment : 컬럼추가
@@ -31,8 +31,6 @@
 	  - mileage_invoice : 컬럼추가
         > `is_delete` INT(11) NOT NULL DEFAULT 0 COMMENT '0: 미삭제, 1: 삭제'
       - 더미데이터 추가
-[V1.53]
-	- ordered 에 감추기용 isHidden 컬럼 추가(DELETE 기능 대신)
 */
 
 -- MySQL Workbench Forward Engineering
@@ -222,16 +220,16 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `todayart`.`category_id`
+-- Table `todayart`.`category`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `todayart`.`category_id` (
-  `category_id` INT(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `todayart`.`category` (
+  `categoryId` INT(11) NOT NULL AUTO_INCREMENT,
   `category_name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`category_id`))
+  PRIMARY KEY (`categoryId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `todayart`.`category_id` VALUE(1, '그림');
+INSERT INTO `todayart`.`category` VALUE(1, '그림');
 
 -- -----------------------------------------------------
 -- Table `todayart`.`product`
@@ -239,8 +237,8 @@ INSERT INTO `todayart`.`category_id` VALUE(1, '그림');
 CREATE TABLE IF NOT EXISTS `todayart`.`product` (
   `product_id` INT(11) NOT NULL AUTO_INCREMENT,
   `artist_id` INT(11) NOT NULL,
-  `category_id` INT(11) NOT NULL,
-  `product_name` VARCHAR(255) NOT NULL,
+  `categoryId` INT(11) NOT NULL,
+  `productName` VARCHAR(255) NOT NULL,
   `product_size` VARCHAR(255) NOT NULL,
   `product_price` INT(11) NOT NULL,
   `thumbnail_id` INT(11) NOT NULL,
@@ -255,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `todayart`.`product` (
   `shipping_fee` INT(11) NOT NULL,
   PRIMARY KEY (`product_id`),
   INDEX `fk_product_artist_idx` (`artist_id` ASC) VISIBLE,
-  INDEX `fk_product_category_idx` (`category_id` ASC) VISIBLE,
+  INDEX `fk_product_category_idx` (`categoryId` ASC) VISIBLE,
   INDEX `fk_product_file_idx` (`thumbnail_id` ASC) VISIBLE,
   CONSTRAINT `fk_product_artist`
     FOREIGN KEY (`artist_id`)
@@ -263,8 +261,8 @@ CREATE TABLE IF NOT EXISTS `todayart`.`product` (
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_product_category`
-    FOREIGN KEY (`category_id`)
-    REFERENCES `todayart`.`category_id` (`category_id`)
+    FOREIGN KEY (`categoryId`)
+    REFERENCES `todayart`.`category` (`categoryId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_product_file`
@@ -359,7 +357,6 @@ CREATE TABLE IF NOT EXISTS `todayart`.`ordered` (
   `order_dated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `total_price` INT(11) NOT NULL,
   `shipping_fee` INT(11) NULL DEFAULT NULL,
-  `isHidden` INT NOT NULL DEFAULT 0 COMMENT "0:보이기 1:감추기",
   PRIMARY KEY (`ordered_id`),
   INDEX `fk_ordered_member_idx` (`member_id` ASC) VISIBLE,
   INDEX `fk_ordered_cart_idx` (`cart_id` ASC) VISIBLE,
@@ -509,7 +506,7 @@ CREATE TABLE IF NOT EXISTS `todayart`.`ordered_detail` (
   `quantity` INT(11) NOT NULL,
   `total_price` INT(11) NOT NULL,
   `product_price` INT(11) NOT NULL,
-  `product_name` VARCHAR(255) NOT NULL,
+  `productName` VARCHAR(255) NOT NULL,
   `product_size` VARCHAR(255) NOT NULL,
   `shipping_fee` INT(11) NOT NULL,
   `tracking_number` VARCHAR(255) NULL DEFAULT NULL,

@@ -1,5 +1,7 @@
 package com.artfactory.project01.todayart.util;
 
+import com.artfactory.project01.todayart.entity.Member;
+import com.artfactory.project01.todayart.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

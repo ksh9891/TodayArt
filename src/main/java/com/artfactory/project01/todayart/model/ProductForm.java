@@ -1,39 +1,34 @@
 package com.artfactory.project01.todayart.model;
+
 import com.artfactory.project01.todayart.entity.Product;
 import java.io.Serializable;
 
-
-
-
-
 public class ProductForm implements Serializable {
 
-
-
-    private String product_name;
-    private String product_size;
-    private Integer product_price;
-    private Integer thumbnail_id;
-    private Integer category_id;
+    private String productName;
+    private String productSize;
+    private Integer productPrice;
+    private Integer thumbnailId;
+    private Integer categoryId;
     private Integer remain;
-    private Integer shipping_fee;
-    private Integer is_sold_out;
-    private Integer is_delete;
+    private Integer shippingFee;
+    private Integer isSoldOut;
+    private Integer isDelete;
     private Product product;
 
 
-    public Integer getIs_delete() {
-        return is_delete;
+    public Integer getIsDelete() {
+        return isDelete;
     }
 
-    public void setIs_delete(Integer is_delete) {
+    public void setIsDelete(Integer isDelete) {
 
-        this.is_delete = is_delete;
+        this.isDelete = isDelete;
 
     }
 
     public void setDelete(Product product) {
-        product.setIs_delete(this.is_delete);
+        product.setIsDelete(this.isDelete);
         this.product = product;
     }
 
@@ -44,29 +39,29 @@ public class ProductForm implements Serializable {
     public void setProduct(Product product) {
 
 
-        if(product_name != null){
-            product.setProduct_name(this.product_name);
+        if(productName != null){
+            product.setProductName(this.productName);
         }
-        if(product_size != null){
-            product.setProduct_size(this.product_size);
+        if(productSize != null){
+            product.setProductSize(this.productSize);
         }
-        if(thumbnail_id != null){
-            product.setThumbnail_id(this.thumbnail_id);
+        if(thumbnailId != null){
+            product.setThumbnailId(this.thumbnailId);
         }
-        if(category_id != null){
-            product.setCategory_id(this.category_id);
+        if(categoryId != null){
+            product.setCategoryId(this.categoryId);
         }
         if(remain!= null){
             product.setRemain(this.remain);
         }
-        if(shipping_fee!= null){
-            product.setShipping_fee(this.shipping_fee);
+        if(shippingFee != null){
+            product.setShippingFee(this.shippingFee);
         }
-        if(is_sold_out != null){
-            product.setIs_sold_out(this.is_sold_out);
+        if(isSoldOut != null){
+            product.setIsSoldOut(this.isSoldOut);
         }
-        if(product_price != null){
-            product.setProduct_price(this.product_price);
+        if(productPrice != null){
+            product.setProductPrice(this.productPrice);
         }
 
 
@@ -74,52 +69,52 @@ public class ProductForm implements Serializable {
 
     }
 
-    public Integer getIs_sold_out() {
-        return is_sold_out;
+    public Integer getIsSoldOut() {
+        return isSoldOut;
     }
 
-    public void setIs_sold_out(Integer is_sold_out) {
-        this.is_sold_out = is_sold_out;
+    public void setIsSoldOut(Integer isSoldOut) {
+        this.isSoldOut = isSoldOut;
     }
 
-    public String getProduct_name() {
-        return product_name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getProduct_size() {
-        return product_size;
+    public String getProductSize() {
+        return productSize;
     }
 
-    public void setProduct_size(String product_size) {
-        this.product_size = product_size;
+    public void setProductSize(String productSize) {
+        this.productSize = productSize;
     }
 
-    public Integer getProduct_price() {
-        return product_price;
+    public Integer getProductPrice() {
+        return productPrice;
     }
 
-    public void setProduct_price(Integer product_price) {
-        this.product_price = product_price;
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public Integer getThumbnail_id() {
-        return thumbnail_id;
+    public Integer getThumbnailId() {
+        return thumbnailId;
     }
 
-    public void setThumbnail_id(Integer thumbnail_id) {
-        this.thumbnail_id = thumbnail_id;
+    public void setThumbnailId(Integer thumbnailId) {
+        this.thumbnailId = thumbnailId;
     }
 
-    public Integer getCategory_id() {
-        return category_id;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(Integer category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Integer getRemain() {
@@ -130,12 +125,12 @@ public class ProductForm implements Serializable {
         this.remain = remain;
     }
 
-    public Integer getShipping_fee() {
-        return shipping_fee;
+    public Integer getShippingFee() {
+        return shippingFee;
     }
 
-    public void setShipping_fee(Integer shipping_fee) {
-        this.shipping_fee = shipping_fee;
+    public void setShippingFee(Integer shippingFee) {
+        this.shippingFee = shippingFee;
     }
 
 

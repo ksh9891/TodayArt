@@ -1,16 +1,12 @@
 package com.artfactory.project01.todayart.repository;
-
-
 import com.artfactory.project01.todayart.entity.Product;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
-
-
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
@@ -27,15 +23,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query(value="UPDATE product SET update_dated = now() WHERE product_id = ?", nativeQuery=true)
     void updateDate(Integer product_id);
 
+
     @Query(value = "SELECT * FROM Product WHERE product_name LIKE ? ", nativeQuery = true)
     List<Product> findByProduct_nameLike(String product_name);
 
 
-
-    @Query(value = "SELECT * FROM Product WHERE category_id = ? ", nativeQuery = true)
-    List<Product> findByCategory(Integer category_id);
-
     @Query(value = "SELECT * FROM Product WHERE is_delete = 0 ", nativeQuery = true)
     List<Product> findNotDelete();
 
+    @Query(value = "SELECT * FROM Product WHERE category_id = ? ", nativeQuery = true)
+    List<Product> findByCategory_idLike(Integer category_id);
 }
