@@ -75,6 +75,17 @@ public class Product {
     @Column(name = "shipping_fee")
     private Integer shippingFee;
 
+    @Column(name = "product_content")
+    private String productContent;
+
+
+    public String getProductContent() {
+        return productContent;
+    }
+
+    public void setProductContent(String productContent) {
+        this.productContent = productContent;
+    }
 
     public Integer getProductId() {
         return productId;

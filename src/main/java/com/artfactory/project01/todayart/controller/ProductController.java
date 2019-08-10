@@ -38,6 +38,29 @@ public class ProductController {
     }
 
 
+    // 상품 가격 오름차순 출력 (read/get)
+    @RequestMapping(
+            path = "/list/asc",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public List<Product> productListPriceAsc() {
+        return productService.listProductPriceAsc();
+    }
+
+
+
+    // 상품 가격 내림차순 출력 (read/get)
+    @RequestMapping(
+            path = "/list/desc",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public List<Product> productListPriceDesc() {
+        return productService.listProducPriceDesc();
+    }
+
+
 
     // 상품 아이디별 조회(상품 상세 페이지, read/get)
     @RequestMapping(

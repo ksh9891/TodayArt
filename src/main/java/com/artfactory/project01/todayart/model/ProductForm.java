@@ -14,7 +14,9 @@ public class ProductForm implements Serializable {
     private Integer shippingFee;
     private Integer isSoldOut;
     private Integer isDelete;
+    private String productContent;
     private Product product;
+
 
 
     public Integer getIsDelete() {
@@ -63,10 +65,23 @@ public class ProductForm implements Serializable {
         if(productPrice != null){
             product.setProductPrice(this.productPrice);
         }
+        if(productContent != null){
+            product.setProductContent(this.productContent);
+        }
+
 
 
         this.product = product;
 
+    }
+
+
+    public String getProductContent() {
+        return productContent;
+    }
+
+    public void setProductContent(String productContent) {
+        this.productContent = productContent;
     }
 
     public Integer getIsSoldOut() {

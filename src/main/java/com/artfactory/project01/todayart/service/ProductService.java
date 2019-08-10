@@ -23,14 +23,25 @@ public class ProductService {
     }
 
 
-
-
-
     // GET ===========================================
     // 상품 전체 조회
     @Transactional(readOnly = true)
     public List<Product> listProduct() {
         return productRepository.findNotDelete();
+    }
+
+
+    // 상품 가격 오름차순 조회
+    @Transactional(readOnly = true)
+    public List<Product> listProductPriceAsc() {
+        return productRepository.findProductsByPriceASC();
+    }
+
+
+    // 상품 가격 내림차순 조회
+    @Transactional(readOnly = true)
+    public List<Product> listProducPriceDesc() {
+        return productRepository.findProductsByPriceDESC();
     }
 
 
@@ -80,6 +91,7 @@ public class ProductService {
         productRepository.deleteDate(id);
         return productRepository.save(product);
     }
+
 
 
 
