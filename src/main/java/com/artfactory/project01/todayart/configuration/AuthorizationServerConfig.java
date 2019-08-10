@@ -29,8 +29,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private MemberDetailServiceImpl memberDetailsService;
+//    @Autowired
+//    private MemberDetailServiceImpl memberDetailsService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

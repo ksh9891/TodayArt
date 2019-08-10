@@ -31,8 +31,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByProduct_nameLike(String product_name);
 
 
+
     @Query(value = "SELECT * FROM Product WHERE category_id = ? ", nativeQuery = true)
     List<Product> findByCategory(Integer category_id);
 
+    @Query(value = "SELECT * FROM Product WHERE is_delete = 0 ", nativeQuery = true)
+    List<Product> findNotDelete();
 
 }

@@ -34,7 +34,7 @@ public class ProductService {
     // 상품 전체 조회
     @Transactional(readOnly = true)
     public List<Product> listProduct() {
-        return productRepository.findAll();
+        return productRepository.findNotDelete();
     }
 
 
