@@ -19,45 +19,45 @@ import java.util.*;
 @DynamicInsert
 public class Member implements UserDetails, Serializable {
     @Id
-    @Column(name="member_id", updatable = false, nullable = false)
+    @Column(name = "member_id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer memberId;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
-    @Column(name="nickname")
+    @Column(name = "nickname")
     private String nickname;
 
-    @Column(name="username")
+    @Column(name = "username")
     private String username;
 
-    @Column(name="reg_dated")
+    @Column(name = "reg_dated")
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date regDated;
 
-    @Column(name="phone")
+    @Column(name = "phone")
     private String Phone;
 
-    @Column(name="role")
+    @Column(name = "role")
     private String role;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="last_connect_dated")
+    @Column(name = "last_connect_dated")
     private Date lastConnectDated;
 
-    @Column(name="expired")
+    @Column(name = "expired")
     private Integer expired;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="expired_dated")
+    @Column(name = "expired_dated")
     private Date expiredDated;
 
-    @Column(name="email_checked")
+    @Column(name = "email_checked")
     private Integer emailChecked;
 
     public Integer getMemberId() {
@@ -163,8 +163,8 @@ public class Member implements UserDetails, Serializable {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-            GrantedAuthority authority = new SimpleGrantedAuthority(role);
-            authorities.add(authority);
+        GrantedAuthority authority = new SimpleGrantedAuthority(role);
+        authorities.add(authority);
         return authorities;
     }
 
@@ -187,5 +187,4 @@ public class Member implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
-
 }

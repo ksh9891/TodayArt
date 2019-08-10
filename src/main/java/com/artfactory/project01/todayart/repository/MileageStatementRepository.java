@@ -1,10 +1,9 @@
 package com.artfactory.project01.todayart.repository;
 
-import com.artfactory.project01.todayart.entity.Member;
+import com.artfactory.project01.todayart.entity.MileageStatement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, Integer> {
-    Member findByEmail(String email);
+public interface MileageStatementRepository extends JpaRepository<MileageStatement, Integer> {
 }
