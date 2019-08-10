@@ -1,7 +1,5 @@
 package com.artfactory.project01.todayart;
 
-import com.artfactory.project01.todayart.entity.Member;
-import com.artfactory.project01.todayart.repository.MemberRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
