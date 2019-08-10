@@ -5,8 +5,11 @@ import com.artfactory.project01.todayart.model.UpdateMember;
 import com.artfactory.project01.todayart.repository.MemberRepository;
 import com.artfactory.project01.todayart.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 public class MemberController {
@@ -39,11 +42,14 @@ public class MemberController {
 
     @RequestMapping(
             value = "/delete/{id}",
-            method = RequestMethod.PATCH,
+            method = RequestMethod.DELETE,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE
             })
     public Member delete(@PathVariable("id") int id, UpdateMember updateMember){
+        Date expiredDated = new Date();
+        updateMember.setExpired(1);
+        updateMember.setExpiredDated(expiredDated);
         return updateService.update(id, updateMember);
     }
 }
