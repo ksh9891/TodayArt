@@ -3,6 +3,7 @@ package com.artfactory.project01.todayart.entity;
 
 
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -43,11 +44,13 @@ public class Product {
     @Column(name = "is_delete")
     private Integer isDelete;
 
-    @UpdateTimestamp
+
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "delete_dated", nullable = true)
     private Date deleteDated;
 
+    @CreationTimestamp
     @Column(name = "enroll_dated", nullable = true, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date enrollDated;
@@ -57,8 +60,9 @@ public class Product {
     @Column(name = "update_dated", nullable = true)
     private Date updateDated;
 
-    @Column(name = "category_id")
-    private Integer categoryId;
+    @ManyToOne(targetEntity = ProductCategory.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private ProductCategory productCategory;
 
     @Column(name = "is_sold_out")
     private Integer isSoldOut;
@@ -143,12 +147,12 @@ public class Product {
         this.isDelete = isDelete;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public ProductCategory getProductCategory() {
+        return productCategory;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
     }
 
     public Integer getIsSoldOut() {

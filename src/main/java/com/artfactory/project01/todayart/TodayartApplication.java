@@ -2,12 +2,15 @@ package com.artfactory.project01.todayart;
 
 import com.artfactory.project01.todayart.model.Mail;
 import com.artfactory.project01.todayart.service.EmailService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.WebApplicationType;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
 
 @SpringBootApplication
 //public class TodayartApplication implements ApplicationRunner {
@@ -31,4 +34,5 @@ public class TodayartApplication {
 //
 //        emailService.sendSimpleMessage(mail);
 //    }
+
 }

@@ -17,7 +17,7 @@ public class ProductController {
 
     // 상품 등록(create/post)
     @RequestMapping(
-            path = "/regist",
+            path = "/add",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -57,7 +57,7 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public List<Product> productListPriceDesc() {
-        return productService.listProducPriceDesc();
+        return productService.listProductPriceDesc();
     }
 
 
@@ -77,25 +77,26 @@ public class ProductController {
 
     // 상품 이름으로 검색(read/get)
     @RequestMapping(
-            path = "/productname",
+            path = "/lists",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+
     )
-    public List<Product> productList(@RequestBody Search search) {
-        return productService.SearchByProductName(search);
+    public List<Product> productListByName(@RequestParam(value = "name", required = false) String productName) {
+
+        return productService.SearchByProductName(productName);
     }
-
-
 
 
     // 상품 카테고리별 검색(read/get)
     @RequestMapping(
-            path = "/category",
+            path = "/category={categoryId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public List<Product> productListByCategory(@RequestBody Search search) {
-        return productService.SearchByCategory(search);
+    public List<Product> productListByCategory(@PathVariable("categoryId") Integer categoryId) {
+
+        return productService.SearchByCategory(categoryId);
     }
 
 
@@ -104,7 +105,7 @@ public class ProductController {
 
     // 상품 정보 수정(update/patch)
     @RequestMapping(
-            path = "/{product_id}",
+            path = "/update/{product_id}",
             method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -117,7 +118,7 @@ public class ProductController {
 
     // 상품 삭제 : is_delete만 1로 변경(update/patch)
     @RequestMapping(
-            path = "/deleted{product_id}",
+            path = "/delete/{product_id}",
             method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -131,7 +132,7 @@ public class ProductController {
 
     // 상품 삭제 : 실제 DB에서 삭제됨(delete/delete)
     @RequestMapping(
-            path = "/{product_id}",
+            path = "/remove/{product_id}",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )

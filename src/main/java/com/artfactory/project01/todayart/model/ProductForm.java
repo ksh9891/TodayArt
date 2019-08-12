@@ -1,7 +1,10 @@
 package com.artfactory.project01.todayart.model;
 
 import com.artfactory.project01.todayart.entity.Product;
+import com.artfactory.project01.todayart.entity.ProductCategory;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class ProductForm implements Serializable {
 
@@ -9,13 +12,17 @@ public class ProductForm implements Serializable {
     private String productSize;
     private Integer productPrice;
     private Integer thumbnailId;
-    private Integer categoryId;
+    private ProductCategory productCategory;
     private Integer remain;
     private Integer shippingFee;
     private Integer isSoldOut;
     private Integer isDelete;
     private String productContent;
     private Product product;
+    private Date deleteDated;
+    private Integer categoryId;
+
+
 
 
 
@@ -31,6 +38,7 @@ public class ProductForm implements Serializable {
 
     public void setDelete(Product product) {
         product.setIsDelete(this.isDelete);
+        product.setDeleteDated(new Date());
         this.product = product;
     }
 
@@ -51,7 +59,7 @@ public class ProductForm implements Serializable {
             product.setThumbnailId(this.thumbnailId);
         }
         if(categoryId != null){
-            product.setCategoryId(this.categoryId);
+            productCategory.setCategory_id(categoryId);
         }
         if(remain!= null){
             product.setRemain(this.remain);
@@ -70,11 +78,19 @@ public class ProductForm implements Serializable {
         }
 
 
-
+        this.productCategory = productCategory;
         this.product = product;
 
     }
 
+
+    public Date getDeleteDated() {
+        return deleteDated;
+    }
+
+    public void setDeleteDated(Date deleteDated) {
+        this.deleteDated = deleteDated;
+    }
 
     public String getProductContent() {
         return productContent;
@@ -122,6 +138,14 @@ public class ProductForm implements Serializable {
 
     public void setThumbnailId(Integer thumbnailId) {
         this.thumbnailId = thumbnailId;
+    }
+
+    public ProductCategory getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
     }
 
     public Integer getCategoryId() {

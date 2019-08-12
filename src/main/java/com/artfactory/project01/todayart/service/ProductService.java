@@ -6,6 +6,8 @@ import com.artfactory.project01.todayart.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 import java.util.List;
 @Service
 public class ProductService {
@@ -27,21 +29,22 @@ public class ProductService {
     // 상품 전체 조회
     @Transactional(readOnly = true)
     public List<Product> listProduct() {
-        return productRepository.findNotDelete();
+        Integer isDelete = 0;
+        return productRepository.findByIsDelete(isDelete);
     }
 
 
     // 상품 가격 오름차순 조회
     @Transactional(readOnly = true)
     public List<Product> listProductPriceAsc() {
-        return productRepository.findProductsByPriceASC();
+        return productRepository.findAllByOrderByProductPriceAsc();
     }
 
 
     // 상품 가격 내림차순 조회
     @Transactional(readOnly = true)
-    public List<Product> listProducPriceDesc() {
-        return productRepository.findProductsByPriceDESC();
+    public List<Product> listProductPriceDesc() {
+        return productRepository.findAllByOrderByProductPriceDesc();
     }
 
 
@@ -56,18 +59,18 @@ public class ProductService {
 
     // 상품 이름 검색
     @Transactional(readOnly = true)
-    public List<Product> SearchByProductName(Search search) {
-        String product_name = search.getProductName();
-        product_name = "%"+product_name+"%";
-        return productRepository.findByProduct_nameLike(product_name);
+    public List<Product> SearchByProductName(String productName) {
+
+        Integer categoryId = 0;
+        return productRepository.findByProductNameContainingAndIsDelete(productName,categoryId);
     }
 
 
     // 상품 카테고리별 검색
     @Transactional(readOnly = true)
-    public List<Product> SearchByCategory(Search search) {
-        Integer category_id = search.getCategoryId();
-        return productRepository.findByCategory_idLike(category_id);
+    public List<Product> SearchByCategory(Integer category_id) {
+
+        return productRepository.findByProductCategory_CategoryId(category_id);
     }
 
 
@@ -80,7 +83,6 @@ public class ProductService {
     public Product updateProduct(Integer id, ProductForm productForm) {
         Product product = productRepository.findById(id).get();
         productForm.setProduct(product);
-        productRepository.updateDate(id);
         return productRepository.save(product);
     }
     // 상품 삭제(is_delete 변경)
@@ -88,7 +90,7 @@ public class ProductService {
     public Product deleteProduct(Integer id, ProductForm productForm){
         Product product = productRepository.findById(id).get();
         productForm.setDelete(product);
-        productRepository.deleteDate(id);
+
         return productRepository.save(product);
     }
 
