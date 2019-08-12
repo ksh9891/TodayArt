@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,11 +14,17 @@ public interface OrderedRepository extends JpaRepository<Ordered, Integer> {
     @Query(value = "SELECT * FROM ordered WHERE member_id = ?1 and isHidden = 0", nativeQuery = true)
     List<Ordered> findByMemberId(Integer memberId);
 
+
+    List<Ordered> findAllByOrderDetails_Status(String status);
+
+    List<Ordered> findAllByOrderDetails_StatusAndMemberId(String status, int memberId);
+
+
     @Query(value = "SELECT * FROM ordered WHERE member_id = ?1 and order_dated BETWEEN ?2 AND DATE_ADD(?3, INTERVAL 1 DAY)", nativeQuery = true)
-    List<Ordered> findByMemberIdWithTerm(int memberId, Date startDate, Date endDate);
+    ArrayList<Ordered> findByMemberIdWithTerm(int memberId, Date startDate, Date endDate);
 
     @Query(value = "SELECT * FROM ordered WHERE order_dated BETWEEN ?1 AND DATE_ADD(?2, INTERVAL 1 DAY)",nativeQuery = true)
-    List<Ordered> findByMemberIdWithTerm(Date startDate, Date endDate);
+    ArrayList<Ordered> findByMemberIdWithTerm(Date startDate, Date endDate);
 
     Ordered findByOrderId(int orderId);
 

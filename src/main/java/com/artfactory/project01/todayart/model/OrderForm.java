@@ -58,7 +58,6 @@ public class OrderForm {
         ordered.setMemberId(memberId);
         ordered.setTotalPrice(totalPrice);
         ordered.setShippingFee(shippingFee);
-        ordered.setCartId(cartId);
         return ordered;
     }
 }

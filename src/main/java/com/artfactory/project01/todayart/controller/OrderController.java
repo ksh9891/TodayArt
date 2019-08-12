@@ -50,19 +50,20 @@ public class OrderController {
     //  주문 아이템 상태로 조회
     // 결제완료, 배송준비, 배송중, 배송완료, 주문확정, 주문취소, 반품, 환불
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ArrayList<OrderFormReturn> listOf(@RequestParam(value = "type", required = false)String type, Principal principal){
+    public List<Ordered> listOf(@RequestParam(value = "type", required = false)String type, Principal principal){
         member = getMember(principal);
         int id = member.getMemberId();
-        if(type==null){
         String role = member.getRole();
-        return ((role.equals("ROLE_ADMIN"))?orderService.getOrders():orderService.getOrdersByUser(id));}
+        if(type==null){
+            return ((role.equals("ROLE_ADMIN"))?orderService.getOrders():orderService.getOrdersByUser(id));}
         else{
-            return orderService.getOrdersByStatus(id, type);
+
+            return orderService.getOrdersByStatus(role, id, type);
         }
     }
 
     @RequestMapping(path="/period", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ArrayList<OrderFormReturn> listOfOrderWithPeriod(@RequestBody Period period, Principal principal){
+    public ArrayList<Ordered> listOfOrderWithPeriod(@RequestBody Period period, Principal principal){
         member = getMember(principal);
         String role = member.getRole();
         if(role.equals("ROLE_ADMIN")){
@@ -73,15 +74,7 @@ public class OrderController {
 
     }
 
-    /* ui 변경으로 필요없어짐
-    // (관리자)(특정 id) 주문 확인 // 소비자 본인(의 특정) 주문 확인
-    @RequestMapping(path="/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Ordered retrieveOrder(@PathVariable("id") int orderId, Principal principal){
-        Member member = (Member) PrincipalUtil.from(principal);
-        int auth =2;
-        return ((auth==2)?orderService.getOrderForAdmin(orderId):orderService.getOrder(orderId, member));
-    }
-    */
+
 
 
     // (관리자)(특정 id) 주문(디테일) 확인 // 소비자 본인(의 특정) 주문(디테일) 확인
@@ -103,18 +96,6 @@ public class OrderController {
         return orderService.getOrdersByMemberId(memberId);
     }
 
-
-
-/*    //  주문 아이템 상태로 조회
-    // 결제완료, 배송준비, 배송중, 배송완료, 주문확정, 주문취소, 반품, 환불
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
-    @RequestMapping(method=RequestMethod.GET, produces={MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ArrayList<OrderFormReturn> listOfOrdersByStatus(@RequestParam("type")String type, String status, Principal principal){
-        member = getMember(principal);
-        return orderService.getOrdersByStatus(member, status);
-
-
-    }*/
 
 
     // PATCH =========================================

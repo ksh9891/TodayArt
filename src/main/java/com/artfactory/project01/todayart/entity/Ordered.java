@@ -34,13 +34,10 @@ public class Ordered implements Serializable {
     @Column(name = "shipping_fee")
     private Integer shippingFee;
 
-    @Column(name = "cart_id")
-    private Integer cartId;
-
     @Column(name="isHidden")
     private int isHidden;
 
-    @OneToMany
+    @OneToMany(targetEntity=OrderedDetail.class, fetch = FetchType.EAGER)
     @JoinColumn(name="ordered_id")
     private List<OrderedDetail> orderDetails;
 
@@ -84,14 +81,6 @@ public class Ordered implements Serializable {
 
     public void setShippingFee(Integer shippingFee) {
         this.shippingFee = shippingFee;
-    }
-
-    public Integer getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(Integer cartId) {
-        this.cartId = cartId;
     }
 
     public int getIsHidden() {

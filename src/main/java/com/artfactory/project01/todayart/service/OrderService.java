@@ -48,57 +48,35 @@ public class OrderService {
 
     // 주문 조회
     @Transactional
-    public ArrayList<OrderFormReturn> getOrders(){
+    public List<Ordered> getOrders(){
         List<Ordered> orders = orderedRepository.findAll();
-        return getOrderForm(orders, null);
+        return orders;
     }
 
     @Transactional
-    public ArrayList<OrderFormReturn> getOrdersByUser(int id){
+    public List<Ordered> getOrdersByUser(int id){
         List<Ordered> orders = orderedRepository.findByMemberId(id);
-        return getOrderForm(orders, null);
+        return orders;
     }
 
-    @Transactional ArrayList<OrderFormReturn> getOrderForm(List<Ordered> orders, @Nullable String type){
-        ArrayList<OrderFormReturn> orderList= new ArrayList<>();
-        for(Ordered order : orders){
-            List<OrderedDetail> itemDetail;
-            if(type==null){
-                itemDetail= orderedDetailRepository.findAllByOrderId(order.getOrderId());
-            }
-            else{
-                itemDetail= orderedDetailRepository.findAllByOrderIdAndStatus(order.getOrderId(), type);
-            }
-            for(OrderedDetail detail : itemDetail){
-                OrderFormReturn item = new OrderFormReturn();
-                item.setOrderId(detail.getOrderId());
-                item.setOrderDate(order.getOrderDate());
-                item.setProductName(detail.getProductName());
-                item.setProductPrice(detail.getProductPrice());
-                item.setTrackingNumber(detail.getTrackingNumber());
-                item.setStatus(detail.getStatus());
-                orderList.add(item);
-            }
-        }
-        return orderList;
+
+
+
+    @Transactional
+    public ArrayList<Ordered> getOrdersWithTerm(Period period){
+        Date startDate = period.getStartDate();
+        Date endDate = period.getEndDate();
+        ArrayList<Ordered> orderedList = orderedRepository.findByMemberIdWithTerm(startDate, endDate);
+        return orderedList;
     }
 
 
     @Transactional
-    public ArrayList<OrderFormReturn> getOrdersWithTerm(Period period){
+    public ArrayList<Ordered> getOrdersByUserWithTerm(int id, Period period){
         Date startDate = period.getStartDate();
         Date endDate = period.getEndDate();
-        List<Ordered> orderedList = orderedRepository.findByMemberIdWithTerm(startDate, endDate);
-        return getOrderForm(orderedList, null);
-    }
-
-
-    @Transactional
-    public ArrayList<OrderFormReturn> getOrdersByUserWithTerm(int id, Period period){
-        Date startDate = period.getStartDate();
-        Date endDate = period.getEndDate();
-        List<Ordered> orderedList = orderedRepository.findByMemberIdWithTerm(id, startDate, endDate);
-        return getOrderForm(orderedList, null);
+        ArrayList<Ordered> orderedList = orderedRepository.findByMemberIdWithTerm(id, startDate, endDate);
+        return orderedList;
     }
 
 
@@ -150,9 +128,16 @@ public class OrderService {
     }
 
     @Transactional
-    public ArrayList<OrderFormReturn> getOrdersByStatus(int memberId, String status){
-        List<Ordered> orderedList = orderedRepository.findByMemberId(memberId);
-        return getOrderForm(orderedList, status);
+    public List<Ordered> getOrdersByStatus(String role, int memberId, String status){
+        List<Ordered> orderedList;
+
+        if(role.equals("ROLE_ADMIN")){
+            orderedList = orderedRepository.findAllByOrderDetails_Status(status);
+        }
+        else {
+            orderedList = orderedRepository.findAllByOrderDetails_StatusAndMemberId(status, memberId);
+        }
+        return orderedList;
     }
 
     // PATCH =========================================
