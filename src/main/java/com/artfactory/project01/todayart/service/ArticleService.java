@@ -27,8 +27,11 @@ public class ArticleService {
         return articleRepository.findAll(pageable);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Optional<ArticleVO> itemOfArticle(Integer id) {
+        ArticleVO originalVO = articleRepository.findById(id).get();
+        originalVO.setViews(originalVO.getViews()+1);
+        articleRepository.save(originalVO);
         return articleRepository.findById(id);
     }
 
@@ -41,7 +44,14 @@ public class ArticleService {
     }
 
     @Transactional
-    public void deleteArticle(Integer id) {
+    public ArticleVO deleteArticle(Integer id) {
+        ArticleVO originalVO = articleRepository.findById(id).get();
+        originalVO.setIs_deleted(1);
+        return articleRepository.save(originalVO);
+    }
+
+    @Transactional
+    public void dataDeleteArticle(Integer id) {
         articleRepository.deleteById(id);
     }
 

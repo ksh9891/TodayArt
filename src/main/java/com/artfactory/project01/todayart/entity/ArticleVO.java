@@ -213,4 +213,8 @@ public class ArticleVO implements Serializable {
     public void setProduct_id(Integer product_id) {
         this.product_id = product_id;
     }
+
+    public void updateViews(Integer views) {
+        this.views = views + 1;
+    }
 }

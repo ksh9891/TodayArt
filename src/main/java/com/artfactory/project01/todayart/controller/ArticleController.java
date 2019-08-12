@@ -26,6 +26,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    //게시물 생성
     @RequestMapping(
             value = "create",
             method = RequestMethod.POST,
@@ -40,6 +41,7 @@ public class ArticleController {
         return articleService.cretateArticle(articleVO);
     }
 
+    //리스트 불러오기 (카테고리별 커스텀 쿼리 해야함)
     @RequestMapping(
             value = "list",
             method = RequestMethod.GET,
@@ -56,6 +58,7 @@ public class ArticleController {
         return new ResultItems<ArticleVO>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
     }
 
+    //게시물 1개 보기
     @RequestMapping(
             path = "/{article_id}",
             method = RequestMethod.GET,
@@ -68,6 +71,7 @@ public class ArticleController {
         return articleService.itemOfArticle(id).get();
     }
 
+    //게시물 업데이트
     @RequestMapping(
             path = "/{article_id}",
             method = RequestMethod.PATCH,
@@ -81,6 +85,7 @@ public class ArticleController {
         return articleService.updateArticle(id, articleForm);
     }
 
+    //삭제하기(isdelete =0 에서 1로)
     @RequestMapping(
             path = "/{article_id}",
             method = RequestMethod.DELETE,
@@ -90,10 +95,34 @@ public class ArticleController {
             }
     )
     public ArticleVO delete(@PathVariable("article_id") Integer id) {
-        articleService.deleteArticle(id);
+
+        return articleService.deleteArticle(id);
+    }
+
+    //데이터 DB 삭제
+    @RequestMapping(
+            path = "admin/{article_id}",
+            method = RequestMethod.DELETE,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public ArticleVO dataDelete(@PathVariable("article_id") Integer id) {
+        articleService.dataDeleteArticle(id);
 
         ArticleVO articleVO = new ArticleVO();
         articleVO.setArticle_id(id);
         return articleVO;
     }
+
+//    @RequestMapping(
+//            path = "/search/{value}",
+//            method = RequestMethod.GET,
+//            produces = {
+//                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+//                    MediaType.APPLICATION_XML_VALUE
+//            }
+//    )
+//    public ArticleVO search
 }
