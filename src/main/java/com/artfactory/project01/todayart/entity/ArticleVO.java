@@ -28,8 +28,8 @@ public class ArticleVO implements Serializable {
     @Column(name = "board_id", nullable = false)
     private Integer board_id;
 
-    @Column(name = "writter_id", updatable = false, nullable = false)
-    private Integer writter_id;
+    @Column(name = "member_id", updatable = false, nullable = false)
+    private Integer member_id;
 
     @Column(name = "write_dated", updatable = false, nullable = false)
     @CreationTimestamp
@@ -94,12 +94,12 @@ public class ArticleVO implements Serializable {
         this.board_id = board_id;
     }
 
-    public Integer getWritter_id() {
-        return writter_id;
+    public Integer getMember_id() {
+        return member_id;
     }
 
-    public void setWritter_id(Integer writter_id) {
-        this.writter_id = writter_id;
+    public void setMember_id(Integer member_id) {
+        this.member_id = member_id;
     }
 
     public Date getWrite_dated() {
