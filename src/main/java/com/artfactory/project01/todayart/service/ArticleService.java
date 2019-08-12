@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -17,15 +18,24 @@ public class ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
 
+    //게시물 생성
     @Transactional
     public ArticleVO cretateArticle(ArticleVO articleVO) {
         return articleRepository.save(articleVO);
     }
 
+    //보드아이디가 1인 리스트 리턴
     @Transactional(readOnly = true)
-    public Page<ArticleVO> listOfArticle(Pageable pageable) {
-        return articleRepository.findAll(pageable);
+    public Page<ArticleVO> listOfArticle1(Pageable pageable) {
+        return articleRepository.findByBoard_id1(1, pageable);
     }
+
+    //보드아이디가 1인 리스트 리턴
+    @Transactional(readOnly = true)
+    public Page<ArticleVO> listOfArticle2(Pageable pageable) {
+        return articleRepository.findByBoard_id2(2, pageable);
+    }
+
 
     @Transactional
     public Optional<ArticleVO> itemOfArticle(Integer id) {
@@ -47,6 +57,7 @@ public class ArticleService {
     public ArticleVO deleteArticle(Integer id) {
         ArticleVO originalVO = articleRepository.findById(id).get();
         originalVO.setIs_deleted(1);
+        originalVO.setDeleted_dated(new Date());
         return articleRepository.save(originalVO);
     }
 

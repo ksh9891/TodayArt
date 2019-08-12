@@ -1,12 +1,6 @@
 package com.artfactory.project01.todayart.model;
 
 import com.artfactory.project01.todayart.entity.ArticleVO;
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,7 +8,7 @@ public class ArticleForm implements Serializable {
 
     private Integer article_id;
     private Integer board_id;
-    private Integer writter_id;
+    private Integer member_id;
     private Date write_dated;
     private Date update_dated;
     private String title;
@@ -47,12 +41,12 @@ public class ArticleForm implements Serializable {
         this.board_id = board_id;
     }
 
-    public Integer getWritter_id() {
-        return writter_id;
+    public Integer getMember_id() {
+        return member_id;
     }
 
-    public void setWritter_id(Integer writter_id) {
-        this.writter_id = writter_id;
+    public void setMember_id(Integer member_id) {
+        this.member_id = member_id;
     }
 
     public Date getWrite_dated() {
@@ -176,8 +170,8 @@ public class ArticleForm implements Serializable {
             articleVO.setArticle_id(this.article_id);
         }else if(board_id != null){
             articleVO.setBoard_id(this.board_id);
-        }else if(writter_id != null){
-            articleVO.setWritter_id(this.writter_id);
+        }else if(member_id != null){
+            articleVO.setMember_id(this.member_id);
         }else if(write_dated != null){
             articleVO.setWrite_dated(this.write_dated);
         }else if(update_dated != null){

@@ -43,18 +43,34 @@ public class ArticleController {
 
     //리스트 불러오기 (카테고리별 커스텀 쿼리 해야함)
     @RequestMapping(
-            value = "list",
+            value = "list1",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ResultItems<ArticleVO> listOf(
+    public ResultItems<ArticleVO> listOf1(
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<ArticleVO> articleList = articleService.listOfArticle(pageable);
+        Page<ArticleVO> articleList = articleService.listOfArticle1(pageable);
+        return new ResultItems<ArticleVO>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
+    }
+
+    @RequestMapping(
+            value = "list2",
+            method = RequestMethod.GET,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public ResultItems<ArticleVO> listOf2(
+            @RequestParam(name = "page", defaultValue = "1", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<ArticleVO> articleList = articleService.listOfArticle2(pageable);
         return new ResultItems<ArticleVO>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
     }
 
@@ -99,7 +115,7 @@ public class ArticleController {
         return articleService.deleteArticle(id);
     }
 
-    //데이터 DB 삭제
+    //데이터 DB삭제
     @RequestMapping(
             path = "admin/{article_id}",
             method = RequestMethod.DELETE,
