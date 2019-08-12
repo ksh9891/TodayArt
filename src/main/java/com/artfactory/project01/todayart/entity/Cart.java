@@ -9,21 +9,35 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.util.Date;
 
+
 @Entity
 @Table(name="cart")
 @DynamicUpdate
 @DynamicInsert
 public class Cart {
     @Id
+    @Getter
+    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="cart_id", nullable = false, updatable = false)
     private Integer cartId;
 
-    @Column(name ="memver_id", nullable = false, updatable = false)
-    private Integer memberId;
+    @Getter
+    @Setter
+    @Column(name ="member_id", nullable = false, updatable = false)
+    private int memberId;
 
-    @Column(name ="product_id", nullable = false, updatable = false)
-    private Integer productId;
+/*
+    @Getter
+    @Setter
+    @Column(name="product_id")
+    private int productId;
+*/
+    @Getter
+    @Setter
+    @ManyToOne(fetch=FetchType.EAGER, targetEntity = Product.class)
+    @JoinColumn(name ="product_id", nullable = false, updatable = false)
+    private Product product;
 
     @Getter
     @Setter
@@ -54,9 +68,8 @@ public class Cart {
 
     @Getter
     @Setter
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="is_deleted")
-    private Date isDeleted;
+    private int isDeleted;
 
     @Getter
     @Setter
