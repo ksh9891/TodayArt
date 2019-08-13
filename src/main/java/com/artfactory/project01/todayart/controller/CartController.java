@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,22 +27,23 @@ public class CartController {
 
     /*
     작성자: 국화
-    기능 : 장바구니에 담기 눌렀을 때 장바구니에 아이템 생성
-    입력 : Cart Entity
-    출력 : Save 된 Cart 객체
+    장바구니에 담기 눌렀을 때 장바구니에 아이템 생성
+    @Param Cart
+    @Return Cart
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Cart enrollCart(@RequestBody Cart cart, Principal principal){
+    public Cart createCart(@RequestBody Cart cart, Principal principal){
         member = getMember(principal);
-        return cartService.enrollCart(member, cart);
+        return cartService.createCart(member, cart);
     }
+
 
      /*
     작성자: 국화
-    기능 : 장바구니를 클릭했을 때 장바구니에 담겨있는 아이템이 보인다
-    입력 : Member
-    출력 : Member Id 로 검색 된 ArrayList<Cart>
+    장바구니를 클릭했을 때 장바구니에 담겨있는 아이템이 보인다
+    @Param
+    @Return ArrayList<Cart>
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
@@ -52,12 +52,13 @@ public class CartController {
         return cartService.retrieveCart(member);
     }
 
-    /*
-   작성자: 국화
-   기능 : 장바구니에 담긴 아이템 수량변경
-   입력 : Member, cart
-   출력 : Member Id 로 검색 된 ArrayList<Cart>
-   */
+     /*
+    작성자: 국화
+    장바구니에 담긴 아이템 수량변경
+    @param Map<String, changeCartItem>
+    @param Principal
+    @return ArrayList<Cart>
+    */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.PATCH, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ArrayList<Cart> updateCart(@RequestBody Map<String, ChangedCartItem> changedCartItem, Principal principal){
@@ -65,12 +66,12 @@ public class CartController {
         return cartService.updateCart(member,changedCartItem);
     }
 
-    /*
-   작성자: 국화
-   기능 : 장바구니에 담긴 아이템 삭제
-   입력 : cartId
-   출력 : -
-   */
+     /*
+    작성자: 국화
+    장바구니에 담긴 아이템 삭제
+    @param int
+    @return null
+    */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(path="/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public void deleteCart(@PathVariable("id")int cartId){

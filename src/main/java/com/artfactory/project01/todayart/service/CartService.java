@@ -22,7 +22,13 @@ public class CartService implements Serializable {
     @Autowired
     ProductRepository productRepository;
 
-    public Cart enrollCart(Member member, Cart cart){
+    /*
+      작성자: 국화
+      새로운 cart 레코드 작성
+      @param int
+      @return null
+    */
+    public Cart createCart(Member member, Cart cart){
         int productId = cart.getProduct().getProductId();
         Product product = productRepository.findById(productId).get();
         cart.setProductPrice(product.getProductPrice());
@@ -31,11 +37,25 @@ public class CartService implements Serializable {
         return cartRepository.save(cart);
     }
 
+    /*
+      작성자: 국화
+      각 회원의 (삭제되지않은) 장바구니 목록 불러오기
+      @param Member
+      @return ArrayList<Cart>
+    */
     public ArrayList<Cart> retrieveCart(Member member){
         ArrayList<Cart> cartList = cartRepository.findAllByMemberIdAndIsDeleted(member.getMemberId(), 0);
         return cartList;
     }
 
+
+    /*
+      작성자: 국화
+      장바구니에 담긴 아이템의 수량 변경
+      @param Member
+      @param Map<String, ChangedCartItem>
+      @return ArrayList<Cart>
+    */
     public ArrayList<Cart> updateCart(Member member, Map<String, ChangedCartItem> Item){
         for(String item : Item.keySet()){
             Cart cart = cartRepository.findById(Item.get(item).getCartId()).get();
@@ -44,7 +64,12 @@ public class CartService implements Serializable {
         }
         return retrieveCart(member);
     }
-
+    /*
+      작성자: 국화
+      장바구니에서 삭제(감추기)
+      @param int
+      @return null
+    */
     public void deleteCart(int cartId){
         Cart cart = cartRepository.findById(cartId).get();
         cart.setIsDeleted(1);
