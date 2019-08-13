@@ -97,7 +97,6 @@ public class ArticleController {
             }
     )
     public Article update(@PathVariable("article_id") Integer id, @RequestBody ArticleForm articleForm) {
-//        articleVO.setArticleId(id);
         return articleService.updateArticle(id, articleForm);
     }
 
@@ -111,7 +110,6 @@ public class ArticleController {
             }
     )
     public Article delete(@PathVariable("article_id") Integer id) {
-
         return articleService.deleteArticle(id);
     }
 

@@ -15,6 +15,6 @@ public interface ArticleRepository extends JpaRepository<Article,Integer> {
     //게시판 아이디가 1인게시물만 가져오기기
    @Query(value = "SELECT * FROM article WHERE board_id = 1 AND is_deleted = 0 ORDER BY write_dated DESC ", nativeQuery = true)
    Page<Article> findByBoard_id1(Integer board_id , Pageable pageable);
-    @Query(value = "SELECT * FROM article WHERE board_id = 2 AND is_deleted = 0 ORDER BY write_dated DESC ", nativeQuery = true)
-    Page<Article> findByBoard_id2(Integer board_id , Pageable pageable);
+   @Query(value = "SELECT * FROM article WHERE board_id = 2 AND is_deleted = 0 ORDER BY write_dated DESC ", nativeQuery = true)
+   Page<Article> findByBoard_id2(Integer board_id , Pageable pageable);
 }
