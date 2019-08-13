@@ -31,8 +31,12 @@ public class Product {
     @Column(name = "product_name")
     private String productName;
 
-    @Column(name = "artist_id", updatable = false)
-    private Integer artistId;
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
 
 
     @Column(name = "product_size")

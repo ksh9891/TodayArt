@@ -45,14 +45,14 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public List<Product> retrieveProduct() {
-        return productService.listProduct();
+        return productService.retrieveProduct();
     }
 
 
     /*
    작성자: 채경
    기능 설명 : 상품 리스트 가격 오름차순 정렬 후 출력
-   @return 오름차순 정렬된 Product<List> 객체
+   @return 오름차순 정렬된 List<Product> 객체
    */
     @RequestMapping(
             path = "/list/asc",
@@ -60,14 +60,14 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public List<Product> retrieveProductPriceAsc() {
-        return productService.listProductPriceAsc();
+        return productService.retrieveProductPriceAsc();
     }
 
 
     /*
    작성자: 채경
    기능 설명 : 상품 리스트 가격 내림차순 정렬 후 출력
-   @return 내림차순 정렬된 Product<List> 객체
+   @return 내림차순 정렬된 List<Product> 객체
    */
     @RequestMapping(
             path = "/list/desc",
@@ -75,7 +75,7 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public List<Product> retrieveProductPriceDesc() {
-        return productService.listProductPriceDesc();
+        return productService.retrieveProductPriceDesc();
     }
 
 
@@ -83,7 +83,7 @@ public class ProductController {
     작성자: 채경
     기능 설명 : 상품 ID로 상품 상세페이지 출력
     @param Integer productId
-    @return 오름차순 정렬된 Product<List> 객체
+    @return 오름차순 정렬된 List<Product> 객체
     */
     @RequestMapping(
             path = "/list/{product_id}",
@@ -91,7 +91,7 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public Product retrieveProductByProductId(@PathVariable("product_id") Integer productId) {
-        return productService.listProductdetail(productId);
+        return productService.retrieveProductDetail(productId);
     }
 
 
@@ -99,18 +99,18 @@ public class ProductController {
     작성자: 채경
     기능 설명 : 상품 이름(부분 이름)으로 검색 후 결과 출력
     @param String productName
-    @return 상품 이름으로 검색된 Product<List> 객체
-    path /lists?name="상품명"
+    @return 상품 이름으로 검색된 List<Product> 객체
+    path /productlist?name="상품명"
     */
     @RequestMapping(
-            path = "/lists",
+            path = "/list/product",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 
     )
     public List<Product> retrieveProductByName(@RequestParam(value = "name", required = false) String productName) {
 
-        return productService.searchByProductName(productName);
+        return productService.retrieveByProductName(productName);
     }
 
 
@@ -118,17 +118,57 @@ public class ProductController {
     작성자: 채경
     기능 설명 : 카테고리를 선택하면 선택한 카테고리 상품만 출력
     @param Integer categoryId
-    @return 각 카테고리별 Product<List> 객체
+    @return 각 카테고리별 List<Product> 객체
     */
     @RequestMapping(
-            path = "/category={categoryId}",
+            path = "/list/category={categoryId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public List<Product> retrieveProductByCategory(@PathVariable("categoryId") Integer categoryId) {
 
-        return productService.searchByCategory(categoryId);
+        return productService.retrieveByCategory(categoryId);
     }
+
+
+
+    /*
+    작성자: 채경
+    기능 설명 : 판매자시점에서 자기가 올린 상품만 조회
+    @param Integer artistId
+    @return 판매자별 List<Product> 객체
+    */
+    @RequestMapping(
+            path = "/list/artist={artistId}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public List<Product> retrieveProductByArtistName(@PathVariable("artistId") Integer artistId) {
+
+        return productService.retrieveByArtistId(artistId);
+    }
+
+
+    /*
+    작성자: 채경
+    기능 설명 : 작가이름으로 상품 조회/출력
+    @param String artistName
+    @return 각 판매자별 List<Product> 객체
+    /artistlist?name=작가명
+    */
+    @RequestMapping(
+            path = "/list/artist",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+
+    )
+    public List<Product> retrieveProductByArtistName(@RequestParam(value = "name", required = false) String artistName) {
+
+        return productService.retrieveByArtistName(artistName);
+    }
+
+
+
 
 
     /*

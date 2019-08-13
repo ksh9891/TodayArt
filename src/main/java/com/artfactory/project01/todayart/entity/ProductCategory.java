@@ -25,9 +25,9 @@ public class ProductCategory {
     private Integer categoryId;
 
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
-    private List<Product> productList;
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "category_id")
+//    private List<Product> productList;
 
 
     @Column(name = "category_name")
@@ -35,17 +35,9 @@ public class ProductCategory {
 
 
 
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-//    @JoinColumn(name = "category_id")
-//    private Collection<Product> productList = new ArrayList<>();
 
-    public List<Product> getProductList() {
-        return productList;
-    }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
-    }
+
 
 
 

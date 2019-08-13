@@ -1,4 +1,4 @@
-# Todayart v1.59
+# Todayart v1.61
 /*
 [v1.3]
     - 모든 테이블에 default now() -> default current_timestamp로 변경
@@ -62,6 +62,15 @@
         > `file_size` BIGINT NOT NULL DEFAULT '0',
         > `file_name` VARCHAR(255) NOT NULL UNIQUE KEY,
   - 더미데이터 수정
+[V1.6]
+	- artist : 컬럼 추가
+    > `artist_name` VARCHAR(255) NOT NULL
+[v.1.61]
+	- payment : 컬럼변경
+    > `product_id` -> `ordered_detail_id`
+    > `pay_price` -> `order_detail_price`
+    > `total_price` -> `total_order_price`
+    - 관련 데이터 수정
 */
 
 -- MySQL Workbench Forward Engineering
@@ -157,6 +166,7 @@ INSERT INTO `todayart`.`file` value (6, 'stuff.png', '쓰레기', 1, now(), "127
 CREATE TABLE IF NOT EXISTS `todayart`.`artist` (
   `artist_id` INT(11) NOT NULL AUTO_INCREMENT,
   `member_id` INT(11) NOT NULL,
+  `artist_name` VARCHAR(255) NOT NULL,
   `artist_desc` TEXT NOT NULL,
   `profile_id` INT(11) NULL DEFAULT NULL,
   `adm_product_desc` TEXT NOT NULL,
@@ -184,8 +194,8 @@ CREATE TABLE IF NOT EXISTS `todayart`.`artist` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `todayart`.`artist` VALUE(1, 10001, "나는야 작가", NULL, "비밀스러운 사진", 1, 1);
-INSERT INTO `todayart`.`artist` VALUE(2, 10002, "유명한 화가", NULL, "대표작", 1, 1);
+INSERT INTO `todayart`.`artist` VALUE(1, 10001, "홍길동", "나는야 작가", NULL, "비밀스러운 사진", 1, 1);
+INSERT INTO `todayart`.`artist` VALUE(2, 10002, "장길산", "유명한 화가", NULL, "대표작", 1, 1);
 
 -- -----------------------------------------------------
 -- Table `todayart`.`account`
@@ -323,8 +333,8 @@ INSERT INTO `todayart`.`product`(`artist_id`, `category_id`, `product_name`, `pr
 VALUE(2, 1, '굉장한 그림', '멋있는그림 내용', '엄청나게 크다', 780000, 4, 20000);
 INSERT INTO `todayart`.`product`(`artist_id`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
 VALUE(2, 1, '미인화', '멋있는그림 내용', '중간크기', 150000, 5, 5000);
-INSERT INTO `todayart`.`product`(`artist_id`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
-VALUE(1, 2, '잡동사니', '멋있는그림 내용', '매우 작음', 100, 6, 2500);
+INSERT INTO `todayart`.`product`(`artist_id`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`, `remain`)
+VALUE(1, 2, '잡동사니', '멋있는그림 내용', '매우 작음', 100, 6, 2500, 1000);
 
 
 -- -----------------------------------------------------
@@ -626,26 +636,26 @@ INSERT INTO `todayart`.`ordered_detail` VALUE(7, 5, 3, 4, 5000, "시집", "작�
 CREATE TABLE IF NOT EXISTS `todayart`.`payment` (
   `payment_id` INT(11) NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) NOT NULL,
-  `product_id` INT(11) NOT NULL,
+  `ordered_detail_id` INT(11) NOT NULL,
   `pay_dated` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `pay_method` VARCHAR(255) NOT NULL,
   `card_number` VARCHAR(255) NULL DEFAULT NULL,
-  `pay_price` INT(11) NULL DEFAULT NULL,
-  `total_price` INT(11) NULL DEFAULT NULL,
+  `order_detail_price` INT(11) NULL DEFAULT NULL,
+  `total_order_price` INT(11) NULL DEFAULT NULL,
   `status` ENUM ('결제대기', '결제완료', '결제취소', '결제환불') NOT NULL DEFAULT '결제대기',
   `pg_number` BIGINT default null,
   `refund_comment` VARCHAR(255) DEFAULT NULL COMMENT '환불사유',
   PRIMARY KEY (`payment_id`),
   INDEX `fk_payment_ordered_idx` (`order_id` ASC) VISIBLE,
-  INDEX `fk_payment_product_idx` (`product_id` ASC) VISIBLE,
+  INDEX `fk_payment_ordered_detail_idx` (`ordered_detail_id` ASC) VISIBLE,
   CONSTRAINT `fk_payment_ordered`
     FOREIGN KEY (`order_id`)
     REFERENCES `todayart`.`ordered` (`ordered_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_payment_product`
-    FOREIGN KEY (`product_id`)
-    REFERENCES `todayart`.`product` (`product_id`)
+  CONSTRAINT `fk_payment_ordered_detail`
+    FOREIGN KEY (`ordered_detail_id`)
+    REFERENCES `todayart`.`ordered_detail` (`ordered_detail_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -653,12 +663,12 @@ DEFAULT CHARACTER SET = utf8;
 
 
 INSERT INTO `todayart`.`payment` VALUE (1, 1, 1, now(), '카카오페이', null, 10002500, 10002500, '결제완료', 1000100010, null);
-INSERT INTO `todayart`.`payment` VALUE (2, 2, 6, now(), '신용카드', "8054669811003465", 10002500, 10002500, '결제완료', 8801666001, null);
-INSERT INTO `todayart`.`payment` VALUE (3, 3, 4, now(), '카카오페이', null, 10002500, 10002500, '결제완료', 1000100011,null);
-INSERT INTO `todayart`.`payment` VALUE (4, 3, 6, now(), '카카오페이', null, 10002500, 10002500, '결제완료',1000100011, null);
-INSERT INTO `todayart`.`payment` VALUE (5, 4, 4, NULL, '무통장입금', null, 10002500, 10002500, '결제대기', NULL, null);
-INSERT INTO `todayart`.`payment` VALUE (6, 4, 6, NULL, '무통장입금', null, 10002500, 10002500, '결제대기', NULL, null);
-INSERT INTO `todayart`.`payment` VALUE (7, 5, 3, NULL, '무통장입금', null, 10002500, 10002500, '결제대기', NULL, null);
+INSERT INTO `todayart`.`payment` VALUE (2, 2, 2, now(), '신용카드', "8054669811003465", 10002500, 10002500, '결제완료', 8801666001, null);
+INSERT INTO `todayart`.`payment` VALUE (3, 3, 3, now(), '카카오페이', null, 800000, 802600, '결제완료', 1000100011,null);
+INSERT INTO `todayart`.`payment` VALUE (4, 3, 4, now(), '카카오페이', null, 2600, 802600, '결제완료',1000100011, null);
+INSERT INTO `todayart`.`payment` VALUE (5, 4, 5, NULL, '무통장입금', null, 800000, 812600, '결제대기', NULL, null);
+INSERT INTO `todayart`.`payment` VALUE (6, 4, 6, NULL, '무통장입금', null, 12600, 812600, '결제대기', NULL, null);
+INSERT INTO `todayart`.`payment` VALUE (7, 5, 7, NULL, '무통장입금', null, 10000, 10000, '결제대기', NULL, null);
 
 
 

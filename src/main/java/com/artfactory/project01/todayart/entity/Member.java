@@ -18,6 +18,7 @@ import java.util.*;
 @Table(name="member")
 @DynamicInsert
 public class Member implements UserDetails, Serializable {
+
     @Id
     @Column(name = "member_id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

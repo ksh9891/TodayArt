@@ -25,6 +25,7 @@ public class ProductForm implements Serializable {
     private Product product;
     private Date deleteDated;
     private Integer categoryId;
+    private ProductCategory productCategory;
 
 
 
@@ -62,8 +63,8 @@ public class ProductForm implements Serializable {
         if(thumbnailId != null){
             product.setThumbnailId(this.thumbnailId);
         }
-        if(categoryId != null){
-
+        if(productCategory != null){
+            product.setProductCategory(productCategory);
         }
         if(remain!= null){
             product.setRemain(this.remain);
@@ -80,6 +81,7 @@ public class ProductForm implements Serializable {
         if(productContent != null){
             product.setProductContent(this.productContent);
         }
+
 
 
         this.product = product;
