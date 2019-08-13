@@ -3,7 +3,9 @@ package com.artfactory.project01.todayart.model;
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.entity.ProductCategory;
 
-public class CategoryForm {
+import java.io.Serializable;
+
+public class CategoryForm implements Serializable {
 
     private Integer categoryId;
 
@@ -16,9 +18,9 @@ public class CategoryForm {
     }
 
 
-    public ProductCategory setProductCategory() {
+    public ProductCategory setProductCategory(Integer categoryId) {
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setCategory_id(categoryId);
+        productCategory.setCategoryId(categoryId);
 
         return productCategory;
     }

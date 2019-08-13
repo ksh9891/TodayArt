@@ -1,8 +1,14 @@
 package com.artfactory.project01.todayart.entity;
 
 
+<<<<<<< HEAD
+import com.artfactory.project01.todayart.model.CategoryForm;
+=======
 
 
+import lombok.Getter;
+import lombok.Setter;
+>>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -12,11 +18,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
 @DynamicInsert
 @DynamicUpdate
+@Getter
+@Setter
 public class Product {
 
     @Id
@@ -27,8 +36,17 @@ public class Product {
     @Column(name = "product_name")
     private String productName;
 
-    @Column(name = "artist_id", updatable = false)
-    private Integer artistId;
+<<<<<<< HEAD
+//    @Column(name = "artist_id", updatable = false)
+//    private Integer artistId;
+=======
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
+>>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
 
 
     @Column(name = "product_size")
@@ -60,9 +78,18 @@ public class Product {
     @Column(name = "update_dated", nullable = true)
     private Date updateDated;
 
-    @ManyToOne(targetEntity = ProductCategory.class, fetch = FetchType.EAGER)
+<<<<<<< HEAD
+=======
+
+>>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
+    @ManyToOne
     @JoinColumn(name = "category_id")
+//    @Column(name = "category_id")
     private ProductCategory productCategory;
+
+//    @ManyToOne(targetEntity = ProductCategory.class, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "category_id")
+//    private ProductCategory productCategory;
 
     @Column(name = "is_sold_out")
     private Integer isSoldOut;
@@ -81,6 +108,19 @@ public class Product {
 
     @Column(name = "product_content")
     private String productContent;
+
+
+<<<<<<< HEAD
+
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
+
+
+
+//    @ManyToOne
+//    @JoinColumn(name = "artist_name")
+//    private Artist artist;
 
 
     public String getProductContent() {
@@ -107,12 +147,21 @@ public class Product {
         this.productName = productName;
     }
 
-    public Integer getArtistId() {
-        return artistId;
+//    public Integer getArtistId() {
+//        return artistId;
+//    }
+//
+//    public void setArtistId(Integer artistId) {
+//        this.artistId = artistId;
+//    }
+
+
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setArtistId(Integer artistId) {
-        this.artistId = artistId;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     public String getProductSize() {
@@ -218,5 +267,9 @@ public class Product {
     public void setUpdateDated(Date updateDated) {
         this.updateDated = updateDated;
     }
+
+=======
+
+>>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
 }
 
