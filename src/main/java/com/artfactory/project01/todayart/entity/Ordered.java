@@ -19,7 +19,7 @@ public class Ordered implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderId;
 
-    @Column(name = "member_id")
+    @Column(name = "member_id", updatable = false, nullable = false)
     private Integer memberId;
 
     @Column(name = "order_dated")

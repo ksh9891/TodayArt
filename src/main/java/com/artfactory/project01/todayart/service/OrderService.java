@@ -1,12 +1,11 @@
 package com.artfactory.project01.todayart.service;
 
-import com.artfactory.project01.todayart.entity.Member;
-import com.artfactory.project01.todayart.entity.Ordered;
-import com.artfactory.project01.todayart.entity.OrderedDetail;
+import com.artfactory.project01.todayart.entity.*;
+import com.artfactory.project01.todayart.exception.VerificateFailException;
 import com.artfactory.project01.todayart.model.ChangeOrderDetail;
 import com.artfactory.project01.todayart.model.OrderForm;
-import com.artfactory.project01.todayart.model.OrderFormReturn;
 import com.artfactory.project01.todayart.model.Period;
+import com.artfactory.project01.todayart.repository.CartRepository;
 import com.artfactory.project01.todayart.repository.OrderedDetailRepository;
 import com.artfactory.project01.todayart.repository.OrderedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +24,57 @@ public class OrderService {
     OrderedRepository orderedRepository;
     @Autowired
     OrderedDetailRepository orderedDetailRepository;
+    @Autowired
+    CartRepository cartRepository;
 
     // POST =========================================
 
     @Transactional
-    public Ordered createOrder(OrderForm orderForm){
+    public Ordered createOrder(Member member, OrderForm orderForm){
+        int totalShippingFee=0;
+        int totalPrice=0;
 
-        Ordered ordered = orderedRepository.save(orderForm.setOrder());
 
-        List<OrderedDetail> orderDetailList = orderForm.getOrderDetail();
-        Integer orderId = ordered.getOrderId();
+        Ordered ordered = new Ordered();
+        ordered.setMemberId(member.getMemberId());
+        ordered.setTotalPrice(orderForm.getTotalPrice());
+        ordered.setShippingFee(orderForm.getShippingFee());
+        ordered = orderedRepository.save(ordered);
+        ArrayList<Integer> cartIdList = orderForm.getCartIdList();
+        for(Integer cartId : cartIdList){
+            Cart cart = cartRepository.findById(cartId).get();
+            Product product = cart.getProduct();
 
-        for(OrderedDetail item : orderForm.getOrderDetail()){
-            item.setOrderId(orderId);
-            item.setTotalPrice(item.getProductPrice()*item.getQuantity());
-            orderedDetailRepository.save(item);
+            OrderedDetail orderedDetail = new OrderedDetail();
+            orderedDetail.setOrderId(ordered.getOrderId());
+            orderedDetail.setProductId(product.getProductId());
+            orderedDetail.setCartId(cartId);
+            orderedDetail.setProductName(product.getProductName());
+            orderedDetail.setProductPrice(cart.getProductPrice());
+            orderedDetail.setProductSize(cart.getProductSize());
+            orderedDetail.setShippingFee(cart.getShippingFee());
+            orderedDetail.setQuantity(cart.getQuantity());
+            orderedDetail.setTotalProductPrice(cart.getProductPrice()*cart.getQuantity());
+            orderedDetail.setTotalPrice(orderedDetail.getTotalProductPrice()+cart.getShippingFee());
+            orderedDetailRepository.save(orderedDetail);
+
+            totalShippingFee+=orderedDetail.getShippingFee();
+            totalPrice+=orderedDetail.getTotalPrice();
+            cart.setIsDeleted(1);
+
+            cartRepository.save(cart);
         }
+
+        try{
+        if(ordered.getShippingFee()==totalShippingFee
+        &&ordered.getTotalPrice()==totalPrice){
+        } else{
+            throw new VerificateFailException("값 검증 실패");
+        }
+        }catch(VerificateFailException e) {
+            e.printStackTrace();
+        }
+
         return ordered;
     }
 

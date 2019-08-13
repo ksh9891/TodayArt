@@ -5,7 +5,6 @@ import com.artfactory.project01.todayart.entity.Ordered;
 import com.artfactory.project01.todayart.entity.OrderedDetail;
 import com.artfactory.project01.todayart.model.ChangeOrderDetail;
 import com.artfactory.project01.todayart.model.OrderForm;
-import com.artfactory.project01.todayart.model.OrderFormReturn;
 import com.artfactory.project01.todayart.model.Period;
 import com.artfactory.project01.todayart.service.OrderService;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
@@ -39,8 +38,9 @@ public class OrderController {
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Ordered createOrder(@RequestBody OrderForm orderForm, Principal principal){
         member = getMember(principal);
-        orderForm.setMemberId(member.getMemberId());
-        return orderService.createOrder(orderForm);
+
+
+        return orderService.createOrder(member, orderForm);
     }
 
     // GET =========================================
@@ -62,6 +62,7 @@ public class OrderController {
         }
     }
 
+    // 기간별 검색
     @RequestMapping(path="/period", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ArrayList<Ordered> listOfOrderWithPeriod(@RequestBody Period period, Principal principal){
         member = getMember(principal);
