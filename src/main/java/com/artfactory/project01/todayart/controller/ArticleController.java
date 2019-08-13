@@ -1,7 +1,7 @@
 package com.artfactory.project01.todayart.controller;
 
 
-import com.artfactory.project01.todayart.entity.ArticleVO;
+import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.model.ArticleForm;
 import com.artfactory.project01.todayart.model.ResultItems;
 import com.artfactory.project01.todayart.service.ArticleService;
@@ -35,13 +35,13 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ArticleVO create(
-            @RequestBody ArticleVO articleVO) {
+    public Article create(
+            @RequestBody Article article) {
 
-        return articleService.cretateArticle(articleVO);
+        return articleService.cretateArticle(article);
     }
 
-    //리스트 불러오기 (카테고리별 커스텀 쿼리 해야함)
+    //리스트 불러오기
     @RequestMapping(
             value = "list1",
             method = RequestMethod.GET,
@@ -50,12 +50,12 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ResultItems<ArticleVO> listOf1(
+    public ResultItems<Article> listOf1(
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<ArticleVO> articleList = articleService.listOfArticle1(pageable);
-        return new ResultItems<ArticleVO>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
+        Page<Article> articleList = articleService.listOfArticle1(pageable);
+        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
     }
 
     @RequestMapping(
@@ -66,12 +66,12 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ResultItems<ArticleVO> listOf2(
+    public ResultItems<Article> listOf2(
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<ArticleVO> articleList = articleService.listOfArticle2(pageable);
-        return new ResultItems<ArticleVO>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
+        Page<Article> articleList = articleService.listOfArticle2(pageable);
+        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
     }
 
     //게시물 1개 보기
@@ -83,7 +83,7 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ArticleVO retrieve(@PathVariable("article_id") Integer id) {
+    public Article retrieve(@PathVariable("article_id") Integer id) {
         return articleService.itemOfArticle(id).get();
     }
 
@@ -96,8 +96,8 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ArticleVO update(@PathVariable("article_id") Integer id, @RequestBody ArticleForm articleForm) {
-//        articleVO.setArticle_id(id);
+    public Article update(@PathVariable("article_id") Integer id, @RequestBody ArticleForm articleForm) {
+//        articleVO.setArticleId(id);
         return articleService.updateArticle(id, articleForm);
     }
 
@@ -110,7 +110,7 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ArticleVO delete(@PathVariable("article_id") Integer id) {
+    public Article delete(@PathVariable("article_id") Integer id) {
 
         return articleService.deleteArticle(id);
     }
@@ -124,12 +124,12 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ArticleVO dataDelete(@PathVariable("article_id") Integer id) {
+    public Article dataDelete(@PathVariable("article_id") Integer id) {
         articleService.dataDeleteArticle(id);
 
-        ArticleVO articleVO = new ArticleVO();
-        articleVO.setArticle_id(id);
-        return articleVO;
+        Article article = new Article();
+        article.setArticleId(id);
+        return article;
     }
 
 //    @RequestMapping(
@@ -140,5 +140,5 @@ public class ArticleController {
 //                    MediaType.APPLICATION_XML_VALUE
 //            }
 //    )
-//    public ArticleVO search
+//    public Article search
 }

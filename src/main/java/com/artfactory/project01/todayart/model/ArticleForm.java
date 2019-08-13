@@ -1,6 +1,7 @@
 package com.artfactory.project01.todayart.model;
 
-import com.artfactory.project01.todayart.entity.ArticleVO;
+import com.artfactory.project01.todayart.entity.Article;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,7 +24,7 @@ public class ArticleForm implements Serializable {
     private Integer is_reply;
     private Integer views;
     private Integer product_id;
-    private ArticleVO articleVO;
+    private Article article;
 
     public Integer getArticle_id() {
         return article_id;
@@ -161,46 +162,46 @@ public class ArticleForm implements Serializable {
         this.product_id = product_id;
     }
 
-    public ArticleVO getArticleVO() {
-        return articleVO;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticleVO(ArticleVO articleVO) {
+    public void setArticle(Article article) {
         if(article_id != null){
-            articleVO.setArticle_id(this.article_id);
+            article.setArticleId(this.article_id);
         }else if(board_id != null){
-            articleVO.setBoard_id(this.board_id);
+            article.setBoardId(this.board_id);
         }else if(member_id != null){
-            articleVO.setMember_id(this.member_id);
+            article.setMemberId(this.member_id);
         }else if(write_dated != null){
-            articleVO.setWrite_dated(this.write_dated);
+            article.setWriteDated(this.write_dated);
         }else if(update_dated != null){
-            articleVO.setUpdate_dated(new Date());
+            article.setUpdateDated(new Date());
         }else if(title != null){
-            articleVO.setTitle(this.title);
+            article.setTitle(this.title);
         }else if(content != null){
-            articleVO.setContent(this.content);
+            article.setContent(this.content);
         }else if(group != null){
-            articleVO.setGroup(this.group);
+            article.setGroup(this.group);
         }else if(depth != null){
-            articleVO.setDepth(this.depth);
+            article.setDepth(this.depth);
         }else if(reply_order != null){
-            articleVO.setReply_order(this.reply_order);
+            article.setReplyOrder(this.reply_order);
         }else if(is_deleted != null){
-            articleVO.setIs_deleted(this.is_deleted);
+            article.setIsDeleted(this.is_deleted);
         }else if(deleted_dated != null){
-            articleVO.setDeleted_dated(this.deleted_dated);
+            article.setDeletedDated(this.deleted_dated);
         }else if(is_hidden != null){
-            articleVO.setIs_hidden(this.is_hidden);
+            article.setIsHidden(this.is_hidden);
         }else if(password != null){
-            articleVO.setPassword(this.password);
+            article.setPassword(this.password);
         }else if(is_reply != null){
-            articleVO.setIs_reply(this.is_reply);
+            article.setIsReply(this.is_reply);
         }else if(views != null){
-            articleVO.setViews(this.views);
+            article.setViews(this.views);
         }else if(product_id != null){
-            articleVO.setProduct_id(this.product_id);
+            article.setProductId(this.product_id);
         }
-        this.articleVO = articleVO;
+        this.article = article;
     }
 }

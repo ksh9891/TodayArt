@@ -76,7 +76,7 @@ USE `todayart`;
 -- Table `todayart`.`member`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`member` (
-  `member_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `memberId` INT(11) NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `nickname` VARCHAR(255) NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `todayart`.`member` (
   `expired` INT(11) NOT NULL DEFAULT '0' COMMENT '0: 미탈퇴, 1: 탈퇴',
   `expired_dated` DATETIME NULL DEFAULT NULL,
   `email_checked` INT(11) NOT NULL DEFAULT '0' COMMENT '0: 미인증, 1: 인증',
-  PRIMARY KEY (`member_id`))
+  PRIMARY KEY (`memberId`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 10003
 DEFAULT CHARACTER SET = utf8;
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `todayart`.`file` (
   `file_type` VARCHAR(255) NULL DEFAULT NULL,
   `file_reg_dated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `file_ip` VARCHAR(255) NULL DEFAULT NULL,
-  `member_id` INT(11) NOT NULL,
+  `memberId` INT(11) NOT NULL,
   PRIMARY KEY (`file_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -139,19 +139,19 @@ INSERT INTO todayart.file value (6, 'stuff.png', '쓰레기', 1, 'image', now(),
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`artist` (
   `artist_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `member_id` INT(11) NOT NULL,
+  `memberId` INT(11) NOT NULL,
   `artist_desc` TEXT NOT NULL,
   `profile_id` INT(11) NULL DEFAULT NULL,
   `adm_product_desc` TEXT NOT NULL,
   `adm_check` INT(1) NOT NULL DEFAULT '0' COMMENT '0: 미승인, 1: 승인',
   `artist_level_id` INT(11) NOT NULL,
   PRIMARY KEY (`artist_id`),
-  INDEX `member_id_idx` (`member_id` ASC) VISIBLE,
+  INDEX `member_id_idx` (`memberId` ASC) VISIBLE,
   INDEX `fk_artist_artistLevel_idx` (`artist_level_id` ASC) VISIBLE,
   INDEX `fk_artist_file_idx` (`profile_id` ASC) VISIBLE,
   CONSTRAINT `fk_artist_member`
-    FOREIGN KEY (`member_id`)
-    REFERENCES `todayart`.`member` (`member_id`)
+    FOREIGN KEY (`memberId`)
+    REFERENCES `todayart`.`member` (`memberId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_artist_artistLevel`
@@ -194,9 +194,9 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `todayart`.`board_category`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`board_category` (
-  `board_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `boardId` INT(11) NOT NULL AUTO_INCREMENT,
   `board_name` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`board_id`))
+  PRIMARY KEY (`boardId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -205,34 +205,34 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `todayart`.`article`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`article` (
-  `article_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `board_id` INT(11) NOT NULL,
-  `member_id` INT(11) NOT NULL,
-  `write_dated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_dated` DATETIME NULL DEFAULT NULL,
+  `articleId` INT(11) NOT NULL AUTO_INCREMENT,
+  `boardId` INT(11) NOT NULL,
+  `memberId` INT(11) NOT NULL,
+  `writeDated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updateDated` DATETIME NULL DEFAULT NULL,
   `title` VARCHAR(255) NOT NULL,
   `content` TEXT NOT NULL,
   `group` INT(11) NULL DEFAULT NULL,
   `depth` INT(11) NOT NULL DEFAULT '0',
-  `reply_order` INT(11) NULL DEFAULT NULL,
-  `is_deleted` INT(11) NOT NULL DEFAULT '0' COMMENT '0:미삭제, 1:삭제',
+  `replyOrder` INT(11) NULL DEFAULT NULL,
+  `isDeleted` INT(11) NOT NULL DEFAULT '0' COMMENT '0:미삭제, 1:삭제',
   `delete_dated` DATETIME NULL DEFAULT NULL,
-  `is_hidden` INT(11) NOT NULL DEFAULT '0' COMMENT '0:공개글, 1:비밀글',
+  `isHidden` INT(11) NOT NULL DEFAULT '0' COMMENT '0:공개글, 1:비밀글',
   `password` VARCHAR(255) NULL DEFAULT NULL,
-  `is_reply` INT(11) NOT NULL DEFAULT '0' COMMENT '0:미답변, 1:답변',
+  `isReply` INT(11) NOT NULL DEFAULT '0' COMMENT '0:미답변, 1:답변',
   `views` INT(11) NOT NULL DEFAULT '0',
-  `product_id` INT(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`article_id`),
-  INDEX `fk_article_boardCategory_idx` (`board_id` ASC) VISIBLE,
-  INDEX `fk_article_member_idx` (`member_id` ASC) VISIBLE,
+  `productId` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`articleId`),
+  INDEX `fk_article_boardCategory_idx` (`boardId` ASC) VISIBLE,
+  INDEX `fk_article_member_idx` (`memberId` ASC) VISIBLE,
   CONSTRAINT `fk_article_boardCategory`
-    FOREIGN KEY (`board_id`)
-    REFERENCES `todayart`.`board_category` (`board_id`)
+    FOREIGN KEY (`boardId`)
+    REFERENCES `todayart`.`board_category` (`boardId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_article_member`
-    FOREIGN KEY (`member_id`)
-    REFERENCES `todayart`.`member` (`member_id`)
+    FOREIGN KEY (`memberId`)
+    REFERENCES `todayart`.`member` (`memberId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -263,7 +263,7 @@ INSERT INTO `todayart`.`category` VALUE(2, '기타');
 -- Table `todayart`.`product`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`product` (
-  `product_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `productId` INT(11) NOT NULL AUTO_INCREMENT,
   `artist_id` INT(11) NOT NULL,
   `category_id` INT(11) NOT NULL,
   `product_name` VARCHAR(255) NOT NULL,
@@ -274,13 +274,13 @@ CREATE TABLE IF NOT EXISTS `todayart`.`product` (
   `is_delete` INT(11) NOT NULL DEFAULT '0' COMMENT '0: 미삭제, 1:삭제',
   `delete_dated` DATETIME NULL DEFAULT NULL,
   `enroll_dated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_dated` DATETIME NULL DEFAULT NULL,
+  `updateDated` DATETIME NULL DEFAULT NULL,
   `is_sold_out` INT(11) NOT NULL DEFAULT '0' COMMENT '0: 판매가능, 1: 품절',
   `remain` INT(11) NOT NULL DEFAULT '1',
   `count_cart` INT(11) NOT NULL DEFAULT '0',
   `count_wishlist` INT(11) NOT NULL DEFAULT '0',
   `shipping_fee` INT(11) NOT NULL,
-  PRIMARY KEY (`product_id`),
+  PRIMARY KEY (`productId`),
   INDEX `fk_product_artist_idx` (`artist_id` ASC) VISIBLE,
   INDEX `fk_product_category_idx` (`category_id` ASC) VISIBLE,
   INDEX `fk_product_file_idx` (`thumbnail_id` ASC) VISIBLE,
@@ -321,49 +321,49 @@ VALUE(1, 2, '잡동사니', '멋있는그림 내용', '매우 작음', 100, 6, 2
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`cart` (
   `cart_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `member_id` INT(11) NOT NULL,
-  `product_id` INT(11) NOT NULL,
+  `memberId` INT(11) NOT NULL,
+  `productId` INT(11) NOT NULL,
   `product_price` int not null,
   `product_size` varchar(255) not null,
   `quantity` int not null default 1,
   `shipping_fee` int not null default 0,
   `enroll_dated` DATETIME NULL DEFAULT current_timestamp,
-  `is_deleted` int(11) not null default 0 comment '0: not deleted, 1: deleted ',
+  `isDeleted` int(11) not null default 0 comment '0: not deleted, 1: deleted ',
   `is_stock` INT(11) NOT NULL DEFAULT 1 COMMENT '0:재고없음, 1:재고있음',
   PRIMARY KEY (`cart_id`),
-  INDEX `fk_cart_member_idx` (`member_id` ASC) VISIBLE,
+  INDEX `fk_cart_member_idx` (`memberId` ASC) VISIBLE,
   CONSTRAINT `fk_cart_member`
-    FOREIGN KEY (`member_id`)
-    REFERENCES `todayart`.`member` (`member_id`)
+    FOREIGN KEY (`memberId`)
+    REFERENCES `todayart`.`member` (`memberId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_cart_product`
-	FOREIGN KEY (`product_id`)
-	REFERENCES `todayart`.`product` (`product_id`)
+	FOREIGN KEY (`productId`)
+	REFERENCES `todayart`.`product` (`productId`)
 	ON DELETE NO ACTION
 	ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-insert into cart (`member_id`,`product_id`,`product_price`,`product_size`, `shipping_fee`, `is_deleted`)
+insert into cart (`memberId`,`productId`,`product_price`,`product_size`, `shipping_fee`, `isDeleted`)
 value (3000, 1, 10000000, "1024", 2500, 1);
-insert into cart (`member_id`,`product_id`,`product_price`,`product_size`,`shipping_fee`)
+insert into cart (`memberId`,`productId`,`product_price`,`product_size`,`shipping_fee`)
 value (3000, 2, 50000, "매우 크다", 10000);
-insert into cart (`member_id`,`product_id`,`product_price`,`product_size`, `quantity`)
+insert into cart (`memberId`,`productId`,`product_price`,`product_size`, `quantity`)
 value (3000, 3, 5000, "작음", 4 );
-insert into cart (`member_id`,`product_id`,`product_price`,`product_size`, `quantity`, `is_deleted`)
+insert into cart (`memberId`,`productId`,`product_price`,`product_size`, `quantity`, `isDeleted`)
 value (10002, 3, 5000, "작음", 2,1);
-insert into cart (`member_id`,`product_id`,`product_price`,`product_size`, `quantity`,`shipping_fee`, `is_deleted`)
+insert into cart (`memberId`,`productId`,`product_price`,`product_size`, `quantity`,`shipping_fee`, `isDeleted`)
 value (3000, 6, 100, "매우 작음", 10, 2500, 1);
-insert into cart (`member_id`,`product_id`,`product_price`,`product_size`, `shipping_fee`, `is_deleted`)
+insert into cart (`memberId`,`productId`,`product_price`,`product_size`, `shipping_fee`, `isDeleted`)
 value (10001, 4, 780000, "엄청나게 크다", 20000, 1);
-insert into cart (`member_id`,`product_id`,`product_price`,`product_size`, `shipping_fee`, `is_deleted`)
+insert into cart (`memberId`,`productId`,`product_price`,`product_size`, `shipping_fee`, `isDeleted`)
 value (10001,6,100,"매우 작음", 2500, 1);
-insert into cart (`member_id`,`product_id`,`product_price`,`product_size`,`shipping_fee`)
+insert into cart (`memberId`,`productId`,`product_price`,`product_size`,`shipping_fee`)
 value (10001,5,150000,"중간크기",5000);
-insert into cart (`member_id`,`product_id`,`product_price`,`product_size`, `shipping_fee`, `is_deleted`)
+insert into cart (`memberId`,`productId`,`product_price`,`product_size`, `shipping_fee`, `isDeleted`)
 value (3000, 4, 780000, "엄청나게 크다", 20000,1);
-insert into cart (`member_id`,`product_id`,`product_price`,`product_size`, `quantity`,`shipping_fee`, `is_deleted`)
+insert into cart (`memberId`,`productId`,`product_price`,`product_size`, `quantity`,`shipping_fee`, `isDeleted`)
 value (3000, 6, 100, "매우 작음", 100, 2500, 1);
 
 
@@ -372,16 +372,16 @@ value (3000, 6, 100, "매우 작음", 100, 2500, 1);
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`member_address` (
   `address_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `member_id` INT(11) NOT NULL,
+  `memberId` INT(11) NOT NULL,
   `postal_number` INT(11) NOT NULL,
   `address` VARCHAR(255) NOT NULL,
   `address_detail` VARCHAR(255) NULL DEFAULT NULL,
   `main_address` INT(11) NOT NULL DEFAULT '0' COMMENT '0:일반배송지, 1:대표배송지',
   PRIMARY KEY (`address_id`),
-  INDEX `fk_memberAddress_member_idx` (`member_id` ASC) VISIBLE,
+  INDEX `fk_memberAddress_member_idx` (`memberId` ASC) VISIBLE,
   CONSTRAINT `fk_memberAddress_member`
-    FOREIGN KEY (`member_id`)
-    REFERENCES `todayart`.`member` (`member_id`)
+    FOREIGN KEY (`memberId`)
+    REFERENCES `todayart`.`member` (`memberId`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -419,16 +419,16 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`ordered` (
   `ordered_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `member_id` INT(11) NOT NULL COMMENT "구매자의 ID",
+  `memberId` INT(11) NOT NULL COMMENT "구매자의 ID",
   `order_dated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `total_price` INT(11) NOT NULL,
   `shipping_fee` INT(11) NULL DEFAULT NULL,
   `isHidden` INT NOT NULL DEFAULT 0 COMMENT "0:보이기 1:감추기",
   PRIMARY KEY (`ordered_id`),
-  INDEX `fk_ordered_member_idx` (`member_id` ASC) VISIBLE,
+  INDEX `fk_ordered_member_idx` (`memberId` ASC) VISIBLE,
   CONSTRAINT `fk_ordered_member`
-    FOREIGN KEY (`member_id`)
-    REFERENCES `todayart`.`member` (`member_id`)
+    FOREIGN KEY (`memberId`)
+    REFERENCES `todayart`.`member` (`memberId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -568,7 +568,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `todayart`.`ordered_detail` (
   `ordered_detail_id` INT(11) NOT NULL AUTO_INCREMENT,
   `ordered_id` INT(11) NOT NULL,
-  `product_id` INT(11) NOT NULL,
+  `productId` INT(11) NOT NULL,
   `cart_id` INT(11) NOT NULL,
   `quantity` INT(11) NOT NULL,
   `total_price` INT(11) NOT NULL,
@@ -580,7 +580,7 @@ CREATE TABLE IF NOT EXISTS `todayart`.`ordered_detail` (
   `status` ENUM('결제대기', '결제취소', '결제완료', '배송준비', '배송중', '배송완료', '주문확정', '주문취소', '반품대기','반품중','반품완료', '환불처리중', '환불완료') NOT NULL DEFAULT '결제대기',
   PRIMARY KEY (`ordered_detail_id`),
   INDEX `fk_orderedDetail_ordered_idx` (`ordered_id` ASC) VISIBLE,
-  INDEX `fk_orderedDetail_product_idx` (`product_id` ASC) VISIBLE,
+  INDEX `fk_orderedDetail_product_idx` (`productId` ASC) VISIBLE,
   INDEX `fk_orderedDetail_cart_idx` (`cart_id` ASC) VISIBLE,
   CONSTRAINT `fk_orderedDetail_ordered`
     FOREIGN KEY (`ordered_id`)
@@ -588,8 +588,8 @@ CREATE TABLE IF NOT EXISTS `todayart`.`ordered_detail` (
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_orderedDetail_product`
-    FOREIGN KEY (`product_id`)
-    REFERENCES `todayart`.`product` (`product_id`)
+    FOREIGN KEY (`productId`)
+    REFERENCES `todayart`.`product` (`productId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
 CONSTRAINT `fk_orderedDetail_cart`
@@ -614,7 +614,7 @@ INSERT INTO `todayart`.`ordered_detail` VALUE(7, 5, 3, 4,2, 10000, 10000, "시�
 CREATE TABLE IF NOT EXISTS `todayart`.`payment` (
   `payment_id` INT(11) NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) NOT NULL,
-  `product_id` INT(11) NOT NULL,
+  `productId` INT(11) NOT NULL,
   `pay_dated` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `pay_method` VARCHAR(255) NOT NULL,
   `card_number` VARCHAR(255) NULL DEFAULT NULL,
@@ -625,15 +625,15 @@ CREATE TABLE IF NOT EXISTS `todayart`.`payment` (
   `refund_comment` VARCHAR(255) DEFAULT NULL COMMENT '환불사유',
   PRIMARY KEY (`payment_id`),
   INDEX `fk_payment_ordered_idx` (`order_id` ASC) VISIBLE,
-  INDEX `fk_payment_product_idx` (`product_id` ASC) VISIBLE,
+  INDEX `fk_payment_product_idx` (`productId` ASC) VISIBLE,
   CONSTRAINT `fk_payment_ordered`
     FOREIGN KEY (`order_id`)
     REFERENCES `todayart`.`ordered` (`ordered_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_payment_product`
-    FOREIGN KEY (`product_id`)
-    REFERENCES `todayart`.`product` (`product_id`)
+    FOREIGN KEY (`productId`)
+    REFERENCES `todayart`.`product` (`productId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -664,14 +664,14 @@ CREATE TABLE IF NOT EXISTS `todayart`.`shipping` (
   `receive_addr` VARCHAR(255) NOT NULL,
   `consignee_phone` INT(11) NOT NULL,
   `artist_id` INT(11) NOT NULL,
-  `member_id` INT(11) NOT NULL,
+  `memberId` INT(11) NOT NULL,
   `courier` VARCHAR(255) NULL DEFAULT NULL,
   `tracking_number` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`shipping_id`),
   UNIQUE INDEX `tracking_number` (`tracking_number` ASC) VISIBLE,
   INDEX `fk_shipping_ordered_idx` (`ordered_id` ASC) VISIBLE,
   INDEX `fk_shipping_artist_idx` (`artist_id` ASC) VISIBLE,
-  INDEX `fk_shipping_member_idx` (`member_id` ASC) VISIBLE,
+  INDEX `fk_shipping_member_idx` (`memberId` ASC) VISIBLE,
   CONSTRAINT `fk_shipping_ordered`
     FOREIGN KEY (`ordered_id`)
     REFERENCES `todayart`.`ordered` (`ordered_id`)
@@ -679,12 +679,12 @@ CREATE TABLE IF NOT EXISTS `todayart`.`shipping` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_shipping_artist`
     FOREIGN KEY (`artist_id`)
-    REFERENCES `todayart`.`member` (`member_id`)
+    REFERENCES `todayart`.`member` (`memberId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_shipping_member`
-    FOREIGN KEY (`member_id`)
-    REFERENCES `todayart`.`member` (`member_id`)
+    FOREIGN KEY (`memberId`)
+    REFERENCES `todayart`.`member` (`memberId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -700,13 +700,13 @@ CREATE TABLE IF NOT EXISTS `todayart`.`shipping_items` (
   `item_id` INT(11) NOT NULL AUTO_INCREMENT,
   `shipping_id` INT(11) NOT NULL,
   `ordered_id` INT(11) NOT NULL,
-  `product_id` INT(11) NOT NULL,
+  `productId` INT(11) NOT NULL,
   `last_updated` DATETIME DEFAULT current_timestamp,
   `status` enum('배송중', '배송완료', '수취거부', '반송대기', '반송중', '반송완료') NOT NULL DEFAULT '배송중',
   PRIMARY KEY (`item_id`),
   INDEX `fk_shippingItems_shipping_idx` (`shipping_id` ASC) VISIBLE,
   INDEX `fk_shippingItems_ordered_idx` (`ordered_id` ASC) VISIBLE,
-  INDEX `fk_shippingItems_product_idx` (`product_id` ASC) VISIBLE,
+  INDEX `fk_shippingItems_product_idx` (`productId` ASC) VISIBLE,
   CONSTRAINT `fk_shippingItems_shipping`
     FOREIGN KEY (`shipping_id`)
     REFERENCES `todayart`.`shipping` (`shipping_id`)
@@ -718,8 +718,8 @@ CREATE TABLE IF NOT EXISTS `todayart`.`shipping_items` (
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_shippingItems_product`
-    FOREIGN KEY (`product_id`)
-    REFERENCES `todayart`.`product` (`product_id`)
+    FOREIGN KEY (`productId`)
+    REFERENCES `todayart`.`product` (`productId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -733,17 +733,17 @@ insert into `todayart`.`shipping_items` value(2, 2, 2, 6, now(), '배송중');
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`update_log` (
   `log_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `member_id` INT(11) NOT NULL,
+  `memberId` INT(11) NOT NULL,
   `updated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `log_type` VARCHAR(255) NOT NULL COMMENT 'tablename_pk_action',
   `log_desc` JSON NOT NULL COMMENT '{log_data: [{\"column\":\"column_name\"\\n
 			\"before\":\"before_data\",\\n										
 			\"after\":\"afer_data\"},{},{}...]}',
   PRIMARY KEY (`log_id`),
-  INDEX `fk_updateLog_member_idx` (`member_id` ASC) VISIBLE,
+  INDEX `fk_updateLog_member_idx` (`memberId` ASC) VISIBLE,
   CONSTRAINT `fk_updateLog_member`
-    FOREIGN KEY (`member_id`)
-    REFERENCES `todayart`.`member` (`member_id`)
+    FOREIGN KEY (`memberId`)
+    REFERENCES `todayart`.`member` (`memberId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -751,7 +751,7 @@ DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `todayart`.`update_log` VALUE(1, 1, now(), 'member_1_create',
 	'[
-    {"column":"member_id", "before":"null", "after":"1"},
+    {"column":"memberId", "before":"null", "after":"1"},
     {"column":"email", "before":"null", "after":"admin@admin.com"},
     {"column":"password", "before":"null", "after":"admin"},
     {"column":"nickname", "before":"null", "after":"admin"},
@@ -766,7 +766,7 @@ INSERT INTO `todayart`.`update_log` VALUE(1, 1, now(), 'member_1_create',
     ]');
 INSERT INTO `todayart`.`update_log` VALUE(2, 1, now(), 'member_3000_create',
 		'[
-    {"column":"member_id", "before":"null", "after":"3000"},
+    {"column":"memberId", "before":"null", "after":"3000"},
     {"column":"email", "before":"null", "after":"member@member.com"},
     {"column":"password", "before":"null", "after":"member"},
     {"column":"nickname", "before":"null", "after":"member"},
@@ -781,7 +781,7 @@ INSERT INTO `todayart`.`update_log` VALUE(2, 1, now(), 'member_3000_create',
     ]');
 INSERT INTO `todayart`.`update_log` VALUE(3, 1, now(), 'member_10001_create',
 		'[
-    {"column":"member_id", "before":"null", "after":"10001"},
+    {"column":"memberId", "before":"null", "after":"10001"},
     {"column":"email", "before":"null", "after":"artist@artist.com"},
     {"column":"password", "before":"null", "after":"artist"},
     {"column":"nickname", "before":"null", "after":"artist"},
@@ -796,7 +796,7 @@ INSERT INTO `todayart`.`update_log` VALUE(3, 1, now(), 'member_10001_create',
     ]');
 INSERT INTO `todayart`.`update_log` VALUE(4, 1, now(), 'member_10002_create',
 	'[
-    {"column":"member_id", "before":"null", "after":"10002"},
+    {"column":"memberId", "before":"null", "after":"10002"},
     {"column":"email", "before":"null", "after":"artist2@artist.com"},
     {"column":"password", "before":"null", "after":"artist2"},
     {"column":"nickname", "before":"null", "after":"artist2"},
@@ -826,7 +826,7 @@ INSERT INTO `todayart`.`update_log` VALUE(6, 10001, now(), 'file_1_create',
     {"column":"file_type", "before":"null", "after":"image"},
     {"column":"file_reg_dated", "before":"null", "after":"2019-08-09 19:03:46"},
     {"column":"file_ip", "before":"null", "after":"127.0.0.1"},
-    {"column":"member_id", "before":"null", "after":"10001"}
+    {"column":"memberId", "before":"null", "after":"10001"}
     ]');
 INSERT INTO `todayart`.`update_log` VALUE(7, 10001, now(), 'file_2_create',
 	'[
@@ -837,7 +837,7 @@ INSERT INTO `todayart`.`update_log` VALUE(7, 10001, now(), 'file_2_create',
     {"column":"file_type", "before":"null", "after":"image"},
     {"column":"file_reg_dated", "before":"null", "after":"2019-08-09 19:03:46"},
     {"column":"file_ip", "before":"null", "after":"127.0.0.1"},
-    {"column":"member_id", "before":"null", "after":"10001"}
+    {"column":"memberId", "before":"null", "after":"10001"}
     ]');
 
 INSERT INTO `todayart`.`update_log` VALUE(8, 10002, now(), 'file_3_create',
@@ -849,7 +849,7 @@ INSERT INTO `todayart`.`update_log` VALUE(8, 10002, now(), 'file_3_create',
     {"column":"file_type", "before":"null", "after":"text"},
     {"column":"file_reg_dated", "before":"null", "after":"2019-08-09 19:03:46"},
     {"column":"file_ip", "before":"null", "after":"127.0.0.1"},
-    {"column":"member_id", "before":"null", "after":"10002"}
+    {"column":"memberId", "before":"null", "after":"10002"}
     ]');
 INSERT INTO `todayart`.`update_log` VALUE(9, 10001, now(), 'file_4_create',
 '[
@@ -860,7 +860,7 @@ INSERT INTO `todayart`.`update_log` VALUE(9, 10001, now(), 'file_4_create',
 {"column":"file_type", "before":"null", "after":"image"},
 {"column":"file_reg_dated", "before":"null", "after":"2019-08-09 19:03:46"},
 {"column":"file_ip", "before":"null", "after":"127.0.0.1"},
-{"column":"member_id", "before":"null", "after":"10002"}
+{"column":"memberId", "before":"null", "after":"10002"}
 ]');
     
 INSERT INTO `todayart`.`update_log` VALUE(10, 10001, now(), 'file_5_create',
@@ -872,7 +872,7 @@ INSERT INTO `todayart`.`update_log` VALUE(10, 10001, now(), 'file_5_create',
     {"column":"file_type", "before":"null", "after":"image"},
     {"column":"file_reg_dated", "before":"null", "after":"2019-08-09 19:03:46"},
     {"column":"file_ip", "before":"null", "after":"127.0.0.1"},
-    {"column":"member_id", "before":"null", "after":"10001"}
+    {"column":"memberId", "before":"null", "after":"10001"}
     ]');
 
 
@@ -881,20 +881,20 @@ INSERT INTO `todayart`.`update_log` VALUE(10, 10001, now(), 'file_5_create',
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`wishlist` (
   `wishlist_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `member_id` INT(11) NOT NULL,
-  `product_id` INT(11) NOT NULL,
+  `memberId` INT(11) NOT NULL,
+  `productId` INT(11) NOT NULL,
   `enroll_dated` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`wishlist_id`),
-  INDEX `fk_wishlist_member_idx` (`member_id` ASC) VISIBLE,
-  INDEX `fk_wishlist_product_idx` (`product_id` ASC) VISIBLE,
+  INDEX `fk_wishlist_member_idx` (`memberId` ASC) VISIBLE,
+  INDEX `fk_wishlist_product_idx` (`productId` ASC) VISIBLE,
   CONSTRAINT `fk_wishlist_member`
-    FOREIGN KEY (`member_id`)
-    REFERENCES `todayart`.`member` (`member_id`)
+    FOREIGN KEY (`memberId`)
+    REFERENCES `todayart`.`member` (`memberId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `fk_wishlist_product`
-    FOREIGN KEY (`product_id`)
-    REFERENCES `todayart`.`product` (`product_id`)
+    FOREIGN KEY (`productId`)
+    REFERENCES `todayart`.`product` (`productId`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB
