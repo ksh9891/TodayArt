@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -44,7 +45,7 @@ public class Product {
 
 
     @Column(name = "delete_dated", nullable = true)
-    @UpdateTimestamp
+    // @UpdateTimestamp
     private Date delete_dated;
 
     @Column(name = "enroll_dated", nullable = true, updatable = false)
@@ -53,10 +54,11 @@ public class Product {
     private Date enroll_dated;
 
     @Column(name = "update_dated", nullable = true)
-    @UpdateTimestamp
+    // @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date update_dated;
 
-    @Column(name = "category")
+    @Column(name = "category_id")
     private Integer category;
 
     @Column(name = "is_sold_out")

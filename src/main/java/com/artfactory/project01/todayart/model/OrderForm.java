@@ -12,7 +12,6 @@ public class OrderForm {
     private Integer shippingFee;
     private List<OrderedDetail> orderDetail;
 
-
     public int getMemberId() {
         return memberId;
     }

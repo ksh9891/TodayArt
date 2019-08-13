@@ -47,10 +47,9 @@ public class MemberController {
 
     // 닉네임 중복체크 로직 진행해야 함.
     @GetMapping(value = "/{id}/change/email", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public boolean changeEmail(@PathVariable("id") int id, @RequestBody Map<String, String> emailMap) {
+    public boolean changeMemberEmail(@PathVariable("id") int id, @RequestBody Map<String, String> emailMap) {
         String email = emailMap.get("email");
         String userEmail = memberService.retrieveMemberEmail(id);
-
         // 닉네임 중복체크 로직 완료
         // 닉네임 업데이트 로직 추가부터 시작
 
