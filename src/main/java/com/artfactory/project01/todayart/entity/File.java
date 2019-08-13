@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "file")
 public class File {
     @Id
-    @Column(name = "file_id")
+    @Column(name = "file_id", nullable = false)
     @Getter
     @Setter
     private int fileId;

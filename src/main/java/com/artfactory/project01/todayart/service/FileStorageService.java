@@ -2,6 +2,8 @@ package com.artfactory.project01.todayart.service;
 
 import com.artfactory.project01.todayart.entity.File;
 import com.artfactory.project01.todayart.entity.Member;
+import com.artfactory.project01.todayart.exception.FileStorageException;
+import com.artfactory.project01.todayart.exception.MyFileNotFoundException;
 import com.artfactory.project01.todayart.repository.FileRepository;
 import com.artfactory.project01.todayart.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
