@@ -3,6 +3,8 @@ package com.artfactory.project01.todayart.entity;
 
 
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -17,6 +19,8 @@ import java.util.Date;
 @Table(name = "product")
 @DynamicInsert
 @DynamicUpdate
+@Getter
+@Setter
 public class Product {
 
     @Id
@@ -60,7 +64,8 @@ public class Product {
     @Column(name = "update_dated", nullable = true)
     private Date updateDated;
 
-    @ManyToOne(targetEntity = ProductCategory.class, fetch = FetchType.EAGER)
+
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private ProductCategory productCategory;
 
@@ -83,140 +88,6 @@ public class Product {
     private String productContent;
 
 
-    public String getProductContent() {
-        return productContent;
-    }
 
-    public void setProductContent(String productContent) {
-        this.productContent = productContent;
-    }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public Integer getArtistId() {
-        return artistId;
-    }
-
-    public void setArtistId(Integer artistId) {
-        this.artistId = artistId;
-    }
-
-    public String getProductSize() {
-        return productSize;
-    }
-
-    public void setProductSize(String productSize) {
-        this.productSize = productSize;
-    }
-
-    public Integer getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(Integer productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public Integer getThumbnailId() {
-        return thumbnailId;
-    }
-
-    public void setThumbnailId(Integer thumbnailId) {
-        this.thumbnailId = thumbnailId;
-    }
-
-    public Integer getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public ProductCategory getProductCategory() {
-        return productCategory;
-    }
-
-    public void setProductCategory(ProductCategory productCategory) {
-        this.productCategory = productCategory;
-    }
-
-    public Integer getIsSoldOut() {
-        return isSoldOut;
-    }
-
-    public void setIsSoldOut(Integer isSoldOut) {
-        this.isSoldOut = isSoldOut;
-    }
-
-    public Integer getRemain() {
-        return remain;
-    }
-
-    public void setRemain(Integer remain) {
-        this.remain = remain;
-    }
-
-    public Integer getCountCart() {
-        return countCart;
-    }
-
-    public void setCountCart(Integer countCart) {
-        this.countCart = countCart;
-    }
-
-    public Integer getCountWishlist() {
-        return countWishlist;
-    }
-
-    public void setCountWishlist(Integer countWishlist) {
-        this.countWishlist = countWishlist;
-    }
-
-    public Integer getShippingFee() {
-        return shippingFee;
-    }
-
-    public void setShippingFee(Integer shippingFee) {
-        this.shippingFee = shippingFee;
-    }
-
-    public Date getDeleteDated() {
-        return deleteDated;
-    }
-
-    public void setDeleteDated(Date deleteDated) {
-        this.deleteDated = deleteDated;
-    }
-
-    public Date getEnrollDated() {
-        return enrollDated;
-    }
-
-    public void setEnrollDated(Date enrollDated) {
-        this.enrollDated = enrollDated;
-    }
-
-    public Date getUpdateDated() {
-        return updateDated;
-    }
-
-    public void setUpdateDated(Date updateDated) {
-        this.updateDated = updateDated;
-    }
 }
 

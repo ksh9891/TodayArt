@@ -1,12 +1,14 @@
 package com.artfactory.project01.todayart.controller;
+
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.model.ProductForm;
-import com.artfactory.project01.todayart.model.Search;
 import com.artfactory.project01.todayart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
 @RestController
 @RequestMapping(value = "/product")
 public class ProductController {
@@ -15,128 +17,164 @@ public class ProductController {
     ProductService productService;
 
 
-    // 상품 등록(create/post)
+    /*
+    작성자: 채경
+    기능 설명 : 새로운 상품 등록(판매자)
+    @param Product Entity
+    @return save된 Product 객체
+    */
     @RequestMapping(
             path = "/add",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product create(@RequestBody Product product) {
+    public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
     }
 
 
-
-    // 상품 전체 리스트 출력 (read/get)
+    /*
+   작성자: 채경
+   기능 설명 : isDelete=0(미삭제)인 상품의 전체리스트 출력(최신 등록순으로 출력)
+              (상품 전체 리스트 : 구매 고객)
+   @return 전체 List<Product>객체
+   */
     @RequestMapping(
             path = "/list",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public List<Product> productList() {
+    public List<Product> retrieveProduct() {
         return productService.listProduct();
     }
 
 
-    // 상품 가격 오름차순 출력 (read/get)
+    /*
+   작성자: 채경
+   기능 설명 : 상품 리스트 가격 오름차순 정렬 후 출력
+   @return 오름차순 정렬된 Product<List> 객체
+   */
     @RequestMapping(
             path = "/list/asc",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public List<Product> productListPriceAsc() {
+    public List<Product> retrieveProductPriceAsc() {
         return productService.listProductPriceAsc();
     }
 
 
-
-    // 상품 가격 내림차순 출력 (read/get)
+    /*
+   작성자: 채경
+   기능 설명 : 상품 리스트 가격 내림차순 정렬 후 출력
+   @return 내림차순 정렬된 Product<List> 객체
+   */
     @RequestMapping(
             path = "/list/desc",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public List<Product> productListPriceDesc() {
+    public List<Product> retrieveProductPriceDesc() {
         return productService.listProductPriceDesc();
     }
 
 
-
-    // 상품 아이디별 조회(상품 상세 페이지, read/get)
+    /*
+    작성자: 채경
+    기능 설명 : 상품 ID로 상품 상세페이지 출력
+    @param Integer productId
+    @return 오름차순 정렬된 Product<List> 객체
+    */
     @RequestMapping(
             path = "/list/{product_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product productList(@PathVariable("product_id") Integer product_id) {
-        return productService.listProductdetail(product_id);
+    public Product retrieveProductByProductId(@PathVariable("product_id") Integer productId) {
+        return productService.listProductdetail(productId);
     }
 
 
-
-
-    // 상품 이름으로 검색(read/get)
+    /*
+    작성자: 채경
+    기능 설명 : 상품 이름(부분 이름)으로 검색 후 결과 출력
+    @param String productName
+    @return 상품 이름으로 검색된 Product<List> 객체
+    path /lists?name="상품명"
+    */
     @RequestMapping(
             path = "/lists",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 
     )
-    public List<Product> productListByName(@RequestParam(value = "name", required = false) String productName) {
+    public List<Product> retrieveProductByName(@RequestParam(value = "name", required = false) String productName) {
 
-        return productService.SearchByProductName(productName);
+        return productService.searchByProductName(productName);
     }
 
 
-    // 상품 카테고리별 검색(read/get)
+    /*
+    작성자: 채경
+    기능 설명 : 카테고리를 선택하면 선택한 카테고리 상품만 출력
+    @param Integer categoryId
+    @return 각 카테고리별 Product<List> 객체
+    */
     @RequestMapping(
             path = "/category={categoryId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public List<Product> productListByCategory(@PathVariable("categoryId") Integer categoryId) {
+    public List<Product> retrieveProductByCategory(@PathVariable("categoryId") Integer categoryId) {
 
-        return productService.SearchByCategory(categoryId);
+        return productService.searchByCategory(categoryId);
     }
 
 
-
-
-
-    // 상품 정보 수정(update/patch)
+    /*
+    작성자: 채경
+    기능 설명 : 상품 개별 컬럼 업데이트
+    @param Integer productId, ProductForm Model
+    @return save된 Product 객체
+    */
     @RequestMapping(
             path = "/update/{product_id}",
             method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product update(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {
-        return productService.updateProduct(product_id, productForm);
+    public Product updateProduct(@PathVariable("product_id") Integer productId, @RequestBody ProductForm productForm) {
+        return productService.updateProduct(productId, productForm);
     }
 
 
-
-
-    // 상품 삭제 : is_delete만 1로 변경(update/patch)
+    /*
+    작성자: 채경
+    기능 설명 : 판매자가 상품삭제를 누르면 is_delete 상태가 1로 바뀌며 삭제
+    @param Integer productId, ProductForm Model
+    @return is_delete 1로 save된 Product 객체
+    */
     @RequestMapping(
             path = "/delete/{product_id}",
             method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product delete(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {
+    public Product deleteProduct(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {
         return productService.deleteProduct(product_id, productForm);
     }
 
 
-
-
-
-    // 상품 삭제 : 실제 DB에서 삭제됨(delete/delete)
+    /*
+    작성자: 채경
+    기능 설명 : 상품이 DB에서 삭제(관리자)
+    @param Integer productId
+    @return Product 객체
+    */
     @RequestMapping(
             path = "/remove/{product_id}",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product deleteReal(@PathVariable("product_id") Integer product_id) {
+    public Product realDeleteProduct(@PathVariable("product_id") Integer product_id) {
         productService.deleteProductReal(product_id);
         Product product = new Product();
         product.setProductId(product_id);

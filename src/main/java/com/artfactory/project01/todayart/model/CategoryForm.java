@@ -18,7 +18,6 @@ public class CategoryForm {
 
     public ProductCategory setProductCategory() {
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setCategory_id(categoryId);
 
         return productCategory;
     }
