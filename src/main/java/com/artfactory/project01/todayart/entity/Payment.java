@@ -24,12 +24,12 @@ public class Payment {
     @Getter
     @Setter
     @Column(name = "order_id", updatable = false, nullable = false)
-    private int orderId;
+    private Integer orderId;
 
     @Getter
     @Setter
-    @Column(name = "product_id", updatable = false, nullable = false)
-    private int productId;
+    @Column(name = "ordered_detail_id", updatable = false, nullable = false)
+    private Integer orderedDetailId;
 
     @Getter
     @Setter
@@ -50,13 +50,13 @@ public class Payment {
 
     @Getter
     @Setter
-    @Column(name = "pay_price")
-    private int payPrice;
+    @Column(name = "order_detail_price")
+    private int orderDetailPrice;
 
     @Getter
     @Setter
-    @Column(name = "total_price")
-    private int totalPrice;
+    @Column(name = "total_order_price")
+    private int totalOrderPrice;
 
     @Getter
     @Setter
@@ -73,5 +73,10 @@ public class Payment {
     @Column(name = "refund_comment")
     private String refundComment;
 
-
+    public Payment setPayment(Payment payment){
+        this.payMethod = payment.getPayMethod();
+        this.cardNumber = payment.getCardNumber();
+        this.totalOrderPrice = payment.getTotalOrderPrice();
+        return this;
+    }
 }
