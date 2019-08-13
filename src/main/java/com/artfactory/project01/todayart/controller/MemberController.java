@@ -88,14 +88,13 @@ public class MemberController {
 
     // 닉네임 중복체크 로직 진행해야 함.
     @GetMapping(value = "/nickname", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void checkNickname(@RequestBody Member member){
-            if (memberService.findByNickname(member.getNickname()) != null) {
-                System.out.println("중복된 닉네임입니다");
-            } else {
-                System.out.println("사용 가능한 닉네임입니다");
-            }
+    public void checkNickname(@RequestBody Member member) {
+        if (memberService.findByNickname(member.getNickname()) != null) {
+            System.out.println("중복된 닉네임입니다");
+        } else {
+            System.out.println("사용 가능한 닉네임입니다");
+        }
         // 닉네임 중복체크 로직 완료+
-        // 닉네임 업데이트 로직 추가부터 시작
     }
 
     @GetMapping(value = "/{id}/checkPassword", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

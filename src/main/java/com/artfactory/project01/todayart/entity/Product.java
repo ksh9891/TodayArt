@@ -1,8 +1,5 @@
 package com.artfactory.project01.todayart.entity;
 
-
-
-
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -10,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
