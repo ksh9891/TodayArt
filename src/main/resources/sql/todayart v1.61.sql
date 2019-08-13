@@ -114,15 +114,25 @@ CREATE TABLE IF NOT EXISTS `todayart`.`member` (
   `expired` INT(11) NOT NULL DEFAULT '0' COMMENT '0: 미탈퇴, 1: 탈퇴',
   `expired_dated` DATETIME NULL DEFAULT NULL,
   `email_checked` INT(11) NOT NULL DEFAULT '0' COMMENT '0: 미인증, 1: 인증',
-  PRIMARY KEY (`member_id`))
+  PRIMARY KEY (`member_id`),
+  UNIQUE KEY(`email`),
+  UNIQUE KEY(`nickname`),
+  UNIQUE KEY(`username`),
+  UNIQUE KEY(`phone`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 10003
 DEFAULT CHARACTER SET = utf8;
  
 INSERT INTO member VALUE(1, "admin@admin.com", "admin", "admin", "admin", now(), "01012345678", "ROLE_ADMIN", now(), 0, null, 1);
+<<<<<<< HEAD:src/main/resources/sql/todayart v1.61.sql
 INSERT INTO member VALUE(3000, "member@member.com", "member", "member", "member", now(), "01012345678", "ROLE_CUSTOMER", now(), 0, null, 1);
 INSERT INTO member VALUE(10001, "artist@artist.com", "artist", "artist", "artist", now(), "01012345678", "ROLE_ARTIST", now(), 0, null, 1);
 INSERT INTO member VALUE(10002, "artist2@artist.com", "artist2", "artist2", "artist2", now(), "01012345678", "ROLE_ARTIST", now(), 0, null, 1);
+=======
+INSERT INTO member VALUE(3000, "member@member.com", "member", "member", "member", now(), "01012345679", "ROLE_CUSTOMER", now(), 0, null, 1);
+INSERT INTO member VALUE(10001, "artist@artist.com", "artist", "artist", "artist", now(), "01012345670", "ROLE_ARTIST", now(), 0, null, 1);
+
+>>>>>>> 2ced63b76e1995b2218dc3e3fd35ed4a2fdd13d6:src/main/resources/sql/todayart v1.52.sql
 
 -- -----------------------------------------------------
 -- Table `todayart`.`artist_level`

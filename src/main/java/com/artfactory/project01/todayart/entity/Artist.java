@@ -14,6 +14,7 @@ public class Artist implements Serializable {
     @Column(name = "artist_id", updatable = false, nullable = false)
     private Integer artistId;
 
+
     @Column(name = "artist_name")
     private String artistName;
 
@@ -35,3 +36,4 @@ public class Artist implements Serializable {
     @Column(name = "artist_level_id")
     private Integer artistLevelId;
 }
+

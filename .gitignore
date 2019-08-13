@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### File repository ban ###
+**/src/main/resources/files/**
