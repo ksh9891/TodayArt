@@ -2,7 +2,7 @@ package com.artfactory.project01.todayart.entity;
 
 
 
-import org.hibernate.annotations.CreationTimestamp;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,133 +19,133 @@ import java.util.Date;
 public class Product {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(columnDefinition = "int", name = "product_id", nullable = false, updatable = false)
-    private Integer product_id;
+    private Integer productId;
 
     @Column(name = "product_name")
-    private String product_name;
+    private String productName;
 
     @Column(name = "artist_id", updatable = false)
-    private Integer artist_id;
+    private Integer artistId;
 
 
     @Column(name = "product_size")
-    private String product_size;
+    private String productSize;
 
     @Column(name = "product_price")
-    private Integer product_price;
+    private Integer productPrice;
 
 
     @Column(name = "thumbnail_id")
-    private Integer thumbnail_id;
+    private Integer thumbnailId;
 
     @Column(name = "is_delete")
-    private Integer is_delete;
+    private Integer isDelete;
 
-
-    @Column(name = "delete_dated", nullable = true)
     @UpdateTimestamp
-    private Date delete_dated;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "delete_dated", nullable = true)
+    private Date deleteDated;
 
     @Column(name = "enroll_dated", nullable = true, updatable = false)
-    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date enroll_dated;
+    private Date enrollDated;
 
-    @Column(name = "update_dated", nullable = true)
     @UpdateTimestamp
-    private Date update_dated;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "update_dated", nullable = true)
+    private Date updateDated;
 
-    @Column(name = "category")
-    private Integer category;
+    @Column(name = "category_id")
+    private Integer categoryId;
 
     @Column(name = "is_sold_out")
-    private Integer is_sold_out;
+    private Integer isSoldOut;
 
     @Column(name = "remain")
     private Integer remain;
 
-    @Column(name = "count_cart")
-    private Integer count_cart;
+    @Column(name = "count_cart", nullable = true)
+    private Integer countCart;
 
-    @Column(name = "count_wishlist")
-    private Integer count_wishlist;
+    @Column(name = "count_wishlist", nullable = true)
+    private Integer countWishlist;
 
     @Column(name = "shipping_fee")
-    private Integer shipping_fee;
+    private Integer shippingFee;
 
 
-    public Integer getProduct_id() {
-        return product_id;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Integer product_id) {
-        this.product_id = product_id;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
-    public String getProduct_name() {
-        return product_name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public Integer getArtist_id() {
-        return artist_id;
+    public Integer getArtistId() {
+        return artistId;
     }
 
-    public void setArtist_id(Integer artist_id) {
-        this.artist_id = artist_id;
+    public void setArtistId(Integer artistId) {
+        this.artistId = artistId;
     }
 
-    public String getProduct_size() {
-        return product_size;
+    public String getProductSize() {
+        return productSize;
     }
 
-    public void setProduct_size(String product_size) {
-        this.product_size = product_size;
+    public void setProductSize(String productSize) {
+        this.productSize = productSize;
     }
 
-    public Integer getProduct_price() {
-        return product_price;
+    public Integer getProductPrice() {
+        return productPrice;
     }
 
-    public void setProduct_price(Integer product_price) {
-        this.product_price = product_price;
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public Integer getThumbnail_id() {
-        return thumbnail_id;
+    public Integer getThumbnailId() {
+        return thumbnailId;
     }
 
-    public void setThumbnail_id(Integer thumbnail_id) {
-        this.thumbnail_id = thumbnail_id;
+    public void setThumbnailId(Integer thumbnailId) {
+        this.thumbnailId = thumbnailId;
     }
 
-    public Integer getIs_delete() {
-        return is_delete;
+    public Integer getIsDelete() {
+        return isDelete;
     }
 
-    public void setIs_delete(Integer is_delete) {
-        this.is_delete = is_delete;
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
-
-    public Integer getCategory() {
-        return category;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public Integer getIs_sold_out() {
-        return is_sold_out;
+    public Integer getIsSoldOut() {
+        return isSoldOut;
     }
 
-    public void setIs_sold_out(Integer is_sold_out) {
-        this.is_sold_out = is_sold_out;
+    public void setIsSoldOut(Integer isSoldOut) {
+        this.isSoldOut = isSoldOut;
     }
 
     public Integer getRemain() {
@@ -156,53 +156,52 @@ public class Product {
         this.remain = remain;
     }
 
-    public Integer getCount_cart() {
-        return count_cart;
+    public Integer getCountCart() {
+        return countCart;
     }
 
-    public void setCount_cart(Integer count_cart) {
-        this.count_cart = count_cart;
+    public void setCountCart(Integer countCart) {
+        this.countCart = countCart;
     }
 
-    public Integer getCount_wishlist() {
-        return count_wishlist;
+    public Integer getCountWishlist() {
+        return countWishlist;
     }
 
-    public void setCount_wishlist(Integer count_wishlist) {
-        this.count_wishlist = count_wishlist;
+    public void setCountWishlist(Integer countWishlist) {
+        this.countWishlist = countWishlist;
     }
 
-    public Integer getShipping_fee() {
-        return shipping_fee;
+    public Integer getShippingFee() {
+        return shippingFee;
     }
 
-    public void setShipping_fee(Integer shipping_fee) {
-        this.shipping_fee = shipping_fee;
+    public void setShippingFee(Integer shippingFee) {
+        this.shippingFee = shippingFee;
     }
 
-    public Date getDelete_dated() {
-        return delete_dated;
+    public Date getDeleteDated() {
+        return deleteDated;
     }
 
-    public void setDelete_dated(Date delete_dated) {
-        this.delete_dated = delete_dated;
+    public void setDeleteDated(Date deleteDated) {
+        this.deleteDated = deleteDated;
     }
 
-    public Date getEnroll_dated() {
-        return enroll_dated;
+    public Date getEnrollDated() {
+        return enrollDated;
     }
 
-    public void setEnroll_dated(Date enroll_dated) {
-        this.enroll_dated = enroll_dated;
+    public void setEnrollDated(Date enrollDated) {
+        this.enrollDated = enrollDated;
     }
 
-    public Date getUpdate_dated() {
-        return update_dated;
+    public Date getUpdateDated() {
+        return updateDated;
     }
 
-    public void setUpdate_dated(Date update_dated) {
-        this.update_dated = update_dated;
+    public void setUpdateDated(Date updateDated) {
+        this.updateDated = updateDated;
     }
 }
-
 

@@ -1,44 +1,34 @@
 package com.artfactory.project01.todayart.model;
 
-
-
 import com.artfactory.project01.todayart.entity.Product;
-
 import java.io.Serializable;
-
-import java.text.DateFormat;
-import java.util.Date;
-
-
 
 public class ProductForm implements Serializable {
 
-    private  Integer product_id;
-    private String product_name;
-    private String product_size;
-    private Integer product_price;
-    private Integer thumbnail_id;
-    private Date update_dated;
-    private Integer category;
+    private String productName;
+    private String productSize;
+    private Integer productPrice;
+    private Integer thumbnailId;
+    private Integer categoryId;
     private Integer remain;
-    private Integer shipping_fee;
-    private Integer is_sold_out;
-    private Integer is_delete;
+    private Integer shippingFee;
+    private Integer isSoldOut;
+    private Integer isDelete;
     private Product product;
 
 
-    public Integer getIs_delete() {
-        return is_delete;
+    public Integer getIsDelete() {
+        return isDelete;
     }
 
-    public void setIs_delete(Integer is_delete) {
+    public void setIsDelete(Integer isDelete) {
 
-        this.is_delete = is_delete;
+        this.isDelete = isDelete;
 
     }
 
     public void setDelete(Product product) {
-        product.setIs_delete(this.is_delete);
+        product.setIsDelete(this.isDelete);
         this.product = product;
     }
 
@@ -49,106 +39,82 @@ public class ProductForm implements Serializable {
     public void setProduct(Product product) {
 
 
-
-
-
-
-
-
-        if(product_name != null){
-            product.setProduct_name(this.product_name);
-        }else if(product_size != null){
-            product.setProduct_size(this.product_size);
-        }else if(thumbnail_id != null){
-            product.setThumbnail_id(this.thumbnail_id);
-        }else if(category!= null){
-            product.setCategory(this.category);
-        }else if(remain!= null){
+        if(productName != null){
+            product.setProductName(this.productName);
+        }
+        if(productSize != null){
+            product.setProductSize(this.productSize);
+        }
+        if(thumbnailId != null){
+            product.setThumbnailId(this.thumbnailId);
+        }
+        if(categoryId != null){
+            product.setCategoryId(this.categoryId);
+        }
+        if(remain!= null){
             product.setRemain(this.remain);
-        }else if(shipping_fee!= null){
-            product.setShipping_fee(this.shipping_fee);
-        }else if(is_sold_out != null){
-            product.setIs_sold_out(this.is_sold_out);
-        }else if(product_price != null){
-            product.setProduct_price(this.product_price);
         }
-
-        if(update_dated != null){
-            product.setUpdate_dated(new Date());
-        }else
-        {
-            product.setUpdate_dated(new Date());
-
+        if(shippingFee != null){
+            product.setShippingFee(this.shippingFee);
         }
-
+        if(isSoldOut != null){
+            product.setIsSoldOut(this.isSoldOut);
+        }
+        if(productPrice != null){
+            product.setProductPrice(this.productPrice);
+        }
 
 
         this.product = product;
 
     }
 
-    public Integer getIs_sold_out() {
-        return is_sold_out;
+    public Integer getIsSoldOut() {
+        return isSoldOut;
     }
 
-    public void setIs_sold_out(Integer is_sold_out) {
-        this.is_sold_out = is_sold_out;
+    public void setIsSoldOut(Integer isSoldOut) {
+        this.isSoldOut = isSoldOut;
     }
 
-    public Integer getProduct_id() {
-        return product_id;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct_id(Integer product_id) {
-        this.product_id = product_id;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getProduct_name() {
-        return product_name;
+    public String getProductSize() {
+        return productSize;
     }
 
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
+    public void setProductSize(String productSize) {
+        this.productSize = productSize;
     }
 
-    public String getProduct_size() {
-        return product_size;
+    public Integer getProductPrice() {
+        return productPrice;
     }
 
-    public void setProduct_size(String product_size) {
-        this.product_size = product_size;
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public Integer getProduct_price() {
-        return product_price;
+    public Integer getThumbnailId() {
+        return thumbnailId;
     }
 
-    public void setProduct_price(Integer product_price) {
-        this.product_price = product_price;
+    public void setThumbnailId(Integer thumbnailId) {
+        this.thumbnailId = thumbnailId;
     }
 
-    public Integer getThumbnail_id() {
-        return thumbnail_id;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setThumbnail_id(Integer thumbnail_id) {
-        this.thumbnail_id = thumbnail_id;
-    }
-
-    public Date getUpdate_dated() {
-        return update_dated;
-    }
-
-    public void setUpdate_dated(Date update_dated) {
-        this.update_dated = new Date();
-    }
-
-    public Integer getCategory() {
-        return category;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Integer getRemain() {
@@ -159,36 +125,13 @@ public class ProductForm implements Serializable {
         this.remain = remain;
     }
 
-    public Integer getShipping_fee() {
-        return shipping_fee;
+    public Integer getShippingFee() {
+        return shippingFee;
     }
 
-    public void setShipping_fee(Integer shipping_fee) {
-        this.shipping_fee = shipping_fee;
+    public void setShippingFee(Integer shippingFee) {
+        this.shippingFee = shippingFee;
     }
-
-
-
-
-
-
-//    public Product setProduct(){
-//        Product product = new Product();
-//        product.setProduct_id(this.product_id);
-//        product.setProduct_name(this.product_name);
-//        product.setProduct_price(this.product_price);
-//        product.setProduct_size(this.product_size);
-//        product.setThumbnail_id(this.thumbnail_id);
-//        product.setUpdate_dated(this.update_dated);
-//        product.setCategory(this.category);
-//        product.setRemain(this.remain);
-//        product.setShipping_fee(this.shipping_fee);
-//        product.setIs_sold_out(this.is_sold_out);
-//
-//
-//        return product;
-//
-//    }
 
 
 }

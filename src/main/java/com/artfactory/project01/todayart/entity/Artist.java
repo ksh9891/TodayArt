@@ -14,7 +14,6 @@ public class Artist implements Serializable {
     @Column(name = "artist_id", updatable = false, nullable = false)
     private Integer artistId;
 
-    @OneToOne
     @JoinColumn(table = "member",name = "member_id")
     @Column(name = "member_id", updatable = false, nullable = false)
     private Integer memberId;

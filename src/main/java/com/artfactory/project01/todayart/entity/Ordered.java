@@ -3,11 +3,11 @@ package com.artfactory.project01.todayart.entity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="ordered")
@@ -19,7 +19,7 @@ public class Ordered implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderId;
 
-    @Column(name = "member_id")
+    @Column(name = "member_id", updatable = false, nullable = false)
     private Integer memberId;
 
     @Column(name = "order_dated")
@@ -34,11 +34,12 @@ public class Ordered implements Serializable {
     @Column(name = "shipping_fee")
     private Integer shippingFee;
 
-    @Column(name = "cart_id")
-    private Integer cartId;
+    @Column(name="isHidden")
+    private int isHidden;
 
-    @Column(name="hidden")
-    private int hidden;
+    @OneToMany(targetEntity=OrderedDetail.class, fetch = FetchType.EAGER)
+    @JoinColumn(name="ordered_id")
+    private List<OrderedDetail> orderDetails;
 
     /* OrderedDetail 과 join하기 */
 
@@ -82,19 +83,19 @@ public class Ordered implements Serializable {
         this.shippingFee = shippingFee;
     }
 
-    public Integer getCartId() {
-        return cartId;
+    public int getIsHidden() {
+        return isHidden;
     }
 
-    public void setCartId(Integer cartId) {
-        this.cartId = cartId;
+    public void setIsHidden(int hidden) {
+        this.isHidden = isHidden;
     }
 
-    public int getHidden() {
-        return hidden;
+    public List<OrderedDetail> getOrderDetails() {
+        return orderDetails;
     }
 
-    public void setHidden(int hidden) {
-        this.hidden = hidden;
+    public void setOrderDetails(List<OrderedDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }
