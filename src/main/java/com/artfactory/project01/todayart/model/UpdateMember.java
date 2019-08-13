@@ -2,27 +2,33 @@ package com.artfactory.project01.todayart.model;
 
 import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.service.MemberService;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
-@Data
-//클래스안의 모든 private 필드에 대해 @Getter와 @Setter를 적용하여 세터/게터를 만들어주고
-//클래스내에 @ToString 과 @EqualsAndHashCode를 적용시켜 메소드를 오버라이드 해주며
-//@RequiredArgsConstructor를 지정해 준다.
+
+@Getter
+@Setter
 public class UpdateMember {
 
+    // 주문자 이름
     private String username;
 
+    // 비밀번호
     private String password;
 
+    // 별명
     private String nickname;
 
+    // 휴대폰 번호
     private String phone;
 
+    // 탈퇴 여부
     private Integer expired;
 
+    // 탈퇴 일자
     private Date expiredDated;
 
     private Member member;
