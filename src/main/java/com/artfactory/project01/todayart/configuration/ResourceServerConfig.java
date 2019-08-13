@@ -40,7 +40,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/12341563132456341563416**")
+                .antMatchers("/a4sd65a4sd65a4sd65a4sd65a4sd/**")
                 .authenticated();
     }
 

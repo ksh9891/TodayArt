@@ -74,14 +74,18 @@ CREATE TABLE IF NOT EXISTS `todayart`.`member` (
   `expired` INT(11) NOT NULL DEFAULT '0' COMMENT '0: 미탈퇴, 1: 탈퇴',
   `expired_dated` DATETIME NULL DEFAULT NULL,
   `email_checked` INT(11) NOT NULL DEFAULT '0' COMMENT '0: 미인증, 1: 인증',
-  PRIMARY KEY (`member_id`))
+  PRIMARY KEY (`member_id`),
+  UNIQUE KEY(`email`),
+  UNIQUE KEY(`nickname`),
+  UNIQUE KEY(`username`),
+  UNIQUE KEY(`phone`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 10002
 DEFAULT CHARACTER SET = utf8;
  
 INSERT INTO member VALUE(1, "admin@admin.com", "admin", "admin", "admin", now(), "01012345678", "ROLE_ADMIN", now(), 0, null, 1);
-INSERT INTO member VALUE(3000, "member@member.com", "member", "member", "member", now(), "01012345678", "ROLE_CUSTOMER", now(), 0, null, 1);
-INSERT INTO member VALUE(10001, "artist@artist.com", "artist", "artist", "artist", now(), "01012345678", "ROLE_ARTIST", now(), 0, null, 1);
+INSERT INTO member VALUE(3000, "member@member.com", "member", "member", "member", now(), "01012345679", "ROLE_CUSTOMER", now(), 0, null, 1);
+INSERT INTO member VALUE(10001, "artist@artist.com", "artist", "artist", "artist", now(), "01012345670", "ROLE_ARTIST", now(), 0, null, 1);
 
 
 -- -----------------------------------------------------

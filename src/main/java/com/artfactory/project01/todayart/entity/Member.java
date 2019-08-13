@@ -1,7 +1,6 @@
 package com.artfactory.project01.todayart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,7 +35,6 @@ public class Member implements UserDetails, Serializable {
 
     @Column(name = "reg_dated")
     @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
     private Date regDated;
 
     @Column(name = "phone")
@@ -61,10 +59,6 @@ public class Member implements UserDetails, Serializable {
 
     public Integer getMemberId() {
         return memberId;
-    }
-
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
     }
 
     public String getEmail() {

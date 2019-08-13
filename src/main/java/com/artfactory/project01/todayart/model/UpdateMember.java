@@ -1,7 +1,9 @@
 package com.artfactory.project01.todayart.model;
 
 import com.artfactory.project01.todayart.entity.Member;
+import com.artfactory.project01.todayart.service.MemberService;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -25,14 +27,20 @@ public class UpdateMember {
 
     private Member member;
 
+    @Autowired
+    private MemberService memberService;
+
     public void member(Member member){
+
+        member.getEmail();
+
         if(this.password != null) { // 입력받은값이 null이 아니면 값 변경
             member.setPassword(password);
         }
         if(this.username != null) {
             member.setUsername(username);
         }
-        if(this.nickname != null) {
+        if(this.nickname != null || memberService.findByNickname(member.getNickname()) == null) {
             member.setNickname(nickname);
         }
         if(this.phone != null) {
