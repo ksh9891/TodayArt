@@ -1,18 +1,19 @@
 package com.artfactory.project01.todayart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="member")
@@ -20,53 +21,54 @@ import java.util.*;
 public class Member implements UserDetails, Serializable {
 
     @Id
-    @Column(name = "member_id", updatable = false, nullable = false)
+    @Column(name="member_id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer memberId;
 
-    @Column(name = "email")
+    @Column(name="email")
     private String email;
 
-    @Column(name = "password")
+    @Column(name="password")
     private String password;
 
-    @Column(name = "nickname")
+    @Column(name="nickname")
     private String nickname;
 
-    @Column(name = "username")
+    @Column(name="username")
     private String username;
 
-    @Column(name = "reg_dated")
+    @Column(name="reg_dated")
     @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
     private Date regDated;
 
-    @Column(name = "phone")
+    @Column(name="phone")
     private String Phone;
 
-    @Column(name = "role")
+    @Column(name="role")
     private String role;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "last_connect_dated")
+    @Column(name="last_connect_dated")
     private Date lastConnectDated;
 
-    @Column(name = "expired")
+    @Column(name="expired")
     private Integer expired;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "expired_dated")
+    @Column(name="expired_dated")
     private Date expiredDated;
 
-    @Column(name = "email_checked")
+    @Column(name="email_checked")
     private Integer emailChecked;
+
+    @Getter
+    @Setter
+    @OneToMany(fetch=FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private List<Cart> cartList;
 
     public Integer getMemberId() {
         return memberId;
-    }
-
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
     }
 
     public String getEmail() {
@@ -164,8 +166,8 @@ public class Member implements UserDetails, Serializable {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        GrantedAuthority authority = new SimpleGrantedAuthority(role);
-        authorities.add(authority);
+            GrantedAuthority authority = new SimpleGrantedAuthority(role);
+            authorities.add(authority);
         return authorities;
     }
 

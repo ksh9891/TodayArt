@@ -1,6 +1,9 @@
 package com.artfactory.project01.todayart.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,14 +24,26 @@ public class OrderedDetail implements Serializable{
     @Column(name = "product_id")
     private int productId;
 
+    @Getter
+    @Setter
+    @Column(name = "cart_id")
+    private int cartId;
+
     @Column(name = "quantity")
     private Integer quantity;
-
     @Column(name = "product_price")
     private Integer productPrice;
 
+    @Getter
+    @Setter
+    @Column(name = "total_product_price")
+    private Integer totalProductPrice;
+
     @Column(name = "total_price")
     private int totalPrice;
+
+
+
 
     @Column(name ="product_name")
     private String productName;
