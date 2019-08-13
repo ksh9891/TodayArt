@@ -1,8 +1,8 @@
 package com.artfactory.project01.todayart.service;
 
 import com.artfactory.project01.todayart.entity.Member;
-import com.artfactory.project01.todayart.entity.Ordered;
 import com.artfactory.project01.todayart.entity.OrderedDetail;
+import com.artfactory.project01.todayart.entity.ProductCategory;
 import com.artfactory.project01.todayart.model.ChangeOrderDetail;
 import com.artfactory.project01.todayart.model.OrderForm;
 import com.artfactory.project01.todayart.model.OrderFormReturn;
@@ -28,9 +28,9 @@ public class OrderService {
     // POST =========================================
 
     @Transactional
-    public Ordered createOrder(OrderForm orderForm){
+    public ProductCategory.Ordered createOrder(OrderForm orderForm){
 
-        Ordered ordered = orderedRepository.save(orderForm.setOrder());
+        ProductCategory.Ordered ordered = orderedRepository.save(orderForm.setOrder());
 
         List<OrderedDetail> orderDetailList = orderForm.getOrderDetail();
         Integer orderId = ordered.getOrderId();
@@ -48,19 +48,19 @@ public class OrderService {
     // 주문 조회
     @Transactional
     public ArrayList<OrderFormReturn> getOrders(){
-        List<Ordered> orders = orderedRepository.findAll();
+        List<ProductCategory.Ordered> orders = orderedRepository.findAll();
         return getOrderForm(orders);
     }
 
     @Transactional
     public ArrayList<OrderFormReturn> getOrdersByUser(int id){
-        List<Ordered> orders = orderedRepository.findByMemberId(id);
+        List<ProductCategory.Ordered> orders = orderedRepository.findByMemberId(id);
         return getOrderForm(orders);
     }
 
-    @Transactional ArrayList<OrderFormReturn> getOrderForm(List<Ordered> orders){
+    @Transactional ArrayList<OrderFormReturn> getOrderForm(List<ProductCategory.Ordered> orders){
         ArrayList<OrderFormReturn> orderList= new ArrayList<>();
-        for(Ordered order : orders){
+        for(ProductCategory.Ordered order : orders){
             List<OrderedDetail> itemDetail = orderedDetailRepository.findAllByOrderId(order.getOrderId());
             for(OrderedDetail detail : itemDetail){
                 OrderFormReturn item = new OrderFormReturn();
@@ -80,7 +80,7 @@ public class OrderService {
     public ArrayList<OrderFormReturn> getOrdersWithTerm(Period period){
         Date startDate = period.getStartDate();
         Date endDate = period.getEndDate();
-        List<Ordered> orderedList = orderedRepository.findByMemberIdWithTerm(startDate, endDate);
+        List<ProductCategory.Ordered> orderedList = orderedRepository.findByMemberIdWithTerm(startDate, endDate);
         return getOrderForm(orderedList);
     }
 
@@ -89,21 +89,21 @@ public class OrderService {
     public ArrayList<OrderFormReturn> getOrdersByUserWithTerm(int id, Period period){
         Date startDate = period.getStartDate();
         Date endDate = period.getEndDate();
-        List<Ordered> orderedList = orderedRepository.findByMemberIdWithTerm(id, startDate, endDate);
+        List<ProductCategory.Ordered> orderedList = orderedRepository.findByMemberIdWithTerm(id, startDate, endDate);
         return getOrderForm(orderedList);
     }
 
 
 
     @Transactional
-    public List<Ordered> getOrdersByMemberId(int memberId){
+    public List<ProductCategory.Ordered> getOrdersByMemberId(int memberId){
         return orderedRepository.findByMemberId(memberId);
     }
 
 
     @Transactional
-    public Ordered getOrder(int orderId, Member member){
-        Ordered ordered = orderedRepository.findById(orderId).get();
+    public ProductCategory.Ordered getOrder(int orderId, Member member){
+        ProductCategory.Ordered ordered = orderedRepository.findById(orderId).get();
         int memberId = member.getMemberId();
         if(ordered.getMemberId()==memberId){
             return ordered;
@@ -112,14 +112,14 @@ public class OrderService {
     }
 
     @Transactional
-    public Ordered getOrderForAdmin(int orderId){
+    public ProductCategory.Ordered getOrderForAdmin(int orderId){
         return orderedRepository.findById(orderId).get();
 
     }
     // 구매자용 특정 주문정보디테일 보기
     @Transactional
     public List<OrderedDetail> getOrderDetail(int orderId, Member member){
-        Optional<Ordered> order = orderedRepository.findById(orderId);
+        Optional<ProductCategory.Ordered> order = orderedRepository.findById(orderId);
         int memberId = member.getMemberId();
         if(order.get().getMemberId()==memberId){
             List<OrderedDetail> orderedDetailList = orderedDetailRepository.findAllByOrderId(orderId);
@@ -132,7 +132,7 @@ public class OrderService {
     @Transactional
     public List<OrderedDetail> getOrderDetailForAdmin(int orderId){
 
-        Optional<Ordered> order = orderedRepository.findById(orderId);
+        Optional<ProductCategory.Ordered> order = orderedRepository.findById(orderId);
             List<OrderedDetail> orderedDetailList = orderedDetailRepository.findAllByOrderId(orderId);
             return orderedDetailList;
 
@@ -141,8 +141,8 @@ public class OrderService {
     // PATCH =========================================
 
     @Transactional
-    public Ordered patchOrder(Integer orderId, Integer shippingfee){
-        Ordered ordered = orderedRepository.findById(orderId).get();
+    public ProductCategory.Ordered patchOrder(Integer orderId, Integer shippingfee){
+        ProductCategory.Ordered ordered = orderedRepository.findById(orderId).get();
         ordered.setShippingFee(shippingfee);
         return orderedRepository.save(ordered);
     }
@@ -155,7 +155,7 @@ public class OrderService {
         if(code.equals("CUSTOMER")){
             int memberId = member.getMemberId();
             int orderId = orderedDetail.getOrderId();
-            Ordered ordered = orderedRepository.findByOrderId(orderId);
+            ProductCategory.Ordered ordered = orderedRepository.findByOrderId(orderId);
             if(memberId==ordered.getMemberId()){
                 if(orderedDetail.getStatus().equals("배송준비")){
                     orderedDetail.setStatus("주문취소");
@@ -185,7 +185,7 @@ public class OrderService {
 
     @Transactional
     public void hiddenOrders(int orderedId){
-        Ordered ordered = orderedRepository.findByOrderId(orderedId);
+        ProductCategory.Ordered ordered = orderedRepository.findByOrderId(orderedId);
         ordered.setHidden(1);
         orderedRepository.save(ordered);
     }

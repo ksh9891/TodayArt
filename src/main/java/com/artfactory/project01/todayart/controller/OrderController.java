@@ -1,8 +1,8 @@
 package com.artfactory.project01.todayart.controller;
 
 import com.artfactory.project01.todayart.entity.Member;
-import com.artfactory.project01.todayart.entity.Ordered;
 import com.artfactory.project01.todayart.entity.OrderedDetail;
+import com.artfactory.project01.todayart.entity.ProductCategory;
 import com.artfactory.project01.todayart.model.ChangeOrderDetail;
 import com.artfactory.project01.todayart.model.OrderForm;
 import com.artfactory.project01.todayart.model.OrderFormReturn;
@@ -28,7 +28,7 @@ public class OrderController {
     // 주문 생성
     @RequestMapping(method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Ordered createOrder(@RequestBody OrderForm orderForm, Principal principal){
+    public ProductCategory.Ordered createOrder(@RequestBody OrderForm orderForm, Principal principal){
         Member member = (Member) PrincipalUtil.from(principal);
         orderForm.setMemberId(member.getMemberId());
         return orderService.createOrder(orderForm);
@@ -82,14 +82,14 @@ public class OrderController {
     // (관리자)(특정 유저의) 주문 확인
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(path="/user/{memberId}", method=RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<Ordered> listOfOrderByMember(@PathVariable("memberId") int memberId){
+    public List<ProductCategory.Ordered> listOfOrderByMember(@PathVariable("memberId") int memberId){
         return orderService.getOrdersByMemberId(memberId);
     }
 
 
 
     @RequestMapping(path="/{id}/{price}", method=RequestMethod.PATCH, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Ordered patchOrder(@PathVariable("id") Integer orderId, @PathVariable("price") Integer price){
+    public ProductCategory.Ordered patchOrder(@PathVariable("id") Integer orderId, @PathVariable("price") Integer price){
         return orderService.patchOrder(orderId, price);
     }
 

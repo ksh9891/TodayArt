@@ -12,10 +12,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
-<<<<<<< HEAD
-//    List<Product> findByProductCategory_CategoryId(Integer categoryId);
-=======
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
 
 
     /*
@@ -48,10 +44,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByProductNameContainingAndIsDelete(String productName, Integer IsDelete);
 
 
-<<<<<<< HEAD
-    // 카테고리별 검색
-    List<Product> findByProductCategory_CategoryId(Integer category_id);
-=======
 
     /*
     작성자: 채경
@@ -68,7 +60,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
                판매자별 상품 검색
     */
     List<Product> findByArtist_ArtistIdAndIsDelete(Integer artistId, Integer isDelete);
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
 
 
     // 상품 가격별 오름차순 검색
@@ -92,17 +83,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
 
-    // 상품 최신등록순으로 정렬
-    List<Product> findAllByIsDeleteOrderByEnrollDatedDesc(Integer isDelete);
 
 
-    // 아티스트id로 검색
-    List<Product> findByArtist_ArtistId(Integer artist_id);
-
-
-    // 작가명으로 검색
-//    List<Product> findByArtistNameContaining(String artist_name);
-    List<Product> findByArtist_ArtistName(String artist_name);
 
 
 }

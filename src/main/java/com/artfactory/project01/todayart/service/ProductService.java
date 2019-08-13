@@ -1,15 +1,9 @@
 package com.artfactory.project01.todayart.service;
 
-<<<<<<< HEAD
-import com.artfactory.project01.todayart.entity.Artist;
-=======
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.model.ProductForm;
 import com.artfactory.project01.todayart.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,45 +16,26 @@ public class ProductService {
 
 
 
-<<<<<<< HEAD
-    /*
-작성자: 수지
-기능 설명 : 상품등록
-<POST>
-@param Product product
-@return Product 객체
-*/
-=======
 
-   /*
-    작성자: 수지
-    기능 설명 : 상품등록
-    <POST>
-    @param Product product
-    @return Product 객체
-    */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
+    /*
+     작성자: 수지
+     기능 설명 : 상품등록
+     <POST>
+     @param Product product
+     @return Product 객체
+     */
     @Transactional
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
 
 
-<<<<<<< HEAD
     /*
-작성자: 수지
-기능 설명 : 등록된 상품중 삭제되지 않은 모든 상품 리스트 조회
-<GET>
-@param Integer isDelete
-@return 각 카테고리별 Product<List> 객체
-*/
-=======
-     /*
-    작성자: 수지
-    기능 설명 : 등록된 상품중 삭제되지 않은 모든 상품 리스트 조회(최신등록순)
-    <GET>
-    @return List<Product> 객체
-    */
+   작성자: 수지
+   기능 설명 : 등록된 상품중 삭제되지 않은 모든 상품 리스트 조회(최신등록순)
+   <GET>
+   @return List<Product> 객체
+   */
     @Transactional(readOnly = true)
     public List<Product> retrieveProduct() {
         // is_delete를 0인 것만 검색하기 위함
@@ -69,40 +44,26 @@ public class ProductService {
     }
 
 
-     /*
-    작성자: 수지
-    기능 설명 : 등록된 상품 가격 오름차순으로 조회(저렴한 가격-> 비싼가격 순으로 조회)
-    <GET>
-    @return 오름차순 정렬된 List<Product> 객체
-    */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
+    /*
+   작성자: 수지
+   기능 설명 : 등록된 상품 가격 오름차순으로 조회(저렴한 가격-> 비싼가격 순으로 조회)
+   <GET>
+   @return 오름차순 정렬된 List<Product> 객체
+   */
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceAsc() {
         // is_delete를 0인 것만 검색하기 위함
         Integer isDelete = 0;
-<<<<<<< HEAD
-        return productRepository.findAllByIsDeleteOrderByEnrollDatedDesc(isDelete);
-=======
         return productRepository.findAllByIsDeleteOrderByProductPriceAsc(isDelete);
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     }
 
 
     /*
-<<<<<<< HEAD
-작성자: 수지
-기능 설명 : 등록된 상품 가격 오름차순으로 조회(저렴한 가격-> 비싼가격 순으로 조회)
-<GET>
-@param Integer categoryId
-@return 각 카테고리별 Product<List> 객체
-*/
-=======
     작성자: 수지
     기능 설명 : 등록된 상품 가격 내림차순으로 조회(비싼 가격-> 저렴한 순으로 조회)
     <GET>
     @return 내림차순 정렬된 List<Product> 객체
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceDesc() {
 
@@ -112,15 +73,6 @@ public class ProductService {
     }
 
 
-<<<<<<< HEAD
-    /*
-작성자: 수지
-기능 설명 : 등록된 상품 가격 내림차순으로 조회(비싼 가격-> 저렴한 순으로 조회)
-<GET>
-@param Integer categoryId
-@return 각 카테고리별 Product<List> 객체
-*/
-=======
 
     /*
     작성자: 수지
@@ -129,30 +81,14 @@ public class ProductService {
     @param Integer product_id
     @return 각 상품별 Product 객체
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @Transactional(readOnly = true)
     public Product retrieveProductDetail(Integer productId) {
         return productRepository.findById(productId).get();
     }
 
 
-//    @Transactional(readOnly = true)
-//    public List<Product> listProductErollDated() {
-//        Integer isDelete = 0;
-//        return productRepository.findAllByOrderByErollDated(Integer isDelete);
-//    }
-//
 
 
-<<<<<<< HEAD
-    /*
-작성자: 수지
-기능 설명 : 상품 상세 페이지
-<GET>
-@param Integer product_id
-@return 각 카테고리별 Product<List> 객체
-*/
-=======
 
 
     /*
@@ -162,7 +98,6 @@ public class ProductService {
     @param String productName
     @return 상품명으로 조회된 List<Product> 객체
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @Transactional(readOnly = true)
     public List<Product> retrieveByProductName(String productName) {
 
@@ -173,14 +108,6 @@ public class ProductService {
 
 
     /*
-<<<<<<< HEAD
-작성자: 수지
-기능 설명 : 상품 이름(productName)으로 검색
-<GET>
-@param String productName
-@return 각 카테고리별 Product<List> 객체
-*/
-=======
     작성자: 수지
     기능 설명 : 상품 카테고리별 검색
     <GET>
@@ -205,31 +132,12 @@ public class ProductService {
     @param Integer artistId
     @return 각 판매자 아이디별 List<Product> 객체
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @Transactional(readOnly = true)
     public List<Product> retrieveByArtistId(Integer artistId) {
 
         // is_delete를 0인 것만 검색하기 위함
         Integer isDelete = 0;
 
-<<<<<<< HEAD
-        Integer categoryId = 0;
-        return productRepository.findByProductNameContainingAndIsDelete(productName, categoryId);
-    }
-
-
-    /*
-작성자: 수지
-기능 설명 : 상품 카테고리별 검색
-<GET>
-@param Integer categoryId
-@return 각 카테고리별 Product<List> 객체
-*/
-    @Transactional(readOnly = true)
-    public List<Product> SearchByCategory(Integer categoryId) {
-
-        return productRepository.findByProductCategory_CategoryId(categoryId);
-=======
         return productRepository.findByArtist_ArtistIdAndIsDelete(artistId, isDelete);
     }
 
@@ -248,43 +156,12 @@ public class ProductService {
         artistName = "%" + artistName +"%";
 
         return productRepository.findByArtistNameAndIsDelete(artistName);
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     }
 
 
 
 
-// 아티스트id 검색
-    @Transactional(readOnly = true)
-    public List<Product> SearchByArtist(Integer artistId) {
 
-        return productRepository.findByArtist_ArtistId(artistId);
-    }
-
-
-    // 아티스트 이름 검색
-    @Transactional(readOnly = true)
-    public List<Product> SearchByArtistName(String artistName) {
-//        String artist_name =
-//        @Query(value = "SELECT * FROM Product WHERE artist_name = "%" + artist_name + "%" ", nativeQuery = true)
-//                artist_name = "%" + artist_name + "%";
-
-<<<<<<< HEAD
-
-        return productRepository.findByArtist_ArtistName(artistName);
-    }
-
-
-
-
-    /*
-작성자: 수지
-기능 설명 : 상품 정보 수정(상품별 컬럼 개별업데이트)
-<PATCH>
-@param Integer id, ProductForm productForm
-@return Product 객체
-*/
-=======
     /*
     작성자: 수지
     기능 설명 : 상품 정보 수정(상품별 컬럼 개별업데이트)
@@ -292,7 +169,6 @@ public class ProductService {
     @param Integer id, ProductForm productForm
     @return save된 Product 객체
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @Transactional
     public Product updateProduct(Integer id, ProductForm productForm) {
         Product product = productRepository.findById(id).get();
@@ -301,15 +177,6 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-<<<<<<< HEAD
-    /*
-작성자: 수지
-기능 설명 : 상품 삭제(is_delete=1일 때)
-<PATCH>
-@param Integer id, ProductForm productForm
-@return Product 객체
-*/
-=======
 
     /*
     작성자: 수지
@@ -319,7 +186,6 @@ public class ProductService {
     @param Integer id, ProductForm productForm
     @return Product 객체
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @Transactional
     public Product deleteProduct(Integer id, ProductForm productForm) {
         Product product = productRepository.findById(id).get();
@@ -330,22 +196,13 @@ public class ProductService {
 
 
     /*
-<<<<<<< HEAD
-작성자: 수지
-기능 설명 : 상품 삭제(DB에서 삭제됨)
-<DELETE>
-@param Integer categoryId
-
-*/
-=======
     작성자: 수지
     기능 설명 : 상품 삭제(DB에서 삭제됨)
     <DELETE>
     @param Integer productId
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @Transactional
     public void deleteProductReal(Integer productId) {
         productRepository.deleteById(productId);
     }
-    }
+}

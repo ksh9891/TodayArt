@@ -1,7 +1,7 @@
 package com.artfactory.project01.todayart.model;
 
-import com.artfactory.project01.todayart.entity.Ordered;
 import com.artfactory.project01.todayart.entity.OrderedDetail;
+import com.artfactory.project01.todayart.entity.ProductCategory;
 
 import java.util.List;
 
@@ -53,8 +53,8 @@ public class OrderForm {
         this.orderDetail = orderDetail;
     }
 
-    public Ordered setOrder(){
-        Ordered ordered = new Ordered();
+    public ProductCategory.Ordered setOrder(){
+        ProductCategory.Ordered ordered = new ProductCategory.Ordered();
         ordered.setMemberId(memberId);
         ordered.setTotalPrice(totalPrice);
         ordered.setShippingFee(shippingFee);

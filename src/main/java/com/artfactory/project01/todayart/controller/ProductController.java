@@ -1,14 +1,9 @@
 package com.artfactory.project01.todayart.controller;
 
-<<<<<<< HEAD
-import com.artfactory.project01.todayart.entity.Artist;
-=======
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.model.ProductForm;
 import com.artfactory.project01.todayart.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,28 +33,19 @@ public class ProductController {
     }
 
 
-<<<<<<< HEAD
-    // 상품 전체 리스트 출력 (read/get)
-=======
     /*
    작성자: 채경
    기능 설명 : isDelete=0(미삭제)인 상품의 전체리스트 출력(최신 등록순으로 출력)
               (상품 전체 리스트 : 구매 고객)
    @return 전체 List<Product>객체
    */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @RequestMapping(
             path = "/list",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-<<<<<<< HEAD
-    public List<Product> retreiveProduct() {
-        return productService.listProduct();
-=======
     public List<Product> retrieveProduct() {
         return productService.retrieveProduct();
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     }
 
 
@@ -78,15 +64,11 @@ public class ProductController {
     }
 
 
-<<<<<<< HEAD
-    // 상품 가격 내림차순 출력 (read/get)
-=======
     /*
    작성자: 채경
    기능 설명 : 상품 리스트 가격 내림차순 정렬 후 출력
    @return 내림차순 정렬된 List<Product> 객체
    */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @RequestMapping(
             path = "/list/desc",
             method = RequestMethod.GET,
@@ -113,9 +95,6 @@ public class ProductController {
     }
 
 
-<<<<<<< HEAD
-    // 상품 이름으로 검색(read/get)
-=======
     /*
     작성자: 채경
     기능 설명 : 상품 이름(부분 이름)으로 검색 후 결과 출력
@@ -141,7 +120,6 @@ public class ProductController {
     @param Integer categoryId
     @return 각 카테고리별 List<Product> 객체
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @RequestMapping(
             path = "/list/category={categoryId}",
             method = RequestMethod.GET,
@@ -193,59 +171,17 @@ public class ProductController {
 
 
 
-<<<<<<< HEAD
-
-// 아티스트id별 상품 검색
-    @RequestMapping(
-            path = "/artistId={artistId}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
-    )
-    public List<Product> productListByArtistId(@PathVariable("artistId") Integer artistId) {
-
-        return productService.SearchByArtist(artistId);
-    }
-
-
-    // 아티스트이름 검색
-
-    @RequestMapping(
-//            path = "/artist=artistName",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
-    )
-    public List<Product> productListByArtistName(@RequestParam(value = "artistName", required = false) String artistName) {
-
-        return productService.SearchByArtistName(artistName);
-    }
-
-
-
-
-
-
-    // 상품 정보 수정(update/patch)
-=======
     /*
     작성자: 채경
     기능 설명 : 상품 개별 컬럼 업데이트
     @param Integer productId, ProductForm Model
     @return save된 Product 객체
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @RequestMapping(
             path = "/update/{product_id}",
             method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-<<<<<<< HEAD
-    public Product updateProduct(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {
-        return productService.updateProduct(product_id, productForm);
-    }
-
-
-    // 상품 삭제 : is_delete만 1로 변경(update/patch)
-=======
     public Product updateProduct(@PathVariable("product_id") Integer productId, @RequestBody ProductForm productForm) {
         return productService.updateProduct(productId, productForm);
     }
@@ -257,7 +193,6 @@ public class ProductController {
     @param Integer productId, ProductForm Model
     @return is_delete 1로 save된 Product 객체
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @RequestMapping(
             path = "/delete/{product_id}",
             method = RequestMethod.PATCH,
@@ -268,16 +203,12 @@ public class ProductController {
     }
 
 
-<<<<<<< HEAD
-    // 상품 삭제 : 실제 DB에서 삭제됨(delete/delete)
-=======
     /*
     작성자: 채경
     기능 설명 : 상품이 DB에서 삭제(관리자)
     @param Integer productId
     @return Product 객체
     */
->>>>>>> d82492ec1ba7403c834520c8a55b0a15f7967afc
     @RequestMapping(
             path = "/remove/{product_id}",
             method = RequestMethod.DELETE,
