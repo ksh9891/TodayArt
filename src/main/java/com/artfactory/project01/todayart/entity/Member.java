@@ -1,6 +1,8 @@
 package com.artfactory.project01.todayart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import javax.persistence.*;
+import javax.websocket.server.ServerEndpoint;
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.*;
@@ -59,6 +62,12 @@ public class Member implements UserDetails, Serializable {
 
     @Column(name="email_checked")
     private Integer emailChecked;
+
+    @Getter
+    @Setter
+    @OneToMany(fetch=FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private List<Cart> cartList;
 
     public Integer getMemberId() {
         return memberId;

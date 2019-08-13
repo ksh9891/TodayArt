@@ -14,4 +14,7 @@ public interface OrderedDetailRepository extends JpaRepository<OrderedDetail, In
     List<OrderedDetail> findAllByOrderId(int orderId);
 
     OrderedDetail findByOrderDetailId(int orderDetailId);
+
+
+    List<OrderedDetail> findAllByOrderIdAndStatus(int memberId, String status);
 }
