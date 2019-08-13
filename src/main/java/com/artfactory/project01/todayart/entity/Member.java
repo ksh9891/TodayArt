@@ -63,12 +63,6 @@ public class Member implements UserDetails, Serializable {
     @Column(name = "email_checked")
     private Integer emailChecked;
 
-    @Getter
-    @Setter
-    @OneToMany(fetch=FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private List<Cart> cartList;
-
     public Integer getMemberId() {
         return memberId;
     }
