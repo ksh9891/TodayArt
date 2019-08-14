@@ -2,22 +2,15 @@ package com.artfactory.project01.todayart.service;
 
 import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.model.ArticleForm;
-import com.artfactory.project01.todayart.model.ResultItems;
 import com.artfactory.project01.todayart.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -33,14 +26,20 @@ public class ArticleService {
 
     //보드아이디가 1인 리스트 리턴
     @Transactional(readOnly = true)
-    public Page<Article> listOfArticle1(Pageable pageable) {
-        return articleRepository.findByBoard_id1(1, pageable);
+    public Page<Article> listOfArticle(Integer boardId, Pageable pageable) {
+        return articleRepository.findByBoard_id(boardId, pageable);
     }
 
-    //보드아이디가 2인 리스트 리턴
+//    //보드아이디가 2인 리스트 리턴
+//    @Transactional(readOnly = true)
+//    public Page<Article> listOfArticle2(Pageable pageable) {
+//        return articleRepository.findByBoard_id2(2, pageable);
+//    }
+
+    //타이틀명 검색
     @Transactional(readOnly = true)
-    public Page<Article> listOfArticle2(Pageable pageable) {
-        return articleRepository.findByBoard_id2(2, pageable);
+    public Page<Article> findTitle(String title, Integer boardId, Pageable pageable) {
+        return articleRepository.findByTitleAndAndBoardId(title , boardId , pageable);
     }
 
 
@@ -72,6 +71,7 @@ public class ArticleService {
     public void dataDeleteArticle(Integer id) {
         articleRepository.deleteById(id);
     }
+
 
 
 }

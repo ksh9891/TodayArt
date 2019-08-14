@@ -18,6 +18,7 @@ import java.util.Optional;
 @Service
 public class CommentService {
 
+
     @Autowired
     private CommentRepository commentRepository;
 
@@ -27,11 +28,11 @@ public class CommentService {
         return commentRepository.save(comments);
     }
 
-//    //articleId 별 댓글 리스트 리턴
-//    @Transactional(readOnly = true)
-//    public Page<Comments> listOfComments(Pageable pageable) {
-//        return commentRepository.findByArticleId(, pageable);
-//    }
+    //articleId 별 댓글 리스트 리턴
+    @Transactional(readOnly = true)
+    public Page<Comments> listOfComments(Integer id,Pageable pageable) {
+        return commentRepository.findByArticleId(id, pageable);
+    }
 
 
     //댓글 업데이트
