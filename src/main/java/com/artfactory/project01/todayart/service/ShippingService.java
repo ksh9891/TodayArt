@@ -22,21 +22,18 @@ public class ShippingService {
         return shippingRepository.save(shipping);
     }
 
-    // 업데이트 로직은 2개가 있어야 한다.
-    // 하나는 배송 날짜와, 트래킹 넘버를 추가하는 업데이트
-    // 하나는 배송지와 같은 일반적인 내용을 변경하는 업데이트
-    // 아래 메서드는 일반적인 내용을 변경하는 업데이트 로직이다.
-    //public Shipping updateShipping(int id, Shipping replaceShipping) {
-    public Shipping updateShipping(int id, ShippingForm shippingForm) {
-        // PATCH
+    public Shipping updateShippingBefore(int id, ShippingForm shippingForm) {
         Shipping shipping = shippingRepository.findById(id).get();
-//        shipping.setShippingFee(replaceShipping.getShippingFee());
-        Shipping replaceShipping = shippingForm.updateShippingBefore(shipping);
-        return shippingRepository.save(replaceShipping);
+        return shippingRepository.save(shippingForm.updateShippingBefore(shipping));
     }
 
-    public Shipping deleteShipping(int id, int isDelete) {
-        // 대충 삭제 로직
-        return shippingRepository.save(new Shipping());
+    public Shipping deleteShipping(int id, ShippingForm shippingForm) {
+        Shipping shipping = shippingRepository.findById(id).get();
+        return shippingRepository.save(shippingForm.deleteShipping(shipping));
+    }
+
+    public Shipping updateShipping(int id, ShippingForm shippingForm) {
+        Shipping shipping = shippingRepository.findById(id).get();
+        return shippingRepository.save(shippingForm.updateShipping(shipping));
     }
 }

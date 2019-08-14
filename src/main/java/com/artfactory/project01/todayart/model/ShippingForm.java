@@ -35,19 +35,15 @@ public class ShippingForm {
         return shipping;
     }
 
-    public Shipping updateShipping(int id) {
-        Shipping shipping = new Shipping();
-        shipping.setShippingId(id);
+    public Shipping updateShipping(Shipping shipping) {
         shipping.setCourier(getCourier());
         shipping.setTrackingNumber(getTrackingNumber());
-        shipping.setShippingDated(getShippingDated());
+        shipping.setShippingDated(new Date());
 
         return shipping;
     }
 
-    public Shipping deleteShipping(int id) {
-        Shipping shipping = new Shipping();
-        shipping.setShippingId(id);
+    public Shipping deleteShipping(Shipping shipping) {
         shipping.setIsDelete(getIsDelete());
 
         return shipping;
