@@ -44,8 +44,8 @@ public class MemberController {
       @param Member Entity
       @return set 된 멤버 객체
     */
-    @PostMapping(value = "/signIn", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public UserDetails signIn(@RequestParam Map<String, String> signIn) {
+    @PostMapping(value = "/signIn", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public UserDetails signIn(@RequestBody Map<String, String> signIn) {
         String email = signIn.get("email");
         String password = signIn.get("password");
         if(email == null || email.isEmpty()){
