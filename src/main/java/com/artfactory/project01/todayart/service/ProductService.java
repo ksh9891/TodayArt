@@ -1,7 +1,10 @@
 package com.artfactory.project01.todayart.service;
 
+import com.artfactory.project01.todayart.entity.Artist;
+import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.model.ProductForm;
+import com.artfactory.project01.todayart.repository.ArtistRepository;
 import com.artfactory.project01.todayart.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,46 +17,53 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    ArtistRepository artistRepository;
 
 
 
-   /*
-    작성자: 수지
-    기능 설명 : 상품등록
-    <POST>
-    @param Product product
-    @return Product 객체
-    */
+
+    /*
+     작성자: 수지
+     기능 설명 : 상품등록
+     <POST>
+     @param Product product
+     @return Product 객체
+     */
     @Transactional
-    public Product createProduct(Product product) {
+    public Product createProduct(Member member, Product product) {
+        Artist artist = product.getArtist();
+        artist.setMemberId(member.getMemberId());
+        Integer artistId = artist.getArtistId();
+        artist = artistRepository.findById(artistId).get();
+        product.setArtistName(artist.getArtistName());
+
         return productRepository.save(product);
     }
 
 
-     /*
-    작성자: 수지
-    기능 설명 : 등록된 상품중 삭제되지 않은 모든 상품 리스트 조회(최신등록순)
-    <GET>
-    @return List<Product> 객체
-    */
+    /*
+   작성자: 수지
+   기능 설명 : 등록된 상품중 삭제되지 않은 모든 상품 리스트 조회(최신등록순)
+   <GET>
+   @return List<Product> 객체
+   */
     @Transactional(readOnly = true)
     public List<Product> retrieveProduct() {
-        // is_delete를 0인 것만 검색하기 위함
-//        Integer isDelete = 0;
+
         return productRepository.findByIsDeleteOrderByEnrollDatedDesc(0);
     }
 
 
-     /*
-    작성자: 수지
-    기능 설명 : 등록된 상품 가격 오름차순으로 조회(저렴한 가격-> 비싼가격 순으로 조회)
-    <GET>
-    @return 오름차순 정렬된 List<Product> 객체
-    */
+    /*
+   작성자: 수지
+   기능 설명 : 등록된 상품 가격 오름차순으로 조회(저렴한 가격-> 비싼가격 순으로 조회)
+   <GET>
+   @return 오름차순 정렬된 List<Product> 객체
+   */
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceAsc() {
-        // is_delete를 0인 것만 검색하기 위함
-//        Integer isDelete = 0;
+
         return productRepository.findAllByIsDeleteOrderByProductPriceAsc(0);
     }
 
@@ -67,8 +77,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceDesc() {
 
-        // is_delete를 0인 것만 검색하기 위함
-//        Integer isDelete = 0;
+
         return productRepository.findAllByIsDeleteOrderByProductPriceDesc(0);
     }
 
@@ -101,8 +110,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<Product> retrieveByProductName(String productName) {
 
-        // is_delete를 0인 것만 검색하기 위함
-//        Integer isDelete = 0;
+
         return productRepository.findByProductNameContainingAndIsDelete(productName, 0);
     }
 
@@ -118,8 +126,6 @@ public class ProductService {
     public List<Product> retrieveByCategory(Integer category_id) {
 
 
-        // is_delete를 0인 것만 검색하기 위함
-//        Integer isDelete = 0;
 
         return productRepository.findByProductCategory_CategoryIdAndIsDelete(category_id, 0);
     }
@@ -133,10 +139,11 @@ public class ProductService {
     @return 각 판매자 아이디별 List<Product> 객체
     */
     @Transactional(readOnly = true)
-    public List<Product> retrieveByArtistId(Integer artistId) {
+    public List<Product> retrieveByArtistId(Member member) {
+        Integer memberId = member.getMemberId();
+        Artist artist = artistRepository.findByMemberId(memberId);
+        Integer artistId = artist.getArtistId();
 
-        // is_delete를 0인 것만 검색하기 위함
-//        Integer isDelete = 0;
 
         return productRepository.findByArtist_ArtistIdAndIsDelete(artistId, 0);
     }
@@ -170,10 +177,11 @@ public class ProductService {
     @return save된 Product 객체
     */
     @Transactional
-    public Product updateProduct(Integer id, ProductForm productForm) {
-        Product product = productRepository.findById(id).get();
+    public Product updateProduct(Member member, Integer productId, ProductForm productForm) {
 
+        Product product = productRepository.findById(productId).get();
         productForm.setProduct(product);
+
         return productRepository.save(product);
     }
 
@@ -187,11 +195,11 @@ public class ProductService {
     @return Product 객체
     */
     @Transactional
-    public Product deleteProduct(Integer id, ProductForm productForm) {
+    public void deleteProduct(Integer id, ProductForm productForm) {
         Product product = productRepository.findById(id).get();
         productForm.setDelete(product);
 
-        return productRepository.save(product);
+        productRepository.save(product);
     }
 
 
@@ -205,4 +213,4 @@ public class ProductService {
     public void deleteProductReal(Integer productId) {
         productRepository.deleteById(productId);
     }
-    }
+}
