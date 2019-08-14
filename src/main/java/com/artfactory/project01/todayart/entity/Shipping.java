@@ -21,12 +21,12 @@ public class Shipping {
     @Column(name = "shipping_id", insertable = false, nullable = false, updatable = false)
     @Getter
     @Setter
-    private int shippingId;
+    private Integer shippingId;
 
     @Column(name = "ordered_id")
     @Getter
     @Setter
-    private int orderedId;
+    private Integer orderedId;
 
     @Column(name = "shipping_dated", insertable = false)
     @Getter
@@ -37,7 +37,7 @@ public class Shipping {
     @Column(name = "shipping_fee")
     @Getter
     @Setter
-    private int shippingFee;
+    private Integer shippingFee;
 
     @Column(name = "consignee")
     @Getter
@@ -47,7 +47,7 @@ public class Shipping {
     @Column(name = "postal_code")
     @Getter
     @Setter
-    private int postalCode;
+    private Integer postalCode;
 
     @Column(name = "receive_addr")
     @Getter
@@ -62,12 +62,12 @@ public class Shipping {
     @Column(name = "artist_id")
     @Getter
     @Setter
-    private int artistId;
+    private Integer artistId;
 
     @Column(name = "member_id")
     @Getter
     @Setter
-    private int memberId;
+    private Integer memberId;
 
     @Column(name = "courier")
     @Getter
@@ -83,5 +83,5 @@ public class Shipping {
     @Column(name = "is_delete")
     @Getter
     @Setter
-    private int isDelete;
+    private Integer isDelete;
 }

@@ -21,7 +21,7 @@ public class File {
     @Column(name = "file_id", nullable = false)
     @Getter
     @Setter
-    private int fileId;
+    private Integer fileId;
 
     @Column(name = "file_origin_name")
     @Getter
@@ -36,7 +36,7 @@ public class File {
     @Column(name = "file_size")
     @Getter
     @Setter
-    private long fileSize;
+    private Long fileSize;
 
     @Column(name = "file_reg_dated", updatable = false, insertable = false)
     @Getter
@@ -51,7 +51,7 @@ public class File {
     @Column(name = "member_id")
     @Getter
     @Setter
-    private int memberId;
+    private Integer memberId;
 
     @Column(name = "file_content_type")
     @Getter
