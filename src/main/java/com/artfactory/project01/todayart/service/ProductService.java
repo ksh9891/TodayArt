@@ -39,8 +39,8 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<Product> retrieveProduct() {
         // is_delete를 0인 것만 검색하기 위함
-        Integer isDelete = 0;
-        return productRepository.findByIsDeleteOrderByEnrollDatedDesc(isDelete);
+//        Integer isDelete = 0;
+        return productRepository.findByIsDeleteOrderByEnrollDatedDesc(0);
     }
 
 
@@ -53,8 +53,8 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceAsc() {
         // is_delete를 0인 것만 검색하기 위함
-        Integer isDelete = 0;
-        return productRepository.findAllByIsDeleteOrderByProductPriceAsc(isDelete);
+//        Integer isDelete = 0;
+        return productRepository.findAllByIsDeleteOrderByProductPriceAsc(0);
     }
 
 
@@ -68,8 +68,8 @@ public class ProductService {
     public List<Product> retrieveProductPriceDesc() {
 
         // is_delete를 0인 것만 검색하기 위함
-        Integer isDelete = 0;
-        return productRepository.findAllByIsDeleteOrderByProductPriceDesc(isDelete);
+//        Integer isDelete = 0;
+        return productRepository.findAllByIsDeleteOrderByProductPriceDesc(0);
     }
 
 
@@ -102,8 +102,8 @@ public class ProductService {
     public List<Product> retrieveByProductName(String productName) {
 
         // is_delete를 0인 것만 검색하기 위함
-        Integer isDelete = 0;
-        return productRepository.findByProductNameContainingAndIsDelete(productName, isDelete);
+//        Integer isDelete = 0;
+        return productRepository.findByProductNameContainingAndIsDelete(productName, 0);
     }
 
 
@@ -119,9 +119,9 @@ public class ProductService {
 
 
         // is_delete를 0인 것만 검색하기 위함
-        Integer isDelete = 0;
+//        Integer isDelete = 0;
 
-        return productRepository.findByProductCategory_CategoryIdAndIsDelete(category_id, isDelete);
+        return productRepository.findByProductCategory_CategoryIdAndIsDelete(category_id, 0);
     }
 
 
@@ -136,9 +136,9 @@ public class ProductService {
     public List<Product> retrieveByArtistId(Integer artistId) {
 
         // is_delete를 0인 것만 검색하기 위함
-        Integer isDelete = 0;
+//        Integer isDelete = 0;
 
-        return productRepository.findByArtist_ArtistIdAndIsDelete(artistId, isDelete);
+        return productRepository.findByArtist_ArtistIdAndIsDelete(artistId, 0);
     }
 
 

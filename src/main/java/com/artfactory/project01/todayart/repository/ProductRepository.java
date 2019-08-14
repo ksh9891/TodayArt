@@ -1,4 +1,5 @@
 package com.artfactory.project01.todayart.repository;
+
 import com.artfactory.project01.todayart.entity.Artist;
 import com.artfactory.project01.todayart.entity.Product;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -7,11 +8,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-
-
 
 
     /*
@@ -22,18 +23,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByIsDeleteOrderByEnrollDatedDesc(Integer isDelete);
 
 
-
     @Query(value = "SELECT p.* FROM product p, artist a\n" +
             "WHERE p.artist_id = a.artist_id\n" +
             "AND p.is_delete = 0\n " +
             "AND a.artist_name LIKE ? ", nativeQuery = true)
     List<Product> findByArtistNameAndIsDelete(String artistName);
-
-
-
-
-
-
 
 
     /*
@@ -44,14 +38,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByProductNameContainingAndIsDelete(String productName, Integer IsDelete);
 
 
-
     /*
     작성자: 채경
     기능 설명 : ProductService의 searchByCategory에서 사용/
                사용자가 선택한 카테고리별로 검색
     */
     List<Product> findByProductCategory_CategoryIdAndIsDelete(Integer categoryId, Integer isDelete);
-
 
 
     /*
@@ -78,13 +70,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
                productprice 내림차순으로 SELECT
     */
     List<Product> findAllByIsDeleteOrderByProductPriceDesc(Integer isDelete);
-
-
-
-
-
-
-
 
 
 }
