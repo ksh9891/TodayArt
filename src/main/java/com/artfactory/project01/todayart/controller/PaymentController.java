@@ -1,6 +1,5 @@
 package com.artfactory.project01.todayart.controller;
 
-import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Payment;
 import com.artfactory.project01.todayart.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ public class PaymentController {
     @param
     @return
      */
-    @RequestMapping
     @PostMapping
     public Payment createPayment(Payment payment, Integer orderId, Integer orderedDetailId, int price){
         return paymentService.createPayment(payment, orderId, orderedDetailId, price);
@@ -34,7 +32,6 @@ public class PaymentController {
       @param int
       @return null
     */
-    @RequestMapping
     @PatchMapping
     public Boolean updatePayment(Payment payment){
         String paymentMethod = payment.getPayMethod();
