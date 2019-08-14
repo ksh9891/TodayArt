@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/storage")
 public class FileUploadController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
@@ -31,7 +32,7 @@ public class FileUploadController {
     @Autowired
     private FileStorageService fileStorageService;
 
-    @PostMapping(value = "/storage/file", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/file", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request, Principal principal) {
         String replaceFileName = fileStorageService.storeFile(file, request, principal);
 
@@ -44,7 +45,7 @@ public class FileUploadController {
         return new UploadFileResponse(file.getOriginalFilename(), replaceFileName, fileDownloadUri, file.getContentType(), file.getSize());
     }
 
-    @PostMapping(value = "/storage/files")
+    @PostMapping(value = "/files")
     public List<UploadFileResponse> uploadFiles(@RequestParam("files") MultipartFile[] files, HttpServletRequest request, Principal principal) {
         return Arrays.asList(files)
                 .stream()
@@ -52,7 +53,7 @@ public class FileUploadController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/storage/files/{fileName:.+}")
+    @GetMapping("/files/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);

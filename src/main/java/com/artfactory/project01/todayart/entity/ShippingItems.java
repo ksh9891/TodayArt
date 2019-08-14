@@ -22,20 +22,20 @@ import java.util.Date;
 public class ShippingItems {
     @Id
     @Column(name = "item_id")
-    private Integer itemId;
+    private Integer itemId; // Shipping Items 아이디
 
     @Column(name = "shipping_id")
-    private Integer shippingId;
+    private Integer shippingId; // 배송 번호
 
     @Column(name = "ordered_id")
-    private Integer orderedId;
+    private Integer orderedId; // 주문 번호
 
     @Column(name = "product_id")
-    private Integer productId;
+    private Integer productId; // 상품 번호
 
     @Column(name = "last_updated")
-    private Date lastUpdated;
+    private Date lastUpdated; // status 최종 수정 날짜
 
     @Column(name = "status")
-    private String status;
+    private String status; // 배송 상태
 }
