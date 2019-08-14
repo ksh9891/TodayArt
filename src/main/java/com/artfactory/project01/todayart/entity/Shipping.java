@@ -2,6 +2,8 @@ package com.artfactory.project01.todayart.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.Column;
@@ -12,9 +14,11 @@ import java.util.Date;
 
 @Entity
 @Table(name = "shipping")
+@DynamicUpdate
+@DynamicInsert
 public class Shipping {
     @Id
-    @Column(name = "shipping_id")
+    @Column(name = "shipping_id", insertable = false, nullable = false, updatable = false)
     @Getter
     @Setter
     private int shippingId;
@@ -24,9 +28,10 @@ public class Shipping {
     @Setter
     private int orderedId;
 
-    @Column(name = "shipping_dated")
+    @Column(name = "shipping_dated", insertable = false)
     @Getter
     @Setter
+    @Nullable
     private Date shippingDated;
 
     @Column(name = "shipping_fee")
@@ -52,7 +57,7 @@ public class Shipping {
     @Column(name = "consignee_phone")
     @Getter
     @Setter
-    private int consigneePhone;
+    private String consigneePhone;
 
     @Column(name = "artist_id")
     @Getter
