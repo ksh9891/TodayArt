@@ -20,17 +20,18 @@ import java.util.Date;
 @Getter
 @Setter
 public class ShippingItems {
+    @Id
     @Column(name = "item_id")
-    private int itemId;
+    private Integer itemId;
 
     @Column(name = "shipping_id")
-    private int shippingId;
+    private Integer shippingId;
 
     @Column(name = "ordered_id")
-    private int orderedId;
+    private Integer orderedId;
 
     @Column(name = "product_id")
-    private int productId;
+    private Integer productId;
 
     @Column(name = "last_updated")
     private Date lastUpdated;
