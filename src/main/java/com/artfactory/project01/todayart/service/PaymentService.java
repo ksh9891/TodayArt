@@ -29,4 +29,24 @@ public class PaymentService {
 
         return paymentRepository.save(newPayment);
     }
+
+    /*
+      작성자: 국화
+      카카오페이 api 호출
+      @param
+      @return null
+    */
+    public Boolean callKakaoPay(){
+        return false;
+    }
+
+    /*
+      작성자: 국화
+      신용카드 api 호출
+      @param
+      @return null
+    */
+    public Boolean callCreditCard(){
+        return false;
+    }
 }

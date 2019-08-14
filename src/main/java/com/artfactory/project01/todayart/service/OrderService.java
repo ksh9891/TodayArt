@@ -39,7 +39,7 @@ public class OrderService {
       6. paymentMethod에 따라 paymentController 를 호출한다 (결제 api 호출은 paymentService에서 실행)
       7. paymentController의 반환값(결제성공, 결제실패)에 따라 결과를 return 한다
         (결제성공시 Ordered return, 실패시 error return)
-      @param Member
+      @param member
       @param OrderedForm
       @return Ordered
     */
@@ -68,6 +68,7 @@ public class OrderService {
             cartRepository.save(cart);
             paymentController.createPayment(payment, ordered.getOrderId(),orderedDetail.getOrderDetailId(), orderedDetail.getTotalPrice());
         }
+            paymentController.updatePayment(orderForm.getPayment());
 
         try{
         if(ordered.getShippingFee()==totalShippingFee
