@@ -207,40 +207,7 @@ public class ProductController {
 
 
 
-    /*
-    작성자: 채경
-    기능 설명 : 장바구니에 담기 클릭하면 countCart 컬럼이 1씩 증가
-    @param Integer productId
-    @return save된 Product 객체
-    */
-    @PreAuthorize("hasAnyRole('CUSTOMER', 'ARTIST', 'ADMIN')")
-    @RequestMapping(
-            path = "/cart={productId}",
-            method = RequestMethod.PATCH,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
-    )
-    public Product countCart(@PathVariable  Integer productId){
 
-        return productService.countCart(productId);
-}
-
-
-    /*
-        작성자: 채경
-        기능 설명 : 찜하기 클릭하면 countCart 컬럼이 1씩 증가
-        @param Integer productId
-        @return save된 Product 객체
-        */
-    @PreAuthorize("hasAnyRole('CUSTOMER', 'ARTIST', 'ADMIN')")
-    @RequestMapping(
-            path = "/wishlist={productId}",
-            method = RequestMethod.PATCH,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
-    )
-    public Product countWishList(@PathVariable  Integer productId){
-
-        return productService.countWishList(productId);
-    }
 
 
 

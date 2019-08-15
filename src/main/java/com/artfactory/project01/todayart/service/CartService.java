@@ -4,10 +4,12 @@ import com.artfactory.project01.todayart.entity.Cart;
 import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.model.ChangedCartItem;
+import com.artfactory.project01.todayart.model.ProductForm;
 import com.artfactory.project01.todayart.repository.CartRepository;
 import com.artfactory.project01.todayart.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,12 +30,19 @@ public class CartService implements Serializable {
       @param int
       @return null
     */
+    @Transactional
     public Cart createCart(Member member, Cart cart){
         int productId = cart.getProduct().getProductId();
         Product product = productRepository.findById(productId).get();
+        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
+        ProductForm productForm = new ProductForm();
+        productForm.setProduct(product);
+        product.setCountCart(product.getCountCart()+1);
+        //
         cart.setProductPrice(product.getProductPrice());
         cart.setProductSize(product.getProductSize());
         cart.setMemberId(member.getMemberId());
+        productRepository.save(product);
         return cartRepository.save(cart);
     }
 
@@ -43,6 +52,7 @@ public class CartService implements Serializable {
       @param Member
       @return ArrayList<Cart>
     */
+    @Transactional
     public ArrayList<Cart> retrieveCart(Member member){
         ArrayList<Cart> cartList = cartRepository.findAllByMemberIdAndIsDeleted(member.getMemberId(), 0);
         return cartList;
@@ -56,6 +66,7 @@ public class CartService implements Serializable {
       @param Map<String, ChangedCartItem>
       @return ArrayList<Cart>
     */
+    @Transactional
     public ArrayList<Cart> updateCart(Member member, Map<String, ChangedCartItem> Item){
         for(String item : Item.keySet()){
             Cart cart = cartRepository.findById(Item.get(item).getCartId()).get();
@@ -70,6 +81,7 @@ public class CartService implements Serializable {
       @param int
       @return null
     */
+    @Transactional
     public void deleteCart(int cartId){
         Cart cart = cartRepository.findById(cartId).get();
         cart.setIsDeleted(1);

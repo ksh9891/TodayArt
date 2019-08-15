@@ -6,11 +6,13 @@ import com.artfactory.project01.todayart.entity.Cart;
 import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.entity.WishList;
+import com.artfactory.project01.todayart.model.ProductForm;
 import com.artfactory.project01.todayart.repository.CartRepository;
 import com.artfactory.project01.todayart.repository.ProductRepository;
 import com.artfactory.project01.todayart.repository.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -32,15 +34,23 @@ public class WishListService {
       작성자: 채경
       새로운 wishList 레코드 작성
     */
+    @Transactional
     public WishList createWishList(Member member, WishList wishList){
         int productId = wishList.getProduct().getProductId();
         Product product = productRepository.findById(productId).get();
+        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
+        ProductForm productForm = new ProductForm();
+        productForm.setProduct(product);
+        product.setCountWishlist(product.getCountWishlist()+1);
+        //
         wishList.setMemberId(member.getMemberId());
         wishList.setProductPrice(product.getProductPrice());
         wishList.setProductSize(product.getProductSize());
         wishList.setThumbnailId(product.getThumbnailId());
         wishList.setArtistName(product.getArtistName());
         wishList.setIsStock(product.getRemain());
+
+        productRepository.save(product);
 
         return wishListRepository.save(wishList);
     }
@@ -55,6 +65,7 @@ public class WishListService {
       @param Member
       @return ArrayList<WishList>
     */
+    @Transactional
     public ArrayList<WishList> retrieveWishList(Member member){
         ArrayList<WishList> wishLists =
                 wishListRepository.findAllByMemberIdAndIsDelete(member.getMemberId(), 0);
@@ -63,6 +74,13 @@ public class WishListService {
 
 
 
+    /*
+     작성자: 채경
+     기능 : 찜하기에서 장바구니로 이동시켜줌
+     @param int
+     @return null
+   */
+    @Transactional
     public Cart createWishToCart(Integer wishListId){
         WishList wishList = wishListRepository.findByWishlistIdAndIsDelete(wishListId, 0);
         Cart cart = new Cart();
@@ -75,26 +93,23 @@ public class WishListService {
         cart.setShippingFee(product.getShippingFee());
         cart.setIsStock(wishList.getIsStock());
         cart.setQuantity(1);
-
-
-
-
-
-
-
-
-
-
+        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
+        ProductForm productForm = new ProductForm();
+        productForm.setProduct(product);
+        product.setCountWishlist(product.getCountWishlist()+1);
+        //
+        productRepository.save(product);
        return cartRepository.save(cart);
     }
 
 
     /*
-     작성자: 국화
-     장바구니에서 삭제(감추기)
+     작성자: 채경
+     찜하기에서 삭제(감추기)
      @param int
      @return null
    */
+    @Transactional
     public void deleteWishList(Integer wishListId){
         WishList wishList = wishListRepository.findById(wishListId).get();
         wishList.setIsDelete(1);
