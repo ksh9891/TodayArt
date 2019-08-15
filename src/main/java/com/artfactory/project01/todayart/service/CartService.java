@@ -3,10 +3,12 @@ package com.artfactory.project01.todayart.service;
 import com.artfactory.project01.todayart.entity.Cart;
 import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Product;
+import com.artfactory.project01.todayart.entity.WishList;
 import com.artfactory.project01.todayart.model.ChangedCartItem;
 import com.artfactory.project01.todayart.model.ProductForm;
 import com.artfactory.project01.todayart.repository.CartRepository;
 import com.artfactory.project01.todayart.repository.ProductRepository;
+import com.artfactory.project01.todayart.repository.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +24,14 @@ public class CartService implements Serializable {
     CartRepository cartRepository;
 
     @Autowired
+    WishListRepository wishListRepository;
+
+    @Autowired
     ProductRepository productRepository;
 
     /*
-      작성자: 국화
-      새로운 cart 레코드 작성
+      작성자: 국화 // 190815 채경 수정
+      새로운 cart 레코드 작성 // 카트에 추가 시 중복체크 기능 추가
       @param int
       @return null
     */
@@ -34,17 +39,61 @@ public class CartService implements Serializable {
     public Cart createCart(Member member, Cart cart){
         int productId = cart.getProduct().getProductId();
         Product product = productRepository.findById(productId).get();
-        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
+        Integer memberId = member.getMemberId();
+        if (cartRepository.findByMemberIdAndProducIdtAndIsDelete(memberId, productId) != null) {
+            System.out.println("중복");
+        }else if(cartRepository.findByMemberIdAndProducIdtAndIsDelete(memberId, productId) == null){
+            // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
+            ProductForm productForm = new ProductForm();
+            productForm.setProduct(product);
+            product.setCountCart(product.getCountCart()+1);
+            //
+            cart.setProductPrice(product.getProductPrice());
+            cart.setProductSize(product.getProductSize());
+            cart.setMemberId(member.getMemberId());
+            productRepository.save(product);
+            cart = cartRepository.save(cart);
+        }
+
+        return cart;
+
+    }
+
+
+
+    /*
+ 작성자: 채경
+ 기능 : 찜하기에서 장바구니로 이동시켜줌
+ @param int
+ @return null
+*/
+    @Transactional
+    public Cart createWishToCart(Member member, Integer wishListId){
+        WishList wishList = wishListRepository.findById(wishListId).get();
+        int productId = wishList.getProduct().getProductId();
+        Product product = productRepository.findById(productId).get();
+
+        Cart cart = new Cart();
+        cart.setProduct(wishList.getProduct());
+        cart.setProductPrice(product.getProductPrice());
+        cart.setProductSize(product.getProductSize());
+        cart.setMemberId(member.getMemberId());
+        cart.setProductPrice(product.getProductPrice());
+        cart.setProductSize(product.getProductSize());
+        cart.setShippingFee(product.getShippingFee());
+        cart.setIsStock(wishList.getIsStock());
+        cart.setQuantity(1);
+        // 장바구니로 이동 클릭했을 때 프로덕트의 count 컬럼 1 증가
         ProductForm productForm = new ProductForm();
         productForm.setProduct(product);
         product.setCountCart(product.getCountCart()+1);
         //
-        cart.setProductPrice(product.getProductPrice());
-        cart.setProductSize(product.getProductSize());
-        cart.setMemberId(member.getMemberId());
         productRepository.save(product);
+        wishList.setIsDelete(1);
         return cartRepository.save(cart);
     }
+
+
 
     /*
       작성자: 국화
