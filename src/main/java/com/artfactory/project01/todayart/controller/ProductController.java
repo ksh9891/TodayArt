@@ -233,7 +233,7 @@ public class ProductController {
         */
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/wishlist={productId}",햐
+            path = "/wishlist={productId}",
             method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
