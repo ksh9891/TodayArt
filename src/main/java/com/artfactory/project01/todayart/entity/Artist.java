@@ -36,4 +36,3 @@ public class Artist implements Serializable {
     @Column(name = "artist_level_id")
     private Integer artistLevelId;
 }
-

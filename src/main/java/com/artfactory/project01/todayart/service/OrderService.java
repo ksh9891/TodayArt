@@ -66,11 +66,11 @@ public class OrderService {
         }
 
         try{
-        if(ordered.getShippingFee()==totalShippingFee
-        &&ordered.getTotalPrice()==totalPrice){
-        } else{
-            throw new VerificateFailException("값 검증 실패");
-        }
+            if(ordered.getShippingFee()==totalShippingFee
+                    &&ordered.getTotalPrice()==totalPrice){
+            } else{
+                throw new VerificateFailException("값 검증 실패");
+            }
         }catch(VerificateFailException e) {
             e.printStackTrace();
         }
@@ -155,9 +155,9 @@ public class OrderService {
     @Transactional
     public List<OrderedDetail> getOrderDetailForAdmin(int orderId){
 
-       // Optional<Ordered> order = orderedRepository.findById(orderId);
-            List<OrderedDetail> orderedDetailList = orderedDetailRepository.findAllByOrderId(orderId);
-            return orderedDetailList;
+        // Optional<Ordered> order = orderedRepository.findById(orderId);
+        List<OrderedDetail> orderedDetailList = orderedDetailRepository.findAllByOrderId(orderId);
+        return orderedDetailList;
 
     }
 
@@ -216,7 +216,7 @@ public class OrderService {
             return orderedDetailRepository.save(orderedDetail);
 
         }
-    return null;
+        return null;
     }
 
     @Transactional

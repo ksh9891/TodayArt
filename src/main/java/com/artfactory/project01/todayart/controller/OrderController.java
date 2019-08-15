@@ -108,7 +108,7 @@ public class OrderController {
 
     @RequestMapping(method=RequestMethod.PATCH, produces ={MediaType.APPLICATION_JSON_UTF8_VALUE})
     public OrderedDetail changeStatus(@RequestBody ChangeOrderDetail changeList,
-                                Principal principal){
+                                      Principal principal){
         member = getMember(principal);
         return orderService.changeStatus(member, changeList);
 
