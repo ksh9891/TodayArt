@@ -1,7 +1,6 @@
 package com.artfactory.project01.todayart.service;
 
 
-
 import com.artfactory.project01.todayart.entity.Cart;
 import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Product;
@@ -11,6 +10,7 @@ import com.artfactory.project01.todayart.repository.ProductRepository;
 import com.artfactory.project01.todayart.repository.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -27,12 +27,12 @@ public class WishListService {
     CartRepository cartRepository;
 
 
-
     /*
       작성자: 채경
       새로운 wishList 레코드 작성
     */
-    public WishList createWishList(Member member, WishList wishList){
+    @Transactional
+    public WishList createWishList(Member member, WishList wishList) {
         int productId = wishList.getProduct().getProductId();
         Product product = productRepository.findById(productId).get();
         wishList.setMemberId(member.getMemberId());
@@ -46,24 +46,22 @@ public class WishListService {
     }
 
 
-
-
-
     /*
       작성자: 채경
       각 회원의 (삭제되지않은) 찜하기 목록 불러오기
       @param Member
       @return ArrayList<WishList>
     */
-    public ArrayList<WishList> retrieveWishList(Member member){
+    @Transactional
+    public ArrayList<WishList> retrieveWishList(Member member) {
         ArrayList<WishList> wishLists =
                 wishListRepository.findAllByMemberIdAndIsDelete(member.getMemberId(), 0);
         return wishLists;
     }
 
 
-
-    public Cart createWishToCart(Integer wishListId){
+    @Transactional
+    public Cart createWishToCart(Integer wishListId) {
         WishList wishList = wishListRepository.findByWishlistIdAndIsDelete(wishListId, 0);
         Cart cart = new Cart();
         int productId = wishList.getProduct().getProductId();
@@ -76,15 +74,6 @@ public class WishListService {
         cart.setIsStock(wishList.getIsStock());
         cart.setQuantity(1);
 
-
-
-
-
-
-
-
-
-
         return cartRepository.save(cart);
     }
 
@@ -95,7 +84,8 @@ public class WishListService {
      @param int
      @return null
    */
-    public void deleteWishList(Integer wishListId){
+    @Transactional
+    public void deleteWishList(Integer wishListId) {
         WishList wishList = wishListRepository.findById(wishListId).get();
         wishList.setIsDelete(1);
         wishListRepository.save(wishList);
