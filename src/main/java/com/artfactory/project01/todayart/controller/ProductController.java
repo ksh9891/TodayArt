@@ -188,8 +188,6 @@ public class ProductController {
 
 
 
-
-
     /*
     작성자: 채경
     기능 설명 : 상품 개별 컬럼 업데이트
@@ -208,6 +206,44 @@ public class ProductController {
     }
 
 
+
+    /*
+    작성자: 채경
+    기능 설명 : 장바구니에 담기 클릭하면 countCart 컬럼이 1씩 증가
+    @param Integer productId
+    @return save된 Product 객체
+    */
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'ARTIST', 'ADMIN')")
+    @RequestMapping(
+            path = "/cart={productId}",
+            method = RequestMethod.PATCH,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public Product countCart(@PathVariable  Integer productId){
+
+        return productService.countCart(productId);
+}
+
+
+    /*
+        작성자: 채경
+        기능 설명 : 찜하기 클릭하면 countCart 컬럼이 1씩 증가
+        @param Integer productId
+        @return save된 Product 객체
+        */
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'ARTIST', 'ADMIN')")
+    @RequestMapping(
+            path = "/wishlist={productId}",햐
+            method = RequestMethod.PATCH,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public Product countWishList(@PathVariable  Integer productId){
+
+        return productService.countWishList(productId);
+    }
+
+
+
     /*
     작성자: 채경
     기능 설명 : 판매자가 상품삭제를 누르면 is_delete 상태가 1로 바뀌며 삭제
@@ -217,7 +253,7 @@ public class ProductController {
     @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
             path = "/delete/{product_id}",
-            method = RequestMethod.PATCH,
+            method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public void deleteProduct(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {

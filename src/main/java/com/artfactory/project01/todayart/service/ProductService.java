@@ -187,6 +187,41 @@ public class ProductService {
 
 
     /*
+    작성자: 채경
+    기능 설명 : 장바구니에 담기 클릭하면 countCart컬럼 1씩 증가
+    @param Integer productId
+    @return save된 Product 객체
+    */
+    @Transactional
+    public Product countCart(Integer productId){
+        Product product = productRepository.findById(productId).get();
+        ProductForm productForm = new ProductForm();
+        productForm.setProduct(product);
+        product.setCountCart(product.getCountCart()+1);
+
+        return productRepository.save(product);
+    }
+
+    /*
+    작성자: 채경
+    기능 설명 : 장바구니에 담기 클릭하면 countWishList컬럼 1씩 증가
+    @param Integer productId
+    @return save된 Product 객체
+    */
+    @Transactional
+    public Product countWishList(Integer productId){
+        Product product = productRepository.findById(productId).get();
+        ProductForm productForm = new ProductForm();
+        productForm.setProduct(product);
+        product.setCountWishlist(product.getCountWishlist()+1);
+
+        return productRepository.save(product);
+    }
+
+
+
+
+    /*
     작성자: 수지
     기능 설명 : 상품 삭제(is_delete=1로 변경)
     setDelete 는 delete_dated update를 위한 메서드
