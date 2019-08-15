@@ -30,17 +30,16 @@ public class ArticleService {
         return articleRepository.findByBoard_id(boardId, pageable);
     }
 
-//    //보드아이디가 2인 리스트 리턴
-//    @Transactional(readOnly = true)
-//    public Page<Article> listOfArticle2(Pageable pageable) {
-//        return articleRepository.findByBoard_id2(2, pageable);
-//    }
-
     //타이틀명 검색
     @Transactional(readOnly = true)
-    public Page<Article> findTitle(String title, Integer boardId, Pageable pageable) {
-        return articleRepository.findByTitleAndAndBoardId(title , boardId , pageable);
+    public Page<Article> findTitle(String value, Integer boardId ,String where, Pageable pageable) {
+        return articleRepository.findByTitleAndBoardId(value , boardId  ,where, pageable);
     }
+
+//    @Transactional(readOnly = true)
+//    public Page<Article> findContent(String content, Integer boardId, Pageable pageable, String where) {
+//        return articleRepository.findByContentAndBoardId(content , boardId , pageable, where);
+//    }
 
 
     @Transactional

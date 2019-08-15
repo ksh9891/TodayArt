@@ -16,7 +16,10 @@ public interface ArticleRepository extends JpaRepository<Article,Integer> {
    @Query(value = "SELECT * FROM article WHERE board_id = ?1 AND is_deleted = 0 ORDER BY write_dated DESC ", nativeQuery = true)
    Page<Article> findByBoard_id(Integer boardId , Pageable pageable);
 
+   @Query(value = "SELECT * FROM article WHERE board_id = ?2 AND is_deleted = 0 AND ?3 LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
+   Page<Article> findByTitleAndBoardId(String value, Integer boardId , String where, Pageable pageable);
 
-   @Query(value = "SELECT * FROM article WHERE board_id = 1 AND is_deleted = 0 AND title LIKE %title% ORDER BY write_dated DESC ", nativeQuery = true)
-   Page<Article> findByTitleAndAndBoardId(String title, Integer boardId , Pageable pageable);
+//    @Query(value = "SELECT * FROM article WHERE board_id = ?2 AND is_deleted = 0 AND content LIKE %?1% ORDER BY write_dated DESC ", nativeQuery = true)
+//    Page<Article> findByContentAndBoardId(String content, Integer boardId , Pageable pageable);
+
 }
