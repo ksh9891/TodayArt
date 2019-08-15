@@ -1,5 +1,6 @@
 package com.artfactory.project01.todayart.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,8 +19,10 @@ public class Artist implements Serializable {
     @Column(name = "artist_name")
     private String artistName;
 
-    @Column(name = "member_id")
-    private Integer memberId;
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    private Member memberId;
 
     @Column(name = "artist_desc")
     private String artistDesc;

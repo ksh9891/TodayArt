@@ -1,8 +1,6 @@
 package com.artfactory.project01.todayart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+
 
 @Entity
 @Table(name="member")
@@ -60,6 +58,21 @@ public class Member implements UserDetails, Serializable {
 
     @Column(name="email_checked")
     private Integer emailChecked;
+
+    @OneToOne(mappedBy = "memberId")
+    private Artist artist;
+
+    public Artist getArtist() {
+        return artist;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
+
+    public void setMemberId(Integer memberId) {
+        this.memberId = memberId;
+    }
 
     public Integer getMemberId() {
         return memberId;

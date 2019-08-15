@@ -42,7 +42,6 @@ public class OrderController {
     public Ordered createOrder(@RequestBody OrderForm orderForm, Principal principal){
         member = getMember(principal);
 
-
         try {
             return orderService.createOrder(member, orderForm);
         }catch(Exception e){
@@ -72,6 +71,19 @@ public class OrderController {
 
             return orderService.retrieveOrdersByStatus(role, id, type);
         }
+    }
+
+    /*
+    작성자: 국화
+    판매자가 들어온 주문을 확인할 수 있다
+    @param Principal
+    @return List<Ordered>
+     */
+    @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
+    @RequestMapping("/artist")
+    public List<Ordered> retrieveOrders(Principal principal){
+        member = getMember(principal);
+        return null;
     }
 
     /*
