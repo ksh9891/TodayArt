@@ -56,21 +56,7 @@ public class WishListController {
     }
 
 
-    /*
-    작성자: 채경
-    찜하기에서 장바구니로 이동을 누르면 장바구니로 이동됨
-    (장바구니로 이동을 누르면 자동 찜하기에서는 삭제)
-    @param Integer
-    @return null
-    */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
-    @RequestMapping(path="/{wishListId}",
-            method = RequestMethod.POST,
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Cart createWishToCart (@PathVariable("wishListId")Integer wishListId) {
-        wishListService.deleteWishList(wishListId);
-        return wishListService.createWishToCart(wishListId);
-    }
+
 
     /*
     작성자: 채경

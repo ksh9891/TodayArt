@@ -66,6 +66,22 @@ public class CartController {
         return cartService.updateCart(member,changedCartItem);
     }
 
+    /*
+    작성자: 채경
+    찜하기에서 장바구니로 이동을 누르면 장바구니로 이동됨
+    (장바구니로 이동을 누르면 자동 찜하기에서는 삭제)
+    @param Integer
+    @return null
+    */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @RequestMapping(path="/{wishListId}",
+            method = RequestMethod.POST,
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public Cart createWishToCart (@PathVariable("wishListId")Integer wishListId, Principal principal) {
+        member = getMember(principal);
+        return cartService.createWishToCart(member, wishListId);
+    }
+
      /*
     작성자: 국화
     장바구니에 담긴 아이템 삭제

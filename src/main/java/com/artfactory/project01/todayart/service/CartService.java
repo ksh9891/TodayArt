@@ -3,10 +3,12 @@ package com.artfactory.project01.todayart.service;
 import com.artfactory.project01.todayart.entity.Cart;
 import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Product;
+import com.artfactory.project01.todayart.entity.WishList;
 import com.artfactory.project01.todayart.model.ChangedCartItem;
 import com.artfactory.project01.todayart.model.ProductForm;
 import com.artfactory.project01.todayart.repository.CartRepository;
 import com.artfactory.project01.todayart.repository.ProductRepository;
+import com.artfactory.project01.todayart.repository.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,9 @@ public class CartService implements Serializable {
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    WishListRepository wishListRepository;
 
     /*
       작성자: 국화
@@ -75,6 +80,44 @@ public class CartService implements Serializable {
         }
         return retrieveCart(member);
     }
+
+    /*
+    작성자: 채경
+    기능 : 찜하기에서 장바구니로 이동시켜줌
+    @param int
+    @return null
+  */
+    @Transactional
+    public Cart createWishToCart(Member member, Integer wishListId){
+        WishList wishList = wishListRepository.findById(wishListId).get();
+        Cart cart = new Cart();
+        int productId = wishList.getProduct().getProductId();
+        Product product = productRepository.findById(productId).get();
+        cart.setProduct(wishList.getProduct());
+        cart.setMemberId(member.getMemberId());
+        cart.setProductPrice(product.getProductPrice());
+        cart.setProductSize(product.getProductSize());
+        cart.setShippingFee(product.getShippingFee());
+        cart.setIsStock(wishList.getIsStock());
+        cart.setQuantity(1);
+        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
+        ProductForm productForm = new ProductForm();
+        productForm.setProduct(product);
+        product.setCountCart(product.getCountCart()+1);
+
+        //
+
+
+        //
+
+        productRepository.save(product);
+        wishList.setIsDelete(1);
+        return cartRepository.save(cart);
+
+
+    }
+
+
     /*
       작성자: 국화
       장바구니에서 삭제(감추기)

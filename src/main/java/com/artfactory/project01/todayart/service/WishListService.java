@@ -1,7 +1,5 @@
 package com.artfactory.project01.todayart.service;
 
-
-
 import com.artfactory.project01.todayart.entity.Cart;
 import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Product;
@@ -50,6 +48,8 @@ public class WishListService {
         wishList.setArtistName(product.getArtistName());
         wishList.setIsStock(product.getRemain());
 
+
+
         productRepository.save(product);
 
         return wishListRepository.save(wishList);
@@ -74,33 +74,6 @@ public class WishListService {
 
 
 
-    /*
-     작성자: 채경
-     기능 : 찜하기에서 장바구니로 이동시켜줌
-     @param int
-     @return null
-   */
-    @Transactional
-    public Cart createWishToCart(Integer wishListId){
-        WishList wishList = wishListRepository.findByWishlistIdAndIsDelete(wishListId, 0);
-        Cart cart = new Cart();
-        int productId = wishList.getProduct().getProductId();
-        Product product = productRepository.findById(productId).get();
-        cart.setMemberId(wishList.getMemberId());
-        cart.setProduct(wishList.getProduct());
-        cart.setProductPrice(wishList.getProductPrice());
-        cart.setProductSize(wishList.getProductSize());
-        cart.setShippingFee(product.getShippingFee());
-        cart.setIsStock(wishList.getIsStock());
-        cart.setQuantity(1);
-        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
-        ProductForm productForm = new ProductForm();
-        productForm.setProduct(product);
-        product.setCountWishlist(product.getCountWishlist()+1);
-        //
-        productRepository.save(product);
-       return cartRepository.save(cart);
-    }
 
 
     /*
