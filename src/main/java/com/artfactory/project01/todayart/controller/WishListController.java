@@ -4,6 +4,7 @@ package com.artfactory.project01.todayart.controller;
 
 import com.artfactory.project01.todayart.entity.Cart;
 import com.artfactory.project01.todayart.entity.Member;
+import com.artfactory.project01.todayart.entity.WishList;
 import com.artfactory.project01.todayart.service.WishListService;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
