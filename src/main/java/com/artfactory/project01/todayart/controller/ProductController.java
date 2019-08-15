@@ -34,7 +34,6 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/add",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -52,7 +51,6 @@ public class ProductController {
    */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -68,7 +66,7 @@ public class ProductController {
    */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/asc",
+            path = "/priceasc",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -84,7 +82,7 @@ public class ProductController {
    */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/desc",
+            path = "/pricedesc",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -101,7 +99,7 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/{product_id}",
+            path = "/detail/{product_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -119,7 +117,7 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/product",
+            path = "/productname",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 
@@ -138,7 +136,7 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/category={categoryId}",
+            path = "/category={categoryId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -157,11 +155,11 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/artistid",
+            path = "/artistid",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public List<Product> retrieveProductByArtistName(Principal principal) {
+    public List<Product> retrieveProductByArtistId(Principal principal) {
         member = getMember(principal);
         return productService.retrieveByArtistId(member);
     }
@@ -176,7 +174,7 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/artist",
+            path = "/artistname",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 
@@ -196,13 +194,13 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/update/{product_id}",
+            path = "/{product_id}",
             method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
     public Product updateProduct(Principal principal, @PathVariable("product_id") Integer productId, @RequestBody ProductForm productForm) {
         member = getMember(principal);
-        return productService.updateProduct(member, productId, productForm);
+        return productService.updateProduct(productId, productForm);
     }
 
 
@@ -219,7 +217,7 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/delete/{product_id}",
+            path = "/{product_id}",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
