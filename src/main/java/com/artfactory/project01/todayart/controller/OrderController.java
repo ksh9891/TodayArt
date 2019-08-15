@@ -29,10 +29,13 @@ public class OrderController {
         return (Member) PrincipalUtil.from(principal);
     }
 
-
-    // POST =========================================
-
-    // 주문 생성
+    /*
+    작성자: 국화
+    front에서 orderForm 을 받아 주문-배송-결제까지 원스톱 주문 생성
+    @param OrderForm
+    @param Principal
+    @return Ordered
+     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
@@ -40,87 +43,124 @@ public class OrderController {
         member = getMember(principal);
 
 
-        return orderService.createOrder(member, orderForm);
+        try {
+            return orderService.createOrder(member, orderForm);
+        }catch(Exception e){
+            return null;
+        }
     }
 
-    // GET =========================================
 
-    // (관리자는 모든 주문, 주문자는 자신의) 모든 주문 확인
-    // - 이름/가격/날짜/배송정보/주문상태
-    //  주문 아이템 상태로 조회
-    // 결제완료, 배송준비, 배송중, 배송완료, 주문확정, 주문취소, 반품, 환불
+    /*
+    작성자: 국화
+    1. 모든 주문 확인
+        - 관리자 ; 모든 주문
+        - 주문자 ; 자신의 주문
+    2. 주문상태로 주문 조건 검색
+    @param String : ReqeustParam 으로 받는 ordered 의 status
+    @param Principal
+    @return List<Ordered>
+    */
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<Ordered> listOf(@RequestParam(value = "type", required = false)String type, Principal principal){
+    public List<Ordered> retrieveOrders(@RequestParam(value = "type", required = false)String type, Principal principal){
         member = getMember(principal);
         int id = member.getMemberId();
         String role = member.getRole();
         if(type==null){
-            return ((role.equals("ROLE_ADMIN"))?orderService.getOrders():orderService.getOrdersByUser(id));}
+            return ((role.equals("ROLE_ADMIN"))?orderService.retrieveOrders():orderService.retrieveOrdersByMemberId(id));}
         else{
 
-            return orderService.getOrdersByStatus(role, id, type);
+            return orderService.retrieveOrdersByStatus(role, id, type);
         }
     }
 
-    // 기간별 검색
+    /*
+        작성자: 국화
+        기간별 주문 조회
+        @param Period
+        @param Principal
+        @return ArrayList<Ordered>
+     */
     @RequestMapping(path="/period", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ArrayList<Ordered> listOfOrderWithPeriod(@RequestBody Period period, Principal principal){
+    public ArrayList<Ordered> retrieveOrderesByPeriod(@RequestBody Period period, Principal principal){
         member = getMember(principal);
         String role = member.getRole();
         if(role.equals("ROLE_ADMIN")){
-            return orderService.getOrdersWithTerm(period);
+            return orderService.retrieveOrdersByPeriod(period);
         }
         int id = member.getMemberId();
-        return orderService.getOrdersByUserWithTerm(id, period);
+        return orderService.retrieveOrdersByMemberIdAndPeriod(id, period);
 
     }
 
 
 
 
-    // (관리자)(특정 id) 주문(디테일) 확인 // 소비자 본인(의 특정) 주문(디테일) 확인
-    // -주문일자/주문번호/(영수증 발급내역)/상품주문번호/상품정보/상품금액(수량)/배송비/판매자/주문진행상태/주문(상품)금액
+
+    /*
+       작성자: 국화
+       주문 디테일 확인
+       @param int
+       @param Principal
+       @return List<OrderedDetail>
+    */
     @RequestMapping(path="/{id}/detail", method = RequestMethod.GET, produces ={MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<OrderedDetail> retrieveOrderDetail(@PathVariable("id") int orderId, Principal principal){
+    public List<OrderedDetail> retrieveOrderDetails(@PathVariable("id") int orderId, Principal principal){
         member = getMember(principal);
         String role = member.getRole();
-        return ((role.equals("ROLE_ADMIN"))?orderService.getOrderDetailForAdmin(orderId):orderService.getOrderDetail(orderId, member));
+        return ((role.equals("ROLE_ADMIN"))?orderService.retrieveOrderedDetailsForAdmin(orderId):orderService.retrieveOrderedDetails(orderId, member));
     }
 
 
 
 
-    // (관리자)(특정 유저의) 주문 확인
+    /*
+      작성자: 국화
+      회원 id 로 주문 조회(관리자용)
+      @param int
+      @return List<Ordered>
+   */
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(path="/user/{memberId}", method=RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<Ordered> listOfOrderByMember(@PathVariable("memberId") int memberId){
-        return orderService.getOrdersByMemberId(memberId);
+    public List<Ordered> retrieveOrders(@PathVariable("memberId") int memberId){
+        return orderService.retrieveOrdersByMemberId(memberId);
     }
 
 
 
-    // PATCH =========================================
-
-
-    // 주문자 : 상태변경 (주문취소)
-    // 판매자 : 상태변경 (배송준비중=>배송중/tracking_number 입력)
-    // 판매자 : 상태변경 (배송준비중=>주문취소 : 취소사유 입력)
-
+    /*
+      작성자: 국화
+      주문 상태 변경
+      1. 관리자(모든 상태->모든상태)
+      2. 판매자
+        - 결제완료 -> 배송준비/주문취소
+        - 배송준비 -> 배송중
+      3. 구매자
+        - 결제완료 -> 주문취소
+        - 배송준비 -> 주문취소
+        - 배송완료 -> 주문확정
+        - 배송완료 -> 반품대기 (환불절차 첫번째)
+      @param ChangeOrderDetail
+      @return OrderedDetail
+    */
     @RequestMapping(method=RequestMethod.PATCH, produces ={MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public OrderedDetail changeStatus(@RequestBody ChangeOrderDetail changeList,
-                                      Principal principal){
+    public OrderedDetail updateOrderedDetail(@RequestBody ChangeOrderDetail changeList,
+                                             Principal principal){
         member = getMember(principal);
-        return orderService.changeStatus(member, changeList);
+        return orderService.updateStatus(member, changeList);
 
     }
 
 
-    // DELETE =========================================
-
-    // 주문내역 감추기(실제 삭제 X)
+    /*
+      작성자: 국화
+      주문내역 감추기(주문자 기준 주문삭제 기능)
+      @param int
+      @return null
+   */
     @RequestMapping(path="/{id}", method=RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public void deleteOrder(@PathVariable("id") int id){
-        orderService.hiddenOrders(id);
+        orderService.deleteOrdered(id);
 
     }
 }
