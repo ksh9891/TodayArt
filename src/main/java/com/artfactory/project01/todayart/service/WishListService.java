@@ -94,6 +94,7 @@ public class WishListService {
         cart.setIsStock(wishList.getIsStock());
         cart.setQuantity(1);
         return cartRepository.save(cart);
+//        
     }
 
 
