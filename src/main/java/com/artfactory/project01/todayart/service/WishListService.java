@@ -93,6 +93,12 @@ public class WishListService {
         cart.setShippingFee(product.getShippingFee());
         cart.setIsStock(wishList.getIsStock());
         cart.setQuantity(1);
+        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
+        ProductForm productForm = new ProductForm();
+        productForm.setProduct(product);
+        product.setCountWishlist(product.getCountWishlist()+1);
+        //
+        productRepository.save(product);
        return cartRepository.save(cart);
     }
 
