@@ -1,9 +1,7 @@
 package com.artfactory.project01.todayart.controller;
 
 import com.artfactory.project01.todayart.entity.Artist;
-import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.repository.ArtistRepository;
-import com.artfactory.project01.todayart.repository.MemberRepository;
 import com.artfactory.project01.todayart.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,7 +26,7 @@ public class ArtistController {
       * 상품이미지는 프론트에서 올릴때 그정보 받아서 등록할 예정
     */
 //    @PreAuthorize("hasAnyRole('CUSTOMER')")
-    @PostMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Artist createArtist(@PathVariable("id") int id, Artist artist){
         return artistService.createArtist(id, artist);
     }
@@ -40,7 +38,7 @@ public class ArtistController {
       * 프론트에서 승인 누를시 true, 거부 누를시 false로 해서 조건 줄 예정
     */
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @PatchMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Artist updateArtist(@PathVariable("id") int id){
         return artistService.updateArtist(id);
     }
