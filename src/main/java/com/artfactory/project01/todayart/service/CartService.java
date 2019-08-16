@@ -29,9 +29,6 @@ public class CartService implements Serializable {
     @Autowired
     ProductRepository productRepository;
 
-    @Autowired
-    WishListRepository wishListRepository;
-
     /*
       작성자: 국화 // 190815 채경 수정
       새로운 cart 레코드 작성 // 카트에 추가 시 중복체크 기능 추가
@@ -127,44 +124,6 @@ public class CartService implements Serializable {
         }
         return retrieveCart(member);
     }
-
-    /*
-    작성자: 채경
-    기능 : 찜하기에서 장바구니로 이동시켜줌
-    @param int
-    @return null
-  */
-    @Transactional
-    public Cart createWishToCart(Member member, Integer wishListId){
-        WishList wishList = wishListRepository.findById(wishListId).get();
-        Cart cart = new Cart();
-        int productId = wishList.getProduct().getProductId();
-        Product product = productRepository.findById(productId).get();
-        cart.setProduct(wishList.getProduct());
-        cart.setMemberId(member.getMemberId());
-        cart.setProductPrice(product.getProductPrice());
-        cart.setProductSize(product.getProductSize());
-        cart.setShippingFee(product.getShippingFee());
-        cart.setIsStock(wishList.getIsStock());
-        cart.setQuantity(1);
-        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
-        ProductForm productForm = new ProductForm();
-        productForm.setProduct(product);
-        product.setCountCart(product.getCountCart()+1);
-
-        //
-
-
-        //
-
-        productRepository.save(product);
-        wishList.setIsDelete(1);
-        return cartRepository.save(cart);
-
-
-    }
-
-
     /*
       작성자: 국화
       장바구니에서 삭제(감추기)

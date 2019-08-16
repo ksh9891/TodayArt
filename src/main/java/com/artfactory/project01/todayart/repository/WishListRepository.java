@@ -16,13 +16,8 @@ public interface WishListRepository extends JpaRepository<WishList, Integer> {
 
         ArrayList<WishList> findAllByMemberIdAndIsDelete(int memberId, int isDelete);
 
-<<<<<<< HEAD
+
         WishList findByWishlistIdAndIsDelete(Integer wishListId, Integer isDelete);
-
-
-}
-=======
-
 
 
     @Query(value = "SELECT * FROM wishlist WHERE member_id = ?1 AND product_id = ?2 And is_deleted = 0", nativeQuery = true)
@@ -32,4 +27,4 @@ public interface WishListRepository extends JpaRepository<WishList, Integer> {
 
 
 }
->>>>>>> product
+

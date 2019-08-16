@@ -32,11 +32,11 @@ public class ProductService {
      */
     @Transactional
     public Product createProduct(Member member, Product product) {
-        Artist artist = product.getArtist();
-        artist.setMemberId(member.getMemberId());
-        Integer artistId = artist.getArtistId();
-        artist = artistRepository.findById(artistId).get();
-        product.setArtistName(artist.getArtistName());
+//        Artist artist = product.getArtist();
+//        artist.setMemberId(member.getMemberId());
+//        Integer artistId = artist.getArtistId();
+//        artist = artistRepository.findById(artistId).get();
+        product.setArtistName(member.getUsername());
 
         return productRepository.save(product);
     }
@@ -50,7 +50,6 @@ public class ProductService {
    */
     @Transactional(readOnly = true)
     public List<Product> retrieveProduct() {
-
         return productRepository.findByIsDeleteOrderByEnrollDatedDesc(0);
     }
 
@@ -63,7 +62,6 @@ public class ProductService {
    */
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceAsc() {
-
         return productRepository.findAllByIsDeleteOrderByProductPriceAsc(0);
     }
 
@@ -76,8 +74,6 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceDesc() {
-
-
         return productRepository.findAllByIsDeleteOrderByProductPriceDesc(0);
     }
 
@@ -96,10 +92,6 @@ public class ProductService {
     }
 
 
-
-
-
-
     /*
     작성자: 수지
     기능 설명 : 상품 이름(productName)으로 검색
@@ -109,8 +101,6 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveByProductName(String productName) {
-
-
         return productRepository.findByProductNameContainingAndIsDelete(productName, 0);
     }
 
@@ -124,9 +114,6 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveByCategory(Integer category_id) {
-
-
-
         return productRepository.findByProductCategory_CategoryIdAndIsDelete(category_id, 0);
     }
 
@@ -143,7 +130,6 @@ public class ProductService {
         Integer memberId = member.getMemberId();
         Artist artist = artistRepository.findByMemberId(memberId);
         Integer artistId = artist.getArtistId();
-
 
         return productRepository.findByArtist_ArtistIdAndIsDelete(artistId, 0);
     }
@@ -166,9 +152,6 @@ public class ProductService {
     }
 
 
-
-
-
     /*
     작성자: 수지
     기능 설명 : 상품 정보 수정(상품별 컬럼 개별업데이트)
@@ -184,12 +167,6 @@ public class ProductService {
 
         return productRepository.save(product);
     }
-
-
-
-
-
-
 
 
     /*

@@ -73,7 +73,6 @@ public class Product {
     @Column(name = "update_dated", nullable = true)
     private Date updateDated;
 
-
     @ManyToOne
     @JoinColumn(name = "category_id")
     private ProductCategory productCategory;

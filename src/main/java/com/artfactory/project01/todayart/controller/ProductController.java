@@ -34,7 +34,7 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/add",
+//            path = "/add",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -204,11 +204,6 @@ public class ProductController {
         member = getMember(principal);
         return productService.updateProduct(member, productId, productForm);
     }
-
-
-
-
-
 
 
     /*

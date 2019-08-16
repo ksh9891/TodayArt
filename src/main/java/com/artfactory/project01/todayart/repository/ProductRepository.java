@@ -71,5 +71,4 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     */
     List<Product> findAllByIsDeleteOrderByProductPriceDesc(Integer isDelete);
 
-
 }

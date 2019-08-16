@@ -36,27 +36,8 @@ public class WishListService {
     @Transactional
     public WishList createWishList(Member member, WishList wishList) {
         int productId = wishList.getProduct().getProductId();
-<<<<<<< HEAD
+
         Product product = productRepository.findById(productId).get();
-        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
-        ProductForm productForm = new ProductForm();
-        productForm.setProduct(product);
-        product.setCountWishlist(product.getCountWishlist()+1);
-        //
-        wishList.setMemberId(member.getMemberId());
-        wishList.setProductPrice(product.getProductPrice());
-        wishList.setProductSize(product.getProductSize());
-        wishList.setThumbnailId(product.getThumbnailId());
-        wishList.setArtistName(product.getArtistName());
-        wishList.setIsStock(product.getRemain());
-
-
-
-        productRepository.save(product);
-
-        return wishListRepository.save(wishList);
-=======
-                   Product product = productRepository.findById(productId).get();
             Integer memberId = member.getMemberId();
             if (wishListRepository.findByMemberIdAndProducIdtAndIsDelete(memberId, productId) != null) {
                 System.out.println("중복");
@@ -82,7 +63,6 @@ public class WishListService {
         }
         return wishList;
 
->>>>>>> product
     }
 
 
@@ -109,10 +89,6 @@ public class WishListService {
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> product
 
 
     /*
