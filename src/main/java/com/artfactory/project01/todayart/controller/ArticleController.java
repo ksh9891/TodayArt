@@ -151,7 +151,7 @@ public class ArticleController {
 
     /*
      작성자: 진표
-     기능 : 검색조건별 검색
+     기능 : 검색조건별 검색(제목,내용,유져아이디,제목+내용)
      @param Article
      @return 해당조건의 페이지네이션된 Article
      */

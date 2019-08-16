@@ -40,8 +40,6 @@ public class ArticleService {
             return articleRepository.searchContent(value , boardId , where , pageable);
         }else if(where.equals("memberId")){
             return articleRepository.searchMemberId(value , boardId , where , pageable);
-        }else if(where.equals("title")){
-            return articleRepository.searchTitle(value , boardId , where , pageable);
         }else if(where.equals("TC")){
             return articleRepository.searchTitleContent(value , boardId , where , pageable);
         }
@@ -52,8 +50,13 @@ public class ArticleService {
     @Transactional
     public Optional<Article> itemOfArticle(Integer id) {
         Article originalVO = articleRepository.findById(id).get();
+
+
+        //view 값을 가져와서  +1
         originalVO.setViews(originalVO.getViews()+1);
         articleRepository.save(originalVO);
+
+
         return articleRepository.findById(id);
     }
 
