@@ -1,18 +1,11 @@
 package com.artfactory.project01.todayart.service;
 
 import com.artfactory.project01.todayart.entity.Member;
-import com.artfactory.project01.todayart.model.UpdateMember;
 import com.artfactory.project01.todayart.repository.MemberRepository;
-import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.persistence.SqlResultSetMapping;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLData;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -40,19 +33,30 @@ public class MemberService {
     }
 
     @Transactional
-    public Member updateMember(int id, UpdateMember updateMember) {
+    public Member updateMember(int id, Map<String, String> updateMap) {
         Member member = memberRepository.findById(id).get();// id값으로 찾은 객체를 member에 대입
-        updateMember.member(member); // updateMember의 member메서드의 매개변수에 전달
+        member.getEmail();
+        if(updateMap.get("password") != null &&
+                updateMap.get("password").equals(member.getPassword())) { // 입력받은값이 null이 아니면 값 변경
+            member.setPassword(updateMap.get("password"));
+        }
+        if(updateMap.get("username") != null) {
+            member.setUsername(updateMap.get("username"));
+        }
+        if(updateMap.get("nickname") != null || findByNickname(member.getNickname()) == null) {
+            member.setNickname(updateMap.get("nickname"));
+        }
+        if(updateMap.get("phone")!= null) {
+            member.setPhone(updateMap.get("phone"));
+        }
         return memberRepository.save(member); // 수정된 값으로 업데이트 실행
     }
 
     @Transactional
-    public Member deleteMember(int id, UpdateMember updateMember){
+    public Member deleteMember(Member member){
         Date expiredDated = new Date();
-        Member member = memberRepository.findById(id).get();
-        updateMember.setExpired(1);
-        updateMember.setExpiredDated(expiredDated);
-        updateMember.member(member);
+        member.setExpired(1);
+        member.setExpiredDated(expiredDated);
         return memberRepository.save(member);
     }
     @Transactional
@@ -72,5 +76,15 @@ public class MemberService {
 
     public Member findByEmail(String email){
         return memberRepository.findByEmail(email);
+    }
+
+    public Member updatePassword(int id,String password){
+        Member member = memberRepository.findById(id).get();
+        member.setPassword(password);
+        return memberRepository.save(member);
+    }
+
+    public List<Member> retrieveMemberDetails(){
+        return memberRepository.findAll();
     }
 }
