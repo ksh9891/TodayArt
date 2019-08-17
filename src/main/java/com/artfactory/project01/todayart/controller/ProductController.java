@@ -52,7 +52,7 @@ public class ProductController {
    */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list",
+//            path = "/list",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
