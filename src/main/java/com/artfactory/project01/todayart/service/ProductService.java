@@ -32,12 +32,8 @@ public class ProductService {
      */
     @Transactional
     public Product createProduct(Member member, Product product) {
-        Artist artist = product.getArtist();
-        artist.setMemberId(member.getMemberId());
-        Integer artistId = artist.getArtistId();
-        artist = artistRepository.findById(artistId).get();
-        product.setArtistName(artist.getArtistName());
 
+        product.setArtistName(member.getUsername());
         return productRepository.save(product);
     }
 
@@ -50,7 +46,6 @@ public class ProductService {
    */
     @Transactional(readOnly = true)
     public List<Product> retrieveProduct() {
-
         return productRepository.findByIsDeleteOrderByEnrollDatedDesc(0);
     }
 
@@ -63,7 +58,6 @@ public class ProductService {
    */
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceAsc() {
-
         return productRepository.findAllByIsDeleteOrderByProductPriceAsc(0);
     }
 
@@ -76,8 +70,6 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceDesc() {
-
-
         return productRepository.findAllByIsDeleteOrderByProductPriceDesc(0);
     }
 
@@ -109,8 +101,6 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveByProductName(String productName) {
-
-
         return productRepository.findByProductNameContainingAndIsDelete(productName, 0);
     }
 
@@ -124,9 +114,6 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveByCategory(Integer category_id) {
-
-
-
         return productRepository.findByProductCategory_CategoryIdAndIsDelete(category_id, 0);
     }
 
@@ -140,10 +127,9 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveByArtistId(Member member) {
-        Integer memberId = member.getMemberId();
-        Artist artist = artistRepository.findByMemberId(memberId);
-        Integer artistId = artist.getArtistId();
 
+        Artist artist = artistRepository.findByMemberId(member.getMemberId());
+        Integer artistId = artist.getArtistId();
 
         return productRepository.findByArtist_ArtistIdAndIsDelete(artistId, 0);
     }
@@ -177,19 +163,13 @@ public class ProductService {
     @return save된 Product 객체
     */
     @Transactional
-    public Product updateProduct(Member member, Integer productId, ProductForm productForm) {
+    public Product updateProduct(Integer productId, ProductForm productForm) {
 
         Product product = productRepository.findById(productId).get();
         productForm.setProduct(product);
 
         return productRepository.save(product);
     }
-
-
-
-
-
-
 
 
     /*
