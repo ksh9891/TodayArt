@@ -1,11 +1,20 @@
 package com.artfactory.project01.todayart;
 
 import com.artfactory.project01.todayart.service.EmailService;
+
+
 import com.artfactory.project01.todayart.util.FileStorageProperties;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+
+
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+
+
 
 import javax.annotation.PostConstruct;
 import java.time.Instant;
@@ -38,4 +47,5 @@ public class TodayartApplication {
 //
 //        emailService.sendSimpleMessage(mail);
 //    }
+
 }

@@ -3,7 +3,6 @@ package com.artfactory.project01.todayart.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,8 +20,7 @@ public class Artist implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer artistId;
 
-    @JoinColumn(table = "member",name = "member_id")
-    @Column(name = "member_id", updatable = false, nullable = false)
+    @Column(name = "member_id")
     private Integer memberId;
 
     @JoinColumn(table = "member", name = "username")
@@ -54,3 +52,4 @@ public class Artist implements Serializable {
     @Column(name = "adm_check_dated")
     private Date admCheckDated;
 }
+

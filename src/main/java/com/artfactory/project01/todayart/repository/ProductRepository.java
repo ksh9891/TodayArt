@@ -1,4 +1,5 @@
 package com.artfactory.project01.todayart.repository;
+import com.artfactory.project01.todayart.entity.Artist;
 import com.artfactory.project01.todayart.entity.Product;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,24 +12,79 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
-    // is_delete 업데이트 시 delete_dated 현재 시간으로 업데이트
-    @Modifying    // update , delete Query시 @Modifying 어노테이션을 추가
-    @Query(value="UPDATE product SET delete_dated = now() WHERE product_id = ?", nativeQuery=true)
-    void deleteDate(Integer product_id);
+
+
+    /*
+    작성자: 채경
+    기능 설명 : ProductService의 listProduct에서 사용/
+               is_delete=0인 상품만 DB에서 SELECT (기본으로 최신순 정렬됨)
+    */
+    List<Product> findByIsDeleteOrderByEnrollDatedDesc(Integer isDelete);
 
 
 
-    // 상품 업데이트 시 update_dated 현재 시간으로 업데이트
-    @Modifying
-    @Query(value="UPDATE product SET update_dated = now() WHERE product_id = ?", nativeQuery=true)
-    void updateDate(Integer product_id);
-
-
-    @Query(value = "SELECT * FROM Product WHERE product_name LIKE ? ", nativeQuery = true)
-    List<Product> findByProduct_nameLike(String product_name);
+    @Query(value = "SELECT p.* FROM product p, artist a\n" +
+            "WHERE p.artist_id = a.artist_id\n" +
+            "AND p.is_delete = 0\n " +
+            "AND a.artist_name LIKE ? ", nativeQuery = true)
+    List<Product> findByArtistNameAndIsDelete(String artistName);
 
 
 
-    @Query(value = "SELECT * FROM Product WHERE category_id = ? ", nativeQuery = true)
-    List<Product> findByCategory_idLike(Integer category_id);
+
+
+
+
+
+    /*
+    작성자: 채경
+    기능 설명 : ProductService의 searchByProductName에서 사용/
+               is_delete=0인 상품을 상품명으로 DB에서 LIKE SELECT
+    */
+    List<Product> findByProductNameContainingAndIsDelete(String productName, Integer IsDelete);
+
+
+
+    /*
+    작성자: 채경
+    기능 설명 : ProductService의 searchByCategory에서 사용/
+               사용자가 선택한 카테고리별로 검색
+    */
+    List<Product> findByProductCategory_CategoryIdAndIsDelete(Integer categoryId, Integer isDelete);
+
+
+
+    /*
+    작성자: 채경
+    기능 설명 : ProductService의 searchByArtistId에서 사용/
+               판매자별 상품 검색
+    */
+    List<Product> findByArtist_ArtistIdAndIsDelete(Integer artistId, Integer isDelete);
+
+
+    // 상품 가격별 오름차순 검색
+    /*
+    작성자: 채경
+    기능 설명 : ProductService의 listProductPriceAsc에서 사용/
+               productprice 오름차순으로 SELECT
+    */
+    List<Product> findAllByIsDeleteOrderByProductPriceAsc(Integer isDelete);
+
+
+    // 상품 가격별 내림차순 검색
+    /*
+    작성자: 채경
+    기능 설명 : ProductService의 listProductPriceDesc에서 사용/
+               productprice 내림차순으로 SELECT
+    */
+    List<Product> findAllByIsDeleteOrderByProductPriceDesc(Integer isDelete);
+
+
+
+
+
+
+
+
+
 }

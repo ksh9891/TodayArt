@@ -20,6 +20,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class Member implements UserDetails, Serializable {
+
     @Id
     @Column(name="member_id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +61,100 @@ public class Member implements UserDetails, Serializable {
 
     @Column(name="email_checked")
     private Integer emailChecked;
+
+    public Integer getMemberId() {
+        return memberId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Date getRegDated() {
+        return regDated;
+    }
+
+    public void setRegDated(Date regDated) {
+        this.regDated = regDated;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Date getLastConnectDated() {
+        return lastConnectDated;
+    }
+
+    public void setLastConnectDated(Date lastConnectDated) {
+        this.lastConnectDated = lastConnectDated;
+    }
+
+    public Integer getExpired() {
+        return expired;
+    }
+
+    public void setExpired(Integer expired) {
+        this.expired = expired;
+    }
+
+    public Date getExpiredDated() {
+        return expiredDated;
+    }
+
+    public void setExpiredDated(Date expiredDated) {
+        this.expiredDated = expiredDated;
+    }
+
+    public Integer getEmailChecked() {
+        return emailChecked;
+    }
+
+    public void setEmailChecked(Integer emailChecked) {
+        this.emailChecked = emailChecked;
+    }
 
     @JsonIgnore
     @Override

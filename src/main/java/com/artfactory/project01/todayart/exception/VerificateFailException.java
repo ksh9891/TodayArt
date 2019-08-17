@@ -4,4 +4,5 @@ public class VerificateFailException extends Exception {
     public VerificateFailException(String msg){
         super(msg);
     }
+    public VerificateFailException(){};
 }

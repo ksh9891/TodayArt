@@ -1,94 +1,202 @@
 package com.artfactory.project01.todayart.service;
+
+import com.artfactory.project01.todayart.entity.Artist;
+import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.model.ProductForm;
-import com.artfactory.project01.todayart.model.Search;
+import com.artfactory.project01.todayart.repository.ArtistRepository;
 import com.artfactory.project01.todayart.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
 @Service
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    ArtistRepository artistRepository;
 
 
 
-    // POST ===========================================
-    // 상품 등록
+
+   /*
+    작성자: 수지
+    기능 설명 : 상품등록
+    <POST>
+    @param Product product
+    @return Product 객체
+    */
     @Transactional
-    public Product createProduct(Product product) {
+    public Product createProduct(Member member, Product product) {
+
+        product.setArtistName(member.getUsername());
         return productRepository.save(product);
     }
 
 
-
-
-
-    // GET ===========================================
-    // 상품 전체 조회
+     /*
+    작성자: 수지
+    기능 설명 : 등록된 상품중 삭제되지 않은 모든 상품 리스트 조회(최신등록순)
+    <GET>
+    @return List<Product> 객체
+    */
     @Transactional(readOnly = true)
-    public List<Product> listProduct() {
-        return productRepository.findAll();
+    public List<Product> retrieveProduct() {
+        return productRepository.findByIsDeleteOrderByEnrollDatedDesc(0);
+    }
+
+
+     /*
+    작성자: 수지
+    기능 설명 : 등록된 상품 가격 오름차순으로 조회(저렴한 가격-> 비싼가격 순으로 조회)
+    <GET>
+    @return 오름차순 정렬된 List<Product> 객체
+    */
+    @Transactional(readOnly = true)
+    public List<Product> retrieveProductPriceAsc() {
+        return productRepository.findAllByIsDeleteOrderByProductPriceAsc(0);
+    }
+
+
+    /*
+    작성자: 수지
+    기능 설명 : 등록된 상품 가격 내림차순으로 조회(비싼 가격-> 저렴한 순으로 조회)
+    <GET>
+    @return 내림차순 정렬된 List<Product> 객체
+    */
+    @Transactional(readOnly = true)
+    public List<Product> retrieveProductPriceDesc() {
+        return productRepository.findAllByIsDeleteOrderByProductPriceDesc(0);
     }
 
 
 
-    // 상품 상세 페이지
+    /*
+    작성자: 수지
+    기능 설명 : 상품 상세 페이지
+    <GET>
+    @param Integer product_id
+    @return 각 상품별 Product 객체
+    */
     @Transactional(readOnly = true)
-    public Product listProductdetail(Integer product_id) {
-        return productRepository.findById(product_id).get();
-    }
-
-
-
-    // 상품 이름 검색
-    @Transactional(readOnly = true)
-    public List<Product> SearchByProductName(Search search) {
-        String product_name = search.getProductName();
-        product_name = "%"+product_name+"%";
-        return productRepository.findByProduct_nameLike(product_name);
-    }
-
-
-    // 상품 카테고리별 검색
-    @Transactional(readOnly = true)
-    public List<Product> SearchByCategory(Search search) {
-        Integer category_id = search.getCategoryId();
-        return productRepository.findByCategory_idLike(category_id);
+    public Product retrieveProductDetail(Integer productId) {
+        return productRepository.findById(productId).get();
     }
 
 
 
 
 
-    // PATCH ===========================================
-    // 상품 정보 수정
+
+    /*
+    작성자: 수지
+    기능 설명 : 상품 이름(productName)으로 검색
+    <GET>
+    @param String productName
+    @return 상품명으로 조회된 List<Product> 객체
+    */
+    @Transactional(readOnly = true)
+    public List<Product> retrieveByProductName(String productName) {
+        return productRepository.findByProductNameContainingAndIsDelete(productName, 0);
+    }
+
+
+    /*
+    작성자: 수지
+    기능 설명 : 상품 카테고리별 검색
+    <GET>
+    @param Integer categoryId
+    @return 각 카테고리별 List<Product> 객체
+    */
+    @Transactional(readOnly = true)
+    public List<Product> retrieveByCategory(Integer category_id) {
+        return productRepository.findByProductCategory_CategoryIdAndIsDelete(category_id, 0);
+    }
+
+
+    /*
+    작성자: 수지
+    기능 설명 : 상품을 판매자 아이디로 검색
+    <GET>
+    @param Integer artistId
+    @return 각 판매자 아이디별 List<Product> 객체
+    */
+    @Transactional(readOnly = true)
+    public List<Product> retrieveByArtistId(Member member) {
+
+        Artist artist = artistRepository.findByMemberId(member.getMemberId());
+        Integer artistId = artist.getArtistId();
+
+        return productRepository.findByArtist_ArtistIdAndIsDelete(artistId, 0);
+    }
+
+
+
+    /*
+    작성자: 수지
+    기능 설명 : 아티스트 이름으로 검색
+    <GET>
+    @param String artistName
+    @return 아티스트 이름으로 검색한 List<Product> 객체
+    */
+    @Transactional(readOnly = true)
+    public List<Product> retrieveByArtistName(String artistName) {
+        // Like 검색을 위해 앞뒤로 % 달아줌
+        artistName = "%" + artistName +"%";
+
+        return productRepository.findByArtistNameAndIsDelete(artistName);
+    }
+
+
+
+
+
+    /*
+    작성자: 수지
+    기능 설명 : 상품 정보 수정(상품별 컬럼 개별업데이트)
+    <PATCH>
+    @param Integer id, ProductForm productForm
+    @return save된 Product 객체
+    */
     @Transactional
-    public Product updateProduct(Integer id, ProductForm productForm) {
-        Product product = productRepository.findById(id).get();
+    public Product updateProduct(Integer productId, ProductForm productForm) {
+
+        Product product = productRepository.findById(productId).get();
         productForm.setProduct(product);
-        productRepository.updateDate(id);
+
         return productRepository.save(product);
     }
-    // 상품 삭제(is_delete 변경)
+
+
+    /*
+    작성자: 수지
+    기능 설명 : 상품 삭제(is_delete=1로 변경)
+    setDelete 는 delete_dated update를 위한 메서드
+    <PATCH>
+    @param Integer id, ProductForm productForm
+    @return Product 객체
+    */
     @Transactional
-    public Product deleteProduct(Integer id, ProductForm productForm){
+    public void deleteProduct(Integer id, ProductForm productForm) {
         Product product = productRepository.findById(id).get();
         productForm.setDelete(product);
-        productRepository.deleteDate(id);
-        return productRepository.save(product);
+
+        productRepository.save(product);
     }
 
 
-
-
-
-    // DELETE ===========================================
-    // 상품 삭제(DB에서 삭제됨)
+    /*
+    작성자: 수지
+    기능 설명 : 상품 삭제(DB에서 삭제됨)
+    <DELETE>
+    @param Integer productId
+    */
     @Transactional
-    public void deleteProductReal(Integer id) {
-        productRepository.deleteById(id);
+    public void deleteProductReal(Integer productId) {
+        productRepository.deleteById(productId);
     }
-}
+    }
