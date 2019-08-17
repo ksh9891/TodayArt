@@ -125,7 +125,7 @@ public class ProductService {
 
         Artist artist = artistRepository.findByMemberId(member.getMemberId());
         Integer artistId = artist.getArtistId();
-        
+
         return productRepository.findByArtist_ArtistIdAndIsDelete(artistId, 0);
     }
 
