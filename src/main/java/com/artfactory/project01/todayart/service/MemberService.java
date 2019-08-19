@@ -40,8 +40,8 @@ public class MemberService {
                 updateMap.get("password").equals(member.getPassword())) { // 입력받은값이 null이 아니면 값 변경
             member.setPassword(updateMap.get("password"));
         }
-        if(updateMap.get("username") != null) {
-            member.setUsername(updateMap.get("username"));
+        if(updateMap.get("realname") != null) {
+            member.setRealName(updateMap.get("realname"));
         }
         if(updateMap.get("nickname") != null && findByNickname(member.getNickname()) == null) {
             member.setNickname(updateMap.get("nickname"));
