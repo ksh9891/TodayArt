@@ -17,6 +17,7 @@ public class Comments implements Serializable {
 
     @Id
     @Column(name = "comment_id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer commentId;
 
     @Column(name = "article_id", updatable = false, nullable = false)
@@ -42,8 +43,8 @@ public class Comments implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deleteDated;
 
-    @Column(name = "is_delete")
-    private Integer isDelete;
+    @Column(name = "is_deleted")
+    private Integer isDeleted;
 
     public Integer getCommentId() {
         return commentId;
@@ -102,10 +103,10 @@ public class Comments implements Serializable {
     }
 
     public Integer getIsDelete() {
-        return isDelete;
+        return isDeleted;
     }
 
     public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
+        this.isDeleted = isDelete;
     }
 }

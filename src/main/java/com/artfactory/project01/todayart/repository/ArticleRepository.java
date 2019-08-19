@@ -31,4 +31,5 @@ public interface ArticleRepository extends JpaRepository<Article,Integer> {
             "OR content LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
     Page<Article> searchTitleContent(String value, Integer boardId ,String where, Pageable pageable);
 
+
 }

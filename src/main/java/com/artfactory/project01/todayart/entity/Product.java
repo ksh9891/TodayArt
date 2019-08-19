@@ -97,6 +97,22 @@ public class Product {
     private String productContent;
 
 
+    public void setProductId(Integer product_id) {
+    }
 
+    public void setIsDelete(Integer isDelete) {
+    }
+
+    public void setDeleteDated(Date date) {
+    }
+
+    public void setProductName(String productName) {
+    }
+
+    public void setProductSize(String productSize) {
+    }
+
+    public void setThumbnailId(Integer thumbnailId) {
+    }
 }
 

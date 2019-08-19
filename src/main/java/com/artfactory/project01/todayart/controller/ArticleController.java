@@ -36,7 +36,7 @@ public class ArticleController {
         @return Article
      */
     @RequestMapping(
-            value = "/create",
+            path = "/create",
             method = RequestMethod.POST,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -56,7 +56,7 @@ public class ArticleController {
      @return 페이징 처리가된 Article List
      */
     @RequestMapping(
-            value = "/list",
+            path = "/list",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -133,7 +133,7 @@ public class ArticleController {
      @return 삭제완료된 Article
      */
     @RequestMapping(
-            path = "admin/{article_id}",
+            path = "/admin/{article_id}",
             method = RequestMethod.DELETE,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -169,6 +169,7 @@ public class ArticleController {
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
             @RequestParam (name = "where") String where) {
+
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Article> articleList = articleService.search(value,boardId,where,pageable);
         return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
