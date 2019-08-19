@@ -21,12 +21,12 @@ public class MileageInvoice {
     @Column(name = "mileage_id")
     @Getter
     @Setter
-    private int mileageId;
+    private Integer mileageId;
 
     @Column(name = "artist_id")
     @Getter
     @Setter
-    private int artistId;
+    private Integer artistId;
 
     @Column(name = "exchange_dated")
     @Getter
@@ -36,12 +36,12 @@ public class MileageInvoice {
     @Column(name = "exchange_mileage")
     @Getter
     @Setter
-    private int exchangeMileage;
+    private Integer exchangeMileage;
 
     @Column(name = "exchange_cash")
     @Getter
     @Setter
-    private int exchangeCash;
+    private Integer exchangeCash;
 
     @Column(name = "bank_name")
     @Getter
@@ -56,10 +56,10 @@ public class MileageInvoice {
     @Column(name = "balance")
     @Getter
     @Setter
-    private int balance;
+    private Integer balance;
 
     @Column(name = "is_delete")
     @Getter
     @Setter
-    private int isDelete;
+    private Integer isDelete;
 }

@@ -1,4 +1,4 @@
-package com.artfactory.project01.todayart.util;
+package com.artfactory.project01.todayart.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

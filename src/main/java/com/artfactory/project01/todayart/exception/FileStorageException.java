@@ -1,4 +1,4 @@
-package com.artfactory.project01.todayart.util;
+package com.artfactory.project01.todayart.exception;
 
 public class FileStorageException extends RuntimeException {
     public FileStorageException(String message) {
