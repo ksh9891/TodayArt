@@ -36,6 +36,7 @@ public class ArticleController {
         @return Article
      */
     @RequestMapping(
+            path = "/create",
             method = RequestMethod.POST,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -55,6 +56,7 @@ public class ArticleController {
      @return 페이징 처리가된 Article List
      */
     @RequestMapping(
+            path = "/list",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,

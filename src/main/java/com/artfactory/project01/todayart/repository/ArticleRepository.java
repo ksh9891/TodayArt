@@ -32,8 +32,4 @@ public interface ArticleRepository extends JpaRepository<Article,Integer> {
     Page<Article> searchTitleContent(String value, Integer boardId ,String where, Pageable pageable);
 
 
-   @Query(value = "SELECT * FROM article WHERE board_id = ?2 AND is_deleted = 0 AND title LIKE %?1% ORDER BY write_dated DESC ", nativeQuery = true)
-   Page<Article> findByTitleAndAndBoardId(String title, Integer boardId , Pageable pageable);
-
-
 }

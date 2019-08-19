@@ -19,6 +19,7 @@ public class Article implements Serializable {
 
     @Id
     @Column(columnDefinition = "INT", name = "article_id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer articleId;
 
     @Column(name = "board_id", nullable = false)

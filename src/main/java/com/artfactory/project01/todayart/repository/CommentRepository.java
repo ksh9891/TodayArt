@@ -16,6 +16,7 @@ public interface CommentRepository extends JpaRepository<Comments,Integer> {
     @Query(value = "SELECT * FROM comments WHERE article_id = ?1 AND is_deleted = 0 ORDER BY create_dated ASC ", nativeQuery = true)
     Page<Comments> findByArticleId(Integer articleId , Pageable pageable);
 
+    //게시글에 해당하는 댓글수 출력
     @Query(value = "SELECT COUNT(article_id) FROM comments WHERE article_id = ?1", nativeQuery = true)
     List<Comments> numberOfComments(Integer articleId, Integer count);
 

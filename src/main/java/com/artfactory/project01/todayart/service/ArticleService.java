@@ -34,16 +34,17 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public Page<Article> search(String value, Integer boardId ,String where, Pageable pageable) {
 
+        Page<Article> result = null;
         if(where.equals("title")){
-            return articleRepository.searchTitle(value , boardId , where , pageable);
+            result = articleRepository.searchTitle(value , boardId , where , pageable);
         }else if(where.equals("content")){
-            return articleRepository.searchContent(value , boardId , where , pageable);
+            result = articleRepository.searchContent(value , boardId , where , pageable);
         }else if(where.equals("memberId")){
-            return articleRepository.searchMemberId(value , boardId , where , pageable);
+            result = articleRepository.searchMemberId(value , boardId , where , pageable);
         }else if(where.equals("TC")){
-            return articleRepository.searchTitleContent(value , boardId , where , pageable);
+            result = articleRepository.searchTitleContent(value , boardId , where , pageable);
         }
-        return null;
+        return result;
     }
 
     //게시물 상세보기(view +1)
