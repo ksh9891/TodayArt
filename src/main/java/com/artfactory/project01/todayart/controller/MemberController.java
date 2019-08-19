@@ -4,14 +4,11 @@ import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.service.MemberService;
 import com.artfactory.project01.todayart.util.MemberDetailServiceImpl;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
-import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
@@ -29,8 +26,6 @@ public class MemberController {
     @Autowired
     private MemberDetailServiceImpl memberDetailsService;
 
-    private  PrincipalUtil principalUtil;
-
     private boolean isResult;
 
     /*
@@ -45,7 +40,7 @@ public class MemberController {
         if (memberService.findByEmail(member.getEmail()) == null){
             return memberService.createMember(member);
         } else{
-            return null;
+            throw new BadCredentialsException("이미 가입된 이메일입니다");
         }
     }
 
@@ -91,7 +86,7 @@ public class MemberController {
       @return id에 맞는 Member객체
     */
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Member retrieveMember(@PathVariable("id") int id, Map<String, String> passwordMap, Principal principal) {
+    public UserDetails retrieveMember(@PathVariable("id") int id, Map<String, String> passwordMap, Principal principal) {
         if(PrincipalUtil.from(principal).getPassword().equals(passwordMap.get("password"))) {
             return memberService.retrieveMember(id);
         }else{
@@ -105,16 +100,16 @@ public class MemberController {
       @param int id(PathVariable), UpdateMember Model
       @return id,updateMember에 맞게 수정된 Member 객체
     */
-    //update 비밀번호 확인 어떻게 할지 생각중
-//    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
-//    @PatchMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-//    public Member updateMember(@PathVariable("id") int id , @RequestBody Map<String, String> updateMap, Principal principal) {
-//        if(PrincipalUtil.from(principal).getPassword()) {
-//            return memberService.updateMember(id, updateMap);
-//        } else{
-//            throw new BadCredentialsException("정보가 일치하지 않습니다");
-//        }
-//    }
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
+    @PatchMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public UserDetails updateMember(@PathVariable("id") int id , @RequestBody Map<String, String> updateMap,
+                               Principal principal, @RequestBody Map<String, String> passwordMap) {
+        if(PrincipalUtil.from(principal).getPassword().equals(passwordMap.get("password"))) {
+            return memberService.updateMember(id, updateMap);
+        } else{
+            throw new BadCredentialsException("정보가 일치하지 않습니다");
+        }
+    }
 
     /*
        작성자:  희창
@@ -138,7 +133,7 @@ public class MemberController {
       @param int id(PathVariable), Map<String, String> passwordMap
       @return 같으면 true, 다르면 false
     */
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @GetMapping(path = "/checkPassword", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public boolean retrieveMemberPassword(@RequestBody Map<String, String> passwordMap, Principal principal) {
         String password = passwordMap.get("password");
         String userPassword = PrincipalUtil.from(principal).getPassword();
@@ -167,7 +162,7 @@ public class MemberController {
       @return true면 변경될 값 전달
     */
     @PatchMapping(path = "/{id}/updatePassword", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Member updatePassword(@PathVariable("id") int id, @RequestBody Map<String, String> passwordMap, Principal principal) {
+    public UserDetails updatePassword(@PathVariable("id") int id, @RequestBody Map<String, String> passwordMap, Principal principal) {
         String password = passwordMap.get("password");
         String checkPassword = PrincipalUtil.from(principal).getPassword();
         if(isResult == true) {
@@ -175,11 +170,6 @@ public class MemberController {
         } else{
             return memberService.updatePassword(id, checkPassword);
         }
-    }
-
-    @GetMapping(path = "/admin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Member> retrieveMemberDetails(){
-        return memberService.retrieveMemberDetails();
     }
 
     // 비밀번호 변경 로직 해야 함.
