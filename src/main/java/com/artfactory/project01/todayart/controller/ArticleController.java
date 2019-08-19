@@ -161,7 +161,6 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-
     public ResultItems<Article> Search(
             @RequestParam (name = "value") String value,
             @RequestParam (name = "boardId") Integer boardId,
