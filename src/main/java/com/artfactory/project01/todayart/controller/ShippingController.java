@@ -71,9 +71,25 @@ public class ShippingController {
      */
 
     // Shipping Items 와 함께 트랜잭션처리가 필요함.
-    // 현재는 되어 있지 않음
+    // 현재는 되어 있지 않음 - 내일 여기서부터 시작
     @PatchMapping(path = "/{id}/tracking")
     public Shipping updateShipping(@PathVariable("id") int id, @RequestBody ShippingForm shippingForm) {
         return shippingService.updateShipping(id, shippingForm);
     }
+
+    // 현재 없는 리스트
+    // 기간 별 조회기능
+    // 오븐에는 결제완료부터 프로세스가 있는데 배송이라는 페이지를 별도로 분리하여 배송 관련된 작업을 진행해야 하나
+    // 고민이 필요하다.
+
+    // 상품명 검색 기능
+    // 송장번호 조회기능
+    // 해당 송장번호에 묶인 아이템 리스트(?)
+
+    // trackingNumber 이 null 에서 -> 송장번호 존재로 바뀜으로써 shipping_items 에 해당 송장에 맞는 items 가
+    // insert 된다.
+
+    // 1. 임시테이블을 만든다.
+    // 2. Shipping 테이블을 수정
+    // 3. 기타 등등 .. 생각해봐야 함
 }

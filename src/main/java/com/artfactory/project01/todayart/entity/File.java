@@ -18,10 +18,10 @@ import java.util.Date;
 @DynamicInsert
 public class File {
     @Id
-    @Column(name = "file_id", nullable = false)
+    @Column(name = "file_id")
     @Getter
     @Setter
-    private Integer fileId;
+    private int fileId;
 
     @Column(name = "file_origin_name")
     @Getter

@@ -56,6 +56,9 @@ public class MemberController {
         return email.equals(userEmail) ? true : false;
     }
 
+
+
+
     // 비밀번호 변경 로직 해야 함.
     // 우편번호 찾기 및 배송지 추가
     // 변경사항 저장 로직 추가
