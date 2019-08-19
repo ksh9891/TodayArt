@@ -172,8 +172,10 @@ public class MemberController {
         }
     }
 
-
-
+    @GetMapping(path = "/me", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
+    public Member me(Principal principal) {
+        return (Member) memberDetailsService.loadUserByUsername(principal.getName());
+    }
 
     // 비밀번호 변경 로직 해야 함.
     // 우편번호 찾기 및 배송지 추가

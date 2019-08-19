@@ -22,7 +22,6 @@ public class MemberDetailServiceImpl implements UserDetailsService {
         if(member == null){
             throw new UsernameNotFoundException(email);
         }
-
         // if the member is user, attaches member's cart
         return member;
     }
