@@ -1,4 +1,4 @@
-# Todayart v1.68
+﻿# Todayart v1.69
 /*
 [v1.3]
     - 모든 테이블에 default now() -> default current_timestamp로 변경
@@ -110,7 +110,9 @@
 		>`artist_name` VARCHAR(255) NOT NULL
 [V1.68]
 	- product: 더미데이터 수정
-		
+[V1.69]
+	- member: 컬럼명 변경 (username -> realname)
+
 */
 
 -- MySQL Workbench Forward Engineering
@@ -146,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `todayart`.`member` (
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `nickname` VARCHAR(255) NOT NULL,
-  `username` VARCHAR(255) NULL DEFAULT NULL,
+  `realname` VARCHAR(255) NULL DEFAULT NULL,
   `reg_dated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `phone` VARCHAR(255) NULL DEFAULT NULL,
   `role` ENUM('ROLE_ADMIN', 'ROLE_CUSTOMER', 'ROLE_ARTIST') NOT NULL DEFAULT 'ROLE_CUSTOMER',
