@@ -43,7 +43,7 @@ public class MemberService {
         if(updateMap.get("username") != null) {
             member.setUsername(updateMap.get("username"));
         }
-        if(updateMap.get("nickname") != null || findByNickname(member.getNickname()) == null) {
+        if(updateMap.get("nickname") != null && findByNickname(member.getNickname()) == null) {
             member.setNickname(updateMap.get("nickname"));
         }
         if(updateMap.get("phone")!= null) {
@@ -59,19 +59,10 @@ public class MemberService {
         member.setExpiredDated(expiredDated);
         return memberRepository.save(member);
     }
-    @Transactional
-    public String retrieveMemberPassword(int id) {
-        return memberRepository.findById(id).get().getPassword();
-    }
 
     @Transactional
     public Member findByNickname(String nickname) {
         return memberRepository.findByNickname(nickname);
-    }
-
-    @Transactional
-    public Optional<Member> findById(int id){
-        return memberRepository.findById(id);
     }
 
     public Member findByEmail(String email){
@@ -82,9 +73,5 @@ public class MemberService {
         Member member = memberRepository.findById(id).get();
         member.setPassword(password);
         return memberRepository.save(member);
-    }
-
-    public List<Member> retrieveMemberDetails(){
-        return memberRepository.findAll();
     }
 }
