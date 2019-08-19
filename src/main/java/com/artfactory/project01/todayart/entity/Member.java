@@ -13,11 +13,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name="member")
 @DynamicInsert
+@Getter
+@Setter
 public class Member implements UserDetails, Serializable {
 
     @Id
@@ -154,7 +155,6 @@ public class Member implements UserDetails, Serializable {
     public void setEmailChecked(Integer emailChecked) {
         this.emailChecked = emailChecked;
     }
-
 
     @JsonIgnore
     @Override

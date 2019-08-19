@@ -169,37 +169,53 @@ public class ArticleForm implements Serializable {
     public void setArticle(Article article) {
         if(article_id != null){
             article.setArticleId(this.article_id);
-        }else if(board_id != null){
+        }
+        if(board_id != null){
             article.setBoardId(this.board_id);
-        }else if(member_id != null){
+        }
+        if(member_id != null){
             article.setMemberId(this.member_id);
-        }else if(write_dated != null){
+        }
+        if(write_dated != null){
             article.setWriteDated(this.write_dated);
-        }else if(update_dated != null){
+        }
+        if(update_dated != null){
             article.setUpdateDated(new Date());
-        }else if(title != null){
+        }
+        if(title != null){
             article.setTitle(this.title);
-        }else if(content != null){
+        }
+        if(content != null){
             article.setContent(this.content);
-        }else if(group != null){
+        }
+        if(group != null){
             article.setGroup(this.group);
-        }else if(depth != null){
+        }
+        if(depth != null){
             article.setDepth(this.depth);
-        }else if(reply_order != null){
+        }
+        if(reply_order != null){
             article.setReplyOrder(this.reply_order);
-        }else if(is_deleted != null){
+        }
+        if(is_deleted != null){
             article.setIsDeleted(this.is_deleted);
-        }else if(deleted_dated != null){
+        }
+        if(deleted_dated != null){
             article.setDeletedDated(this.deleted_dated);
-        }else if(is_hidden != null){
+        }
+        if(is_hidden != null){
             article.setIsHidden(this.is_hidden);
-        }else if(password != null){
+        }
+        if(password != null){
             article.setPassword(this.password);
-        }else if(is_reply != null){
+        }
+        if(is_reply != null){
             article.setIsReply(this.is_reply);
-        }else if(views != null){
+        }
+        if(views != null){
             article.setViews(this.views);
-        }else if(product_id != null){
+        }
+        if(product_id != null){
             article.setProductId(this.product_id);
         }
         this.article = article;

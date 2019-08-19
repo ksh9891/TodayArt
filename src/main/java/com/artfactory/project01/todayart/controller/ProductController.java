@@ -1,12 +1,17 @@
+
 package com.artfactory.project01.todayart.controller;
 
+import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.model.ProductForm;
 import com.artfactory.project01.todayart.service.ProductService;
+import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -16,6 +21,11 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    private Member member;
+    private static Member getMember(Principal principal){
+        return (Member) PrincipalUtil.from(principal);
+    }
+
 
     /*
     작성자: 채경
@@ -23,13 +33,14 @@ public class ProductController {
     @param Product Entity
     @return save된 Product 객체
     */
+    @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/add",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public Product createProduct(@RequestBody Product product, Principal principal) {
+        member = getMember(principal);
+        return productService.createProduct(member, product);
     }
 
 
@@ -39,8 +50,8 @@ public class ProductController {
               (상품 전체 리스트 : 구매 고객)
    @return 전체 List<Product>객체
    */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -54,8 +65,9 @@ public class ProductController {
    기능 설명 : 상품 리스트 가격 오름차순 정렬 후 출력
    @return 오름차순 정렬된 List<Product> 객체
    */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/asc",
+            path = "/priceasc",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -69,8 +81,9 @@ public class ProductController {
    기능 설명 : 상품 리스트 가격 내림차순 정렬 후 출력
    @return 내림차순 정렬된 List<Product> 객체
    */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/desc",
+            path = "/pricedesc",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -85,8 +98,9 @@ public class ProductController {
     @param Integer productId
     @return 오름차순 정렬된 List<Product> 객체
     */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/{product_id}",
+            path = "/detail/{product_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -102,8 +116,9 @@ public class ProductController {
     @return 상품 이름으로 검색된 List<Product> 객체
     path /productlist?name="상품명"
     */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/product",
+            path = "/productname",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 
@@ -120,8 +135,9 @@ public class ProductController {
     @param Integer categoryId
     @return 각 카테고리별 List<Product> 객체
     */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/category={categoryId}",
+            path = "/category={categoryId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -138,14 +154,15 @@ public class ProductController {
     @param Integer artistId
     @return 판매자별 List<Product> 객체
     */
+    @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/artist={artistId}",
+            path = "/artistid",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public List<Product> retrieveProductByArtistName(@PathVariable("artistId") Integer artistId) {
-
-        return productService.retrieveByArtistId(artistId);
+    public List<Product> retrieveProductByArtistId(Principal principal) {
+        member = getMember(principal);
+        return productService.retrieveByArtistId(member);
     }
 
 
@@ -156,8 +173,9 @@ public class ProductController {
     @return 각 판매자별 List<Product> 객체
     /artistlist?name=작가명
     */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/list/artist",
+            path = "/artistname",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 
@@ -169,22 +187,27 @@ public class ProductController {
 
 
 
-
-
     /*
     작성자: 채경
     기능 설명 : 상품 개별 컬럼 업데이트
     @param Integer productId, ProductForm Model
     @return save된 Product 객체
     */
+    @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/update/{product_id}",
+            path = "/{product_id}",
             method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product updateProduct(@PathVariable("product_id") Integer productId, @RequestBody ProductForm productForm) {
+    public Product updateProduct(Principal principal, @PathVariable("product_id") Integer productId, @RequestBody ProductForm productForm) {
+        member = getMember(principal);
         return productService.updateProduct(productId, productForm);
     }
+
+
+
+
+
 
 
     /*
@@ -193,13 +216,14 @@ public class ProductController {
     @param Integer productId, ProductForm Model
     @return is_delete 1로 save된 Product 객체
     */
+    @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/delete/{product_id}",
-            method = RequestMethod.PATCH,
+            path = "/{product_id}",
+            method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product deleteProduct(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {
-        return productService.deleteProduct(product_id, productForm);
+    public void deleteProduct(@PathVariable("product_id") Integer product_id, @RequestBody ProductForm productForm) {
+        productService.deleteProduct(product_id, productForm);
     }
 
 
@@ -209,6 +233,7 @@ public class ProductController {
     @param Integer productId
     @return Product 객체
     */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(
             path = "/remove/{product_id}",
             method = RequestMethod.DELETE,
@@ -221,3 +246,4 @@ public class ProductController {
         return product;
     }
 }
+

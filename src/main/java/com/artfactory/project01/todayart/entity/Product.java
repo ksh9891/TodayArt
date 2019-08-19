@@ -35,11 +35,13 @@ public class Product {
     private String productName;
 
 
-
-
     @ManyToOne
     @JoinColumn(name = "artist_id")
     private Artist artist;
+
+
+    @Column(name = "artist_name", nullable = true)
+    private String artistName;
 
 
     @Column(name = "product_size")
@@ -95,6 +97,22 @@ public class Product {
     private String productContent;
 
 
+    public void setProductId(Integer product_id) {
+    }
 
+    public void setIsDelete(Integer isDelete) {
+    }
+
+    public void setDeleteDated(Date date) {
+    }
+
+    public void setProductName(String productName) {
+    }
+
+    public void setProductSize(String productSize) {
+    }
+
+    public void setThumbnailId(Integer thumbnailId) {
+    }
 }
 

@@ -30,23 +30,33 @@ public class ArticleService {
         return articleRepository.findByBoard_id(boardId, pageable);
     }
 
-    //타이틀명 검색
+    //조건별검색
     @Transactional(readOnly = true)
-    public Page<Article> findTitle(String value, Integer boardId ,String where, Pageable pageable) {
-        return articleRepository.findByTitleAndBoardId(value , boardId  ,where, pageable);
+    public Page<Article> search(String value, Integer boardId ,String where, Pageable pageable) {
+
+        if(where.equals("title")){
+            return articleRepository.searchTitle(value , boardId , where , pageable);
+        }else if(where.equals("content")){
+            return articleRepository.searchContent(value , boardId , where , pageable);
+        }else if(where.equals("memberId")){
+            return articleRepository.searchMemberId(value , boardId , where , pageable);
+        }else if(where.equals("TC")){
+            return articleRepository.searchTitleContent(value , boardId , where , pageable);
+        }
+        return null;
     }
 
-//    @Transactional(readOnly = true)
-//    public Page<Article> findContent(String content, Integer boardId, Pageable pageable, String where) {
-//        return articleRepository.findByContentAndBoardId(content , boardId , pageable, where);
-//    }
-
-
+    //게시물 상세보기(view +1)
     @Transactional
     public Optional<Article> itemOfArticle(Integer id) {
         Article originalVO = articleRepository.findById(id).get();
+
+
+        //view 값을 가져와서  +1
         originalVO.setViews(originalVO.getViews()+1);
         articleRepository.save(originalVO);
+
+
         return articleRepository.findById(id);
     }
 

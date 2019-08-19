@@ -36,7 +36,6 @@ public class ArticleController {
         @return Article
      */
     @RequestMapping(
-            value = "/create",
             method = RequestMethod.POST,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -56,7 +55,6 @@ public class ArticleController {
      @return 페이징 처리가된 Article List
      */
     @RequestMapping(
-            value = "/list",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -130,10 +128,10 @@ public class ArticleController {
      작성자: 진표
      기능 : article_id별 DB데이터 삭제
      @param Article
-     @return 기능적용후 제외된 Article
+     @return 삭제완료된 Article
      */
     @RequestMapping(
-            path = "admin/{article_id}",
+            path = "/admin/{article_id}",
             method = RequestMethod.DELETE,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -149,6 +147,12 @@ public class ArticleController {
     }
 
 
+    /*
+     작성자: 진표
+     기능 : 검색조건별 검색(제목,내용,유져아이디,제목+내용)
+     @param Article
+     @return 해당조건의 페이지네이션된 Article
+     */
     @RequestMapping(
             path = "/search",
             method = RequestMethod.GET,
@@ -157,33 +161,17 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ResultItems<Article> titleSearch(
+
+    public ResultItems<Article> Search(
             @RequestParam (name = "value") String value,
             @RequestParam (name = "boardId") Integer boardId,
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
             @RequestParam (name = "where") String where) {
+
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Article> articleList = articleService.findTitle(value,boardId,where,pageable);
+        Page<Article> articleList = articleService.search(value,boardId,where,pageable);
         return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
     }
-
-//    @RequestMapping(
-//            path = "/search",
-//            method = RequestMethod.GET,
-//            produces = {
-//                    MediaType.APPLICATION_JSON_UTF8_VALUE,
-//                    MediaType.APPLICATION_XML_VALUE
-//            }
-//    )
-//    public ResultItems<Article> contentSearch(
-//            @RequestParam (name = "content") String content,
-//            @RequestParam (name = "boardId") Integer boardId,
-//            @RequestParam (name = "page", defaultValue = "1", required = false) int page,
-//            @RequestParam (name = "size", defaultValue = "10", required = false) int size) {
-//        Pageable pageable = PageRequest.of(page - 1, size);
-//        Page<Article> articleList = articleService.findContent(content,boardId, pageable);
-//        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
-//    }
 
 }
