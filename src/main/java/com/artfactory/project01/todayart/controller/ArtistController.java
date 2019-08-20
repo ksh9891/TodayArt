@@ -27,7 +27,7 @@ public class ArtistController {
     */
 //    @PreAuthorize("hasAnyRole('CUSTOMER')")
     @PostMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Artist createArtist(@PathVariable("id") int id, Artist artist){
+    public Artist createArtist(@PathVariable("id") int id,@RequestBody Artist artist){
         return artistService.createArtist(id, artist);
     }
     /*

@@ -34,7 +34,7 @@ public class MemberController {
       @param Member
       @return Member
    */
-    @PreAuthorize("isAnonymous()")
+    @PreAuthorize("hasRole('GUEST')")
     @PostMapping(path = "/signUp", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Member createMember(@RequestBody Member member) {
         if (memberService.findByEmail(member.getEmail()) == null){
@@ -101,16 +101,16 @@ public class MemberController {
       @return id,updateMember에 맞게 수정된 Member 객체
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
-    @PatchMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public UserDetails updateMember(@PathVariable("id") int id , @RequestBody Map<String, String> updateMap,
-                               Principal principal, @RequestBody Map<String, String> passwordMap) {
-        if(PrincipalUtil.from(principal).getPassword().equals(passwordMap.get("password"))) {
-            return memberService.updateMember(id, updateMap);
+    @PatchMapping(path = "/update", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public UserDetails updateMember(@RequestBody Map<String, String> updateMap,
+                                    Principal principal) {
+        // JSON받을때 확인용으로 현재 비밀번호 받아서 비교
+        if(PrincipalUtil.from(principal).getPassword().equals(updateMap.get("checkPassword"))) {
+            return memberService.updateMember(principal, updateMap);
         } else{
             throw new BadCredentialsException("정보가 일치하지 않습니다");
         }
     }
-
     /*
        작성자:  희창
        기능 설명 : 회원 삭제(탈퇴 여부 체크)

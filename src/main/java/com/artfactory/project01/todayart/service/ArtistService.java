@@ -23,17 +23,12 @@ public class ArtistService {
     @Transactional
     public Artist createArtist(int id, Artist artist){
         Member member = memberRepository.findById(id).get();
-        if(artistRepository.findAll().equals(artist.getMemberId())) {
-            return null;
-        } else{
+
             artist.setMemberId(member.getMemberId());
-            artist.setArtistName(member.getUsername());
-            artist.setAdmProductImage(1);
-            artist.setArtistDesc("test");
-            artist.setAdmProductDesc("test");
-            artist.setArtistLevelId(1);
+            artist.setArtistName(member.getRealName());
+
             return artistRepository.save(artist);
-        }
+
     }
 
     @Transactional
