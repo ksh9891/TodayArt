@@ -34,7 +34,7 @@ public class Member implements UserDetails, Serializable {
     @Column(name="nickname")
     private String nickname;
 
-    @Column(name="username")
+    @Column(name="realname")
     private String username;
 
     @Column(name="reg_dated")
