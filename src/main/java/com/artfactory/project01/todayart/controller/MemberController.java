@@ -104,7 +104,8 @@ public class MemberController {
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @PatchMapping(path = "/update", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public UserDetails updateMember(@RequestBody Map<String, String> updateMap,
-                               Principal principal) {
+                                    Principal principal) {
+
         // JSON받을때 확인용으로 현재 비밀번호 받아서 비교
         if(PrincipalUtil.from(principal).getPassword().equals(updateMap.get("checkPassword"))) {
             return memberService.updateMember(principal, updateMap);
@@ -112,7 +113,6 @@ public class MemberController {
             throw new BadCredentialsException("정보가 일치하지 않습니다");
         }
     }
-
     /*
        작성자:  희창
        기능 설명 : 회원 삭제(탈퇴 여부 체크)

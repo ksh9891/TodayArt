@@ -15,7 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 
-import java.time.LocalDate;
+
 import java.util.Date;
 
 @Entity
@@ -30,6 +30,7 @@ public class Product {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(columnDefinition = "int", name = "product_id", nullable = false, updatable = false)
     private Integer productId;
+
 
     @Column(name = "product_name")
     private String productName;
@@ -97,22 +98,6 @@ public class Product {
     private String productContent;
 
 
-    public void setProductId(Integer product_id) {
-    }
 
-    public void setIsDelete(Integer isDelete) {
-    }
-
-    public void setDeleteDated(Date date) {
-    }
-
-    public void setProductName(String productName) {
-    }
-
-    public void setProductSize(String productSize) {
-    }
-
-    public void setThumbnailId(Integer thumbnailId) {
-    }
 }
 

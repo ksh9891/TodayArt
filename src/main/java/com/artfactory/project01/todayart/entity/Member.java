@@ -40,6 +40,7 @@ public class Member implements UserDetails, Serializable {
     @Column(name="realname")
     private String realName;
 
+
     @Column(name="reg_dated")
     @Temporal(TemporalType.TIMESTAMP)
     private Date regDated;

@@ -22,7 +22,7 @@ public class Artist implements Serializable {
     @Column(name = "member_id")
     private Integer memberId;
 
-    @JoinColumn(table = "member", name = "username")
+    @JoinColumn(table = "member", name = "realname")
     @Column(name = "artist_name", updatable = false, nullable = false)
     private String artistName;
 
