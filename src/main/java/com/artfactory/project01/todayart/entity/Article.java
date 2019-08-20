@@ -1,5 +1,7 @@
 package com.artfactory.project01.todayart.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -14,6 +16,8 @@ import java.util.Date;
 @Table(name = "article")
 @DynamicInsert
 @DynamicUpdate
+@Getter
+@Setter
 public class Article implements Serializable {
 
 
@@ -22,10 +26,17 @@ public class Article implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer articleId;
 
-    @Column(name = "board_id", nullable = false)
+    @JoinColumn(table="board_category", name = "board_id")
+    @Column(name="board_id")
     private Integer boardId;
+//
+//    @ManyToOne(fetch=FetchType.EAGER, targetEntity = BoardCategory.class)
+//    @JoinColumn(name = "borad_id")
+//    private BoardCategory boardCategory;
 
-    @Column(name = "member_id", updatable = false, nullable = false)
+
+    @JoinColumn(table = "member", name = "member_id")
+    @Column(name = "member_id")
     private Integer memberId;
 
     @Column(name = "write_dated", updatable = false, nullable = false)
@@ -75,143 +86,4 @@ public class Article implements Serializable {
     @Column(name = "product_id")
     private Integer productId;
 
-    public Integer getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
-    }
-
-    public Integer getBoardId() {
-        return boardId;
-    }
-
-    public void setBoardId(Integer boardId) {
-        this.boardId = boardId;
-    }
-
-    public Integer getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
-    }
-
-    public Date getWriteDated() {
-        return writeDated;
-    }
-
-    public void setWriteDated(Date writeDated) {
-        this.writeDated = writeDated;
-    }
-
-    public Date getUpdateDated() {
-        return updateDated;
-    }
-
-    public void setUpdateDated(Date updateDated) {
-        this.updateDated = updateDated;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Integer getGroup() {
-        return group;
-    }
-
-    public void setGroup(Integer group) {
-        this.group = group;
-    }
-
-    public Integer getDepth() {
-        return depth;
-    }
-
-    public void setDepth(Integer depth) {
-        this.depth = depth;
-    }
-
-    public Integer getReplyOrder() {
-        return replyOrder;
-    }
-
-    public void setReplyOrder(Integer replyOrder) {
-        this.replyOrder = replyOrder;
-    }
-
-    public Integer getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public Date getDeletedDated() {
-        return deletedDated;
-    }
-
-    public void setDeletedDated(Date deletedDated) {
-        this.deletedDated = deletedDated;
-    }
-
-    public Integer getIsHidden() {
-        return isHidden;
-    }
-
-    public void setIsHidden(Integer isHidden) {
-        this.isHidden = isHidden;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getIsReply() {
-        return isReply;
-    }
-
-    public void setIsReply(Integer isReply) {
-        this.isReply = isReply;
-    }
-
-    public Integer getViews() {
-        return views;
-    }
-
-    public void setViews(Integer views) {
-        this.views = views;
-    }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public void updateViews(Integer views) {
-        this.views = views + 1;
-    }
 }

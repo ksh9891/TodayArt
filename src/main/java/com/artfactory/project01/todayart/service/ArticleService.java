@@ -18,19 +18,34 @@ public class ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
 
-    //게시물 생성
+    /*
+       작성자: 진표
+       기능 : 새로운 게시글 생성
+       @param Article
+       @return Article
+    */
     @Transactional
     public Article cretateArticle(Article article) {
         return articleRepository.save(article);
     }
 
-    //보드아이디가 1인 리스트 리턴
+    /*
+       작성자: 진표
+       기능 : 보드 아이디별 리스트페이지
+       @param 보드ID(Integer)
+       @return Page<Article>
+    */
     @Transactional(readOnly = true)
     public Page<Article> listOfArticle(Integer boardId, Pageable pageable) {
         return articleRepository.findByBoard_id(boardId, pageable);
     }
 
-    //조건별검색
+    /*
+       작성자: 진표
+       기능 : 조건별 검색
+       @param value(검색값),boardId(찾는 보드아이디),where(제목,내용,아이디,제목+내용)
+       @return 검색된 Page<Article>
+    */
     @Transactional(readOnly = true)
     public Page<Article> search(String value, Integer boardId ,String where, Pageable pageable) {
 
@@ -47,20 +62,29 @@ public class ArticleService {
         return result;
     }
 
-    //게시물 상세보기(view +1)
+    /*
+       작성자: 진표
+       기능 : 게시글 상세보기 및 뷰카운트 +1
+       @param articleId
+       @return articleId에 해당하는 게시글
+    */
     @Transactional
     public Optional<Article> itemOfArticle(Integer id) {
         Article originalVO = articleRepository.findById(id).get();
-
 
         //view 값을 가져와서  +1
         originalVO.setViews(originalVO.getViews()+1);
         articleRepository.save(originalVO);
 
-
         return articleRepository.findById(id);
     }
 
+    /*
+       작성자: 진표
+       기능 : 게시글 업데이트
+       @param articleForm,articleId
+       @return 업데이트 된 Article
+    */
     @Transactional
     public Article updateArticle(Integer id, ArticleForm articleForm) {
         Article originalVO = articleRepository.findById(id).get();
@@ -69,6 +93,12 @@ public class ArticleService {
         return articleRepository.save(originalVO);
     }
 
+    /*
+       작성자: 진표
+       기능 : 게시글 삭제(isDeleted = 1, 삭제시간생성)
+       @param ArticleId
+       @return Article
+    */
     @Transactional
     public Article deleteArticle(Integer id) {
         Article originalVO = articleRepository.findById(id).get();
@@ -77,6 +107,11 @@ public class ArticleService {
         return articleRepository.save(originalVO);
     }
 
+    /*
+       작성자: 진표
+       기능 : 게시글 DB 삭제
+       @param ArticleId
+    */
     @Transactional
     public void dataDeleteArticle(Integer id) {
         articleRepository.deleteById(id);

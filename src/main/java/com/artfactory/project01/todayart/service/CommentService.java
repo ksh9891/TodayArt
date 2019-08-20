@@ -18,21 +18,36 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
-    //댓글 생성
+    /*
+       작성자: 진표
+       기능 : 새로운 댓글 생성
+       @param Comments
+       @return Comments
+    */
     @Transactional
     public Comments createComments(Comments comments) {
         return commentRepository.save(comments);
     }
 
 
-    //articleId 별 댓글 리스트 리턴
+    /*
+       작성자: 진표
+       기능 : articleId별 Comments리스트 리턴
+       @param articleId
+       @return Page<Comments>
+    */
     @Transactional(readOnly = true)
     public Page<Comments> listOfComments(Integer id,Pageable pageable) {
         return commentRepository.findByArticleId(id, pageable);
     }
 
 
-    //댓글 업데이트
+    /*
+       작성자: 진표
+       기능 : 댓글 업데이트
+       @param CommentId,commentForm
+       @return comments
+    */
     @Transactional
     public Comments updateCommments(Integer id, CommentForm commentForm) {
         Comments comments = commentRepository.findById(id).get();
@@ -41,20 +56,46 @@ public class CommentService {
         return commentRepository.save(comments);
     }
 
-    //댓글 삭제시 isDelete =1 로 변경
+    /*
+       작성자: 진표
+       기능 : 댓글 삭제(isDelete = 1, 삭제시 시각 업데이트)
+       @param commentId
+       @return Comments
+    */
     @Transactional
     public Comments deleteComments(Integer id) {
         Comments comments = commentRepository.findById(id).get();
-        comments.setIsDelete(1);
+        comments.setIsDeleted(1);
         comments.setDeleteDated(new Date());
         return commentRepository.save(comments);
     }
 
-    //댓글 삭제
+    /*
+       작성자: 진표
+       기능 : 댓글 DB삭제
+       @param commentId
+    */
     @Transactional
     public void dataDeleteComments(Integer id) {
         commentRepository.deleteById(id);
     }
 
+    /*
+      작성자: 진표
+      기능 : 조건별 검색
+      @param value(검색값),boardId(찾는 보드아이디),where(제목,내용,아이디,제목+내용)
+      @return 검색된 Page<Article>
+   */
+    @Transactional(readOnly = true)
+    public Page<Comments> search(String value, Integer boardId ,String where, Pageable pageable) {
+
+        Page<Comments> result = null;
+        if(where.equals("content")){
+            result = commentRepository.searchContent(value , boardId , where , pageable);
+        }else if(where.equals("memberId")){
+            result = commentRepository.searchMemberId(value , boardId , where , pageable);
+        }
+        return result;
+    }
 
 }

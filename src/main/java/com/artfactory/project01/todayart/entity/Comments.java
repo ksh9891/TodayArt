@@ -1,5 +1,7 @@
 package com.artfactory.project01.todayart.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -12,6 +14,8 @@ import java.util.Date;
 @Table(name = "comments")
 @DynamicInsert
 @DynamicUpdate
+@Getter
+@Setter
 public class Comments implements Serializable {
 
 
@@ -20,9 +24,11 @@ public class Comments implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer commentId;
 
+    @JoinColumn(table = "article", name = "article_id")
     @Column(name = "article_id", updatable = false, nullable = false)
     private Integer articleId;
 
+    @JoinColumn(table = "member", name = "member_id")
     @Column(name = "member_id", updatable = false, nullable = false)
     private Integer memberId;
 
@@ -46,67 +52,4 @@ public class Comments implements Serializable {
     @Column(name = "is_deleted")
     private Integer isDeleted;
 
-    public Integer getCommentId() {
-        return commentId;
-    }
-
-    public void setCommentId(Integer commentId) {
-        this.commentId = commentId;
-    }
-
-    public Integer getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
-    }
-
-    public Integer getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Date getCreateDated() {
-        return createDated;
-    }
-
-    public void setCreateDated(Date createDated) {
-        this.createDated = createDated;
-    }
-
-    public Date getUpdateDated() {
-        return updateDated;
-    }
-
-    public void setUpdateDated(Date updateDated) {
-        this.updateDated = updateDated;
-    }
-
-    public Date getDeleteDated() {
-        return deleteDated;
-    }
-
-    public void setDeleteDated(Date deleteDated) {
-        this.deleteDated = deleteDated;
-    }
-
-    public Integer getIsDelete() {
-        return isDeleted;
-    }
-
-    public void setIsDelete(Integer isDelete) {
-        this.isDeleted = isDelete;
-    }
 }

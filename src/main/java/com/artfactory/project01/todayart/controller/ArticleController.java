@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -26,8 +27,7 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
-    @Autowired
-    private CommentService commentService;
+
 
     /*
         작성자: 진표
@@ -35,6 +35,7 @@ public class ArticleController {
         @param Article
         @return Article
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
             path = "/create",
             method = RequestMethod.POST,
@@ -55,6 +56,7 @@ public class ArticleController {
      @param Article
      @return 페이징 처리가된 Article List
      */
+    @PreAuthorize("isAnonymous()")
     @RequestMapping(
             path = "/list",
             method = RequestMethod.GET,
@@ -71,13 +73,13 @@ public class ArticleController {
         return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
     }
 
-
     /*
      작성자: 진표
      기능 : article_id로 찾은 게시글 상세 표기
      @param Article
      @return Article
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
             path = "/{article_id}",
             method = RequestMethod.GET,
@@ -96,6 +98,7 @@ public class ArticleController {
      @param Article
      @return Article
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
             path = "/{article_id}",
             method = RequestMethod.PATCH,
@@ -114,6 +117,7 @@ public class ArticleController {
      @param Article
      @return Article
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
             path = "/{article_id}",
             method = RequestMethod.DELETE,
@@ -132,6 +136,7 @@ public class ArticleController {
      @param Article
      @return 삭제완료된 Article
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(
             path = "/admin/{article_id}",
             method = RequestMethod.DELETE,
@@ -152,8 +157,8 @@ public class ArticleController {
     /*
      작성자: 진표
      기능 : 검색조건별 검색(제목,내용,유져아이디,제목+내용)
-     @param Article
-     @return 해당조건의 페이지네이션된 Article
+     @param value(검색값),boardId(찾는 보드아이디),where(제목,내용,아이디,제목+내용)
+     @return 해당조건의 Page<Article>
      */
     @RequestMapping(
             path = "/search",
@@ -163,7 +168,7 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ResultItems<Article> Search(
+    public ResultItems<Article> search(
             @RequestParam (name = "value") String value,
             @RequestParam (name = "boardId") Integer boardId,
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,

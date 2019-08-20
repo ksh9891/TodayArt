@@ -2,6 +2,7 @@ package com.artfactory.project01.todayart.model;
 
 import com.artfactory.project01.todayart.entity.Article;
 
+
 import java.io.Serializable;
 import java.util.Date;
 

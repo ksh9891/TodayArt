@@ -20,4 +20,14 @@ public interface CommentRepository extends JpaRepository<Comments,Integer> {
     @Query(value = "SELECT COUNT(article_id) FROM comments WHERE article_id = ?1", nativeQuery = true)
     List<Comments> numberOfComments(Integer articleId, Integer count);
 
+
+    //content검색
+    @Query(value = "SELECT * FROM comments WHERE board_id = ?2 AND is_deleted = 0 AND content LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
+    Page<Comments> searchContent(String value, Integer boardId ,String where, Pageable pageable);
+
+    //memberId검색
+    @Query(value = "SELECT * FROM comments WHERE board_id = ?2 AND is_deleted = 0 AND member_id LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
+    Page<Comments> searchMemberId(String value, Integer boardId ,String where, Pageable pageable);
+
+
 }
