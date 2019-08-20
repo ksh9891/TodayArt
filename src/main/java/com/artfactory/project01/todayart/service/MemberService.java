@@ -1,11 +1,15 @@
 package com.artfactory.project01.todayart.service;
 
+import com.artfactory.project01.todayart.entity.Artist;
 import com.artfactory.project01.todayart.entity.Member;
+import com.artfactory.project01.todayart.repository.ArtistRepository;
 import com.artfactory.project01.todayart.repository.MemberRepository;
+import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +20,9 @@ public class MemberService {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    ArtistRepository artistRepository;
 
     @Transactional
     public Member createMember(Member member) {
@@ -33,26 +40,29 @@ public class MemberService {
     }
 
     @Transactional
-    public Member updateMember(int id, Map<String, String> updateMap) {
-        Member member = memberRepository.findById(id).get();// id값으로 찾은 객체를 member에 대입
+    public Member updateMember(Principal principal, Map<String, String> updateMap) {
+        Member member = (Member) PrincipalUtil.from(principal);
         member.getEmail();
+
         if(updateMap.get("password") != null &&
-                updateMap.get("password").equals(member.getPassword())) { // 입력받은값이 null이 아니면 값 변경
+                (updateMap.get("password")!= (member.getPassword()))) { // 입력받은값이 null이 아니면 값 변경
+
             member.setPassword(updateMap.get("password"));
         }
-        if(updateMap.get("username") != null) {
-            member.setUsername(updateMap.get("username"));
+        if (updateMap.get("realname") != null) {
+            member.setRealName(updateMap.get("realname"));
         }
-        if(updateMap.get("nickname") != null && findByNickname(member.getNickname()) == null) {
+        if (updateMap.get("nickname") != null && findByNickname(member.getNickname()) == null) {
             member.setNickname(updateMap.get("nickname"));
         }
-        if(updateMap.get("phone")!= null) {
+        if (updateMap.get("phone") != null) {
             member.setPhone(updateMap.get("phone"));
         }
         return memberRepository.save(member); // 수정된 값으로 업데이트 실행
     }
 
-    @Transactional
+
+        @Transactional
     public Member deleteMember(Member member){
         Date expiredDated = new Date();
         member.setExpired(1);
@@ -69,9 +79,9 @@ public class MemberService {
         return memberRepository.findByEmail(email);
     }
 
-    public Member updatePassword(int id,String password){
-        Member member = memberRepository.findById(id).get();
-        member.setPassword(password);
-        return memberRepository.save(member);
-    }
+//    public Member updatePassword(int id,String password){
+//        Member member = memberRepository.findById(id).get();
+//        member.setPassword(password);
+//        return memberRepository.save(member);
+//    }
 }

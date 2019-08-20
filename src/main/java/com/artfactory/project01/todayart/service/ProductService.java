@@ -34,7 +34,8 @@ public class ProductService {
     @Transactional
     public Product createProduct(Member member, Product product) {
 
-        product.setArtistName(member.getUsername());
+
+        product.setArtistName(member.getRealName());
         return productRepository.save(product);
     }
 
