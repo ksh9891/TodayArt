@@ -34,7 +34,7 @@ public class MemberController {
       @param Member
       @return Member
    */
-    @PreAuthorize("isAnonymous()")
+    @PreAuthorize("hasRole('GUEST')")
     @PostMapping(path = "/signUp", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Member createMember(@RequestBody Member member) {
         if (memberService.findByEmail(member.getEmail()) == null){
@@ -55,10 +55,10 @@ public class MemberController {
     public UserDetails signIn(@RequestBody Map<String, String> signMember) {
         String email = signMember.get("email");
         String password = signMember.get("password");
-        if(email == null || email.isEmpty()){
+        if(email == null || email.isEmpty() || memberService.findByEmail(email) == null){
             throw new InvalidParameterException("없는 이메일이거나 이메일을 입력하지 않았습니다");
         } else if(password == null || password.isEmpty()){
-            throw new InvalidParameterException("없는 비밀번호이거나 비밀번호를 입력하지 않았습니다");
+            throw new InvalidParameterException("비밀번호를 입력하지 않았습니다");
         }
         Member member = (Member) memberDetailsService.loadUserByUsername(email);
         if(member != null && password.compareTo(member.getPassword()) != 0){
@@ -73,11 +73,12 @@ public class MemberController {
       @param X
       @return List<Member> 화 된 Member 객체
     */
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<Member> retrieveMembers() {
-        return memberService.retrieveMembers();
-    }
+    // 관리자 기능
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+//    public List<Member> retrieveMembers() {
+//        return memberService.retrieveMembers();
+//    }
 
     /*
        작성자:  희창
@@ -86,7 +87,7 @@ public class MemberController {
       @return id에 맞는 Member객체
     */
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public UserDetails retrieveMember(@PathVariable("id") int id, Map<String, String> passwordMap, Principal principal) {
+    public UserDetails retrieveMember(@PathVariable("id") int id,@RequestBody Map<String, String> passwordMap, Principal principal) {
         if(PrincipalUtil.from(principal).getPassword().equals(passwordMap.get("password"))) {
             return memberService.retrieveMember(id);
         }else{
@@ -101,11 +102,12 @@ public class MemberController {
       @return id,updateMember에 맞게 수정된 Member 객체
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
-    @PatchMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public UserDetails updateMember(@PathVariable("id") int id , @RequestBody Map<String, String> updateMap,
-                               Principal principal, @RequestBody Map<String, String> passwordMap) {
-        if(PrincipalUtil.from(principal).getPassword().equals(passwordMap.get("password"))) {
-            return memberService.updateMember(id, updateMap);
+    @PatchMapping(path = "/update", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public UserDetails updateMember(@RequestBody Map<String, String> updateMap,
+                               Principal principal) {
+        // JSON받을때 확인용으로 현재 비밀번호 받아서 비교
+        if(PrincipalUtil.from(principal).getPassword().equals(updateMap.get("checkPassword"))) {
+            return memberService.updateMember(principal, updateMap);
         } else{
             throw new BadCredentialsException("정보가 일치하지 않습니다");
         }
@@ -161,16 +163,17 @@ public class MemberController {
       @param int id(PathVariable), Map<String, String> passwordMap
       @return true면 변경될 값 전달
     */
-    @PatchMapping(path = "/{id}/updatePassword", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public UserDetails updatePassword(@PathVariable("id") int id, @RequestBody Map<String, String> passwordMap, Principal principal) {
-        String password = passwordMap.get("password");
-        String checkPassword = PrincipalUtil.from(principal).getPassword();
-        if(isResult == true) {
-            return memberService.updatePassword(id, password);
-        } else{
-            return memberService.updatePassword(id, checkPassword);
-        }
-    }
+    // 이 메서드가 있어야 하는지 헷갈립니다
+//    @PatchMapping(path = "/{id}/updatePassword", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public UserDetails updatePassword(@PathVariable("id") int id, @RequestBody Map<String, String> passwordMap, Principal principal) {
+//        String password = passwordMap.get("password");
+//        String checkPassword = PrincipalUtil.from(principal).getPassword();
+//        if(isResult == true) {
+//            return memberService.updatePassword(id, password);
+//        } else{
+//            return memberService.updatePassword(id, checkPassword);
+//        }
+//    }
 
     @GetMapping(path = "/me", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE })
     public Member me(Principal principal) {
