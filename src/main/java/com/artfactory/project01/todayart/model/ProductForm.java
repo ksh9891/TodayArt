@@ -63,24 +63,24 @@ public class ProductForm implements Serializable {
         if(thumbnailId != null){
             product.setThumbnailId(this.thumbnailId);
         }
-        if(productCategory != null){
-            product.setProductCategory(productCategory);
-        }
-        if(remain!= null){
-            product.setRemain(this.remain);
-        }
-        if(shippingFee != null){
-            product.setShippingFee(this.shippingFee);
-        }
-        if(isSoldOut != null){
-            product.setIsSoldOut(this.isSoldOut);
-        }
-        if(productPrice != null){
-            product.setProductPrice(this.productPrice);
-        }
-        if(productContent != null){
-            product.setProductContent(this.productContent);
-        }
+//        if(productCategory != null){
+//            product.setProductCategory(productCategory);
+//        }
+//        if(remain!= null){
+//            product.setRemain(this.remain);
+//        }
+//        if(shippingFee != null){
+//            product.setShippingFee(this.shippingFee);
+//        }
+//        if(isSoldOut != null){
+//            product.setIsSoldOut(this.isSoldOut);
+//        }
+//        if(productPrice != null){
+//            product.setProductPrice(this.productPrice);
+//        }
+//        if(productContent != null){
+//            product.setProductContent(this.productContent);
+//        }
 
 
 
