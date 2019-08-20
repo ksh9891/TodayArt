@@ -40,9 +40,9 @@ public class CartService implements Serializable {
         int productId = cart.getProduct().getProductId();
         Product product = productRepository.findById(productId).get();
         Integer memberId = member.getMemberId();
-        if (cartRepository.findByMemberIdAndProducIdtAndIsDelete(memberId, productId) != null) {
+        if (cartRepository.findByMemberIdAndProductIdtAndIsDelete(memberId, productId) != null) {
             System.out.println("중복");
-        }else if(cartRepository.findByMemberIdAndProducIdtAndIsDelete(memberId, productId) == null){
+        }else if(cartRepository.findByMemberIdAndProductIdtAndIsDelete(memberId, productId) == null){
             // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
             ProductForm productForm = new ProductForm();
             productForm.setProduct(product);
@@ -102,7 +102,7 @@ public class CartService implements Serializable {
       @return ArrayList<Cart>
     */
     @Transactional
-    public ArrayList<Cart> retrieveCart(Member member){
+    public List<Cart> retrieveCart(Member member){
         ArrayList<Cart> cartList = cartRepository.findAllByMemberIdAndIsDeleted(member.getMemberId(), 0);
         return cartList;
     }
@@ -116,7 +116,7 @@ public class CartService implements Serializable {
       @return ArrayList<Cart>
     */
     @Transactional
-    public ArrayList<Cart> updateCart(Member member, Map<String, ChangedCartItem> Item){
+    public List<Cart> updateCart(Member member, Map<String, ChangedCartItem> Item){
         for(String item : Item.keySet()){
             Cart cart = cartRepository.findById(Item.get(item).getCartId()).get();
             cart.setQuantity(Item.get(item).getQuantity());
