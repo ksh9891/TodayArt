@@ -1,12 +1,7 @@
 package com.artfactory.project01.todayart.model;
 
-import com.artfactory.project01.todayart.entity.ArticleVO;
-import org.hibernate.annotations.CreationTimestamp;
+import com.artfactory.project01.todayart.entity.Article;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,7 +9,7 @@ public class ArticleForm implements Serializable {
 
     private Integer article_id;
     private Integer board_id;
-    private Integer writter_id;
+    private Integer member_id;
     private Date write_dated;
     private Date update_dated;
     private String title;
@@ -29,7 +24,7 @@ public class ArticleForm implements Serializable {
     private Integer is_reply;
     private Integer views;
     private Integer product_id;
-    private ArticleVO articleVO;
+    private Article article;
 
     public Integer getArticle_id() {
         return article_id;
@@ -47,12 +42,12 @@ public class ArticleForm implements Serializable {
         this.board_id = board_id;
     }
 
-    public Integer getWritter_id() {
-        return writter_id;
+    public Integer getMember_id() {
+        return member_id;
     }
 
-    public void setWritter_id(Integer writter_id) {
-        this.writter_id = writter_id;
+    public void setMember_id(Integer member_id) {
+        this.member_id = member_id;
     }
 
     public Date getWrite_dated() {
@@ -167,46 +162,62 @@ public class ArticleForm implements Serializable {
         this.product_id = product_id;
     }
 
-    public ArticleVO getArticleVO() {
-        return articleVO;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticleVO(ArticleVO articleVO) {
+    public void setArticle(Article article) {
         if(article_id != null){
-            articleVO.setArticle_id(this.article_id);
-        }else if(board_id != null){
-            articleVO.setBoard_id(this.board_id);
-        }else if(writter_id != null){
-            articleVO.setWritter_id(this.writter_id);
-        }else if(write_dated != null){
-            articleVO.setWrite_dated(this.write_dated);
-        }else if(update_dated != null){
-            articleVO.setUpdate_dated(new Date());
-        }else if(title != null){
-            articleVO.setTitle(this.title);
-        }else if(content != null){
-            articleVO.setContent(this.content);
-        }else if(group != null){
-            articleVO.setGroup(this.group);
-        }else if(depth != null){
-            articleVO.setDepth(this.depth);
-        }else if(reply_order != null){
-            articleVO.setReply_order(this.reply_order);
-        }else if(is_deleted != null){
-            articleVO.setIs_deleted(this.is_deleted);
-        }else if(deleted_dated != null){
-            articleVO.setDeleted_dated(this.deleted_dated);
-        }else if(is_hidden != null){
-            articleVO.setIs_hidden(this.is_hidden);
-        }else if(password != null){
-            articleVO.setPassword(this.password);
-        }else if(is_reply != null){
-            articleVO.setIs_reply(this.is_reply);
-        }else if(views != null){
-            articleVO.setViews(this.views);
-        }else if(product_id != null){
-            articleVO.setProduct_id(this.product_id);
+            article.setArticleId(this.article_id);
         }
-        this.articleVO = articleVO;
+        if(board_id != null){
+            article.setBoardId(this.board_id);
+        }
+        if(member_id != null){
+            article.setMemberId(this.member_id);
+        }
+        if(write_dated != null){
+            article.setWriteDated(this.write_dated);
+        }
+        if(update_dated != null){
+            article.setUpdateDated(new Date());
+        }
+        if(title != null){
+            article.setTitle(this.title);
+        }
+        if(content != null){
+            article.setContent(this.content);
+        }
+        if(group != null){
+            article.setGroup(this.group);
+        }
+        if(depth != null){
+            article.setDepth(this.depth);
+        }
+        if(reply_order != null){
+            article.setReplyOrder(this.reply_order);
+        }
+        if(is_deleted != null){
+            article.setIsDeleted(this.is_deleted);
+        }
+        if(deleted_dated != null){
+            article.setDeletedDated(this.deleted_dated);
+        }
+        if(is_hidden != null){
+            article.setIsHidden(this.is_hidden);
+        }
+        if(password != null){
+            article.setPassword(this.password);
+        }
+        if(is_reply != null){
+            article.setIsReply(this.is_reply);
+        }
+        if(views != null){
+            article.setViews(this.views);
+        }
+        if(product_id != null){
+            article.setProductId(this.product_id);
+        }
+        this.article = article;
     }
 }

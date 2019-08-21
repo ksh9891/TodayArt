@@ -1,4 +1,4 @@
-# Todayart v1.61
+﻿# Todayart v1.69
 /*
 [v1.3]
     - 모든 테이블에 default now() -> default current_timestamp로 변경
@@ -71,6 +71,48 @@
     > `pay_price` -> `order_detail_price`
     > `total_price` -> `total_order_price`
     - 관련 데이터 수정
+[V1.62]
+	- shipping : 컬럼 추가
+    > `is_delete` INT(11) NOT NULL DEFAULT '0' COMMENT '0:미삭제, 1:삭제',
+[V1.63]
+    - shipping : 컬럼 수정
+        > `consignee_phone` VARCHAR(255) NOT NULL,
+[V1.64]
+	- wishlist 테이블 전체적인 구조 수정
+		> `artist_name` varchar(255) not NULL
+		> `thumbnail_id` INT(11) NOT NULL
+		> `product_price` int not null
+		> `product_size` varchar(255) not null
+		> `is_deleted` int(11) not null default 0 comment '0: not deleted, 1: deleted '
+		> `is_stock` INT(11) NOT NULL DEFAULT 1 COMMENT '0:재고없음, 1:재고있음'
+    - wishlist 더미데이터 수정/추가
+[V1.65]
+    - artist : 컬럼 추가, fk 추가
+        > `adm_product_image` INT(11) NOT NULL,
+        > INDEX `fk_artist_file_idx2` (`adm_product_image` ASC) VISIBLE,
+        >   CONSTRAINT `fk_artist_file2`
+            FOREIGN KEY (`adm_product_image`)
+            REFERENCES `todayart`.`file` (`file_id`)
+            ON DELETE NO ACTION
+            ON UPDATE CASCADE)
+    - 더미데이터 수정
+    
+[V1.66]
+	-member : UK추가
+		  UNIQUE KEY (`email`),
+		  UNIQUE KEY (`nickname`)
+	-artist : 컬럼 추가
+	  `adm_apply_dated` DATETIME NOT NULL, // 신청일
+	  `adm_check_dated` DATETIME NULL DEFAULT NULL, // 승인,거부 일자
+      
+[V1.67]
+	- product 컬럼 추가
+		>`artist_name` VARCHAR(255) NOT NULL
+[V1.68]
+	- product: 더미데이터 수정
+[V1.69]
+	- member: 컬럼명 변경 (username -> realname)
+
 */
 
 -- MySQL Workbench Forward Engineering
@@ -106,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `todayart`.`member` (
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `nickname` VARCHAR(255) NOT NULL,
-  `username` VARCHAR(255) NULL DEFAULT NULL,
+  `realname` VARCHAR(255) NULL DEFAULT NULL,
   `reg_dated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `phone` VARCHAR(255) NULL DEFAULT NULL,
   `role` ENUM('ROLE_ADMIN', 'ROLE_CUSTOMER', 'ROLE_ARTIST') NOT NULL DEFAULT 'ROLE_CUSTOMER',
@@ -115,24 +157,16 @@ CREATE TABLE IF NOT EXISTS `todayart`.`member` (
   `expired_dated` DATETIME NULL DEFAULT NULL,
   `email_checked` INT(11) NOT NULL DEFAULT '0' COMMENT '0: 미인증, 1: 인증',
   PRIMARY KEY (`member_id`),
-  UNIQUE KEY(`email`),
-  UNIQUE KEY(`nickname`),
-  UNIQUE KEY(`username`),
-  UNIQUE KEY(`phone`))
+  UNIQUE KEY (`email`),
+  UNIQUE KEY (`nickname`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 10003
 DEFAULT CHARACTER SET = utf8;
  
 INSERT INTO member VALUE(1, "admin@admin.com", "admin", "admin", "admin", now(), "01012345678", "ROLE_ADMIN", now(), 0, null, 1);
-<<<<<<< HEAD:src/main/resources/sql/todayart v1.61.sql
 INSERT INTO member VALUE(3000, "member@member.com", "member", "member", "member", now(), "01012345678", "ROLE_CUSTOMER", now(), 0, null, 1);
 INSERT INTO member VALUE(10001, "artist@artist.com", "artist", "artist", "artist", now(), "01012345678", "ROLE_ARTIST", now(), 0, null, 1);
 INSERT INTO member VALUE(10002, "artist2@artist.com", "artist2", "artist2", "artist2", now(), "01012345678", "ROLE_ARTIST", now(), 0, null, 1);
-=======
-INSERT INTO member VALUE(3000, "member@member.com", "member", "member", "member", now(), "01012345679", "ROLE_CUSTOMER", now(), 0, null, 1);
-INSERT INTO member VALUE(10001, "artist@artist.com", "artist", "artist", "artist", now(), "01012345670", "ROLE_ARTIST", now(), 0, null, 1);
-
->>>>>>> 2ced63b76e1995b2218dc3e3fd35ed4a2fdd13d6:src/main/resources/sql/todayart v1.52.sql
 
 -- -----------------------------------------------------
 -- Table `todayart`.`artist_level`
@@ -179,13 +213,17 @@ CREATE TABLE IF NOT EXISTS `todayart`.`artist` (
   `artist_name` VARCHAR(255) NOT NULL,
   `artist_desc` TEXT NOT NULL,
   `profile_id` INT(11) NULL DEFAULT NULL,
+  `adm_product_image` INT(11) NOT NULL,
   `adm_product_desc` TEXT NOT NULL,
-  `adm_check` INT(1) NOT NULL DEFAULT '0' COMMENT '0: 미승인, 1: 승인',
+  `adm_check` INT(1) NOT NULL DEFAULT '0' COMMENT '0: 미승인, 1: 승인, 2: 거부',
   `artist_level_id` INT(11) NOT NULL,
+  `adm_apply_dated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `adm_check_dated` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`artist_id`),
   INDEX `member_id_idx` (`member_id` ASC) VISIBLE,
   INDEX `fk_artist_artistLevel_idx` (`artist_level_id` ASC) VISIBLE,
   INDEX `fk_artist_file_idx` (`profile_id` ASC) VISIBLE,
+  INDEX `fk_artist_file_idx2` (`adm_product_image` ASC) VISIBLE,
   CONSTRAINT `fk_artist_member`
     FOREIGN KEY (`member_id`)
     REFERENCES `todayart`.`member` (`member_id`)
@@ -200,12 +238,17 @@ CREATE TABLE IF NOT EXISTS `todayart`.`artist` (
     FOREIGN KEY (`profile_id`)
     REFERENCES `todayart`.`file` (`file_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_artist_file2`
+      FOREIGN KEY (`adm_product_image`)
+      REFERENCES `todayart`.`file` (`file_id`)
+      ON DELETE NO ACTION
+      ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `todayart`.`artist` VALUE(1, 10001, "홍길동", "나는야 작가", NULL, "비밀스러운 사진", 1, 1);
-INSERT INTO `todayart`.`artist` VALUE(2, 10002, "장길산", "유명한 화가", NULL, "대표작", 1, 1);
+INSERT INTO `todayart`.`artist` VALUE(1, 10001, "홍길동", "나는야 작가", NULL, 1, "비밀스러운 사진", 1, 1, now(), NULL);
+INSERT INTO `todayart`.`artist` VALUE(2, 10002, "장길산", "유명한 화가", NULL, 2, "대표작", 1, 1, now(), NULL);
 
 -- -----------------------------------------------------
 -- Table `todayart`.`account`
@@ -296,6 +339,7 @@ INSERT INTO `todayart`.`category` VALUE(2, '기타');
 CREATE TABLE IF NOT EXISTS `todayart`.`product` (
   `product_id` INT(11) NOT NULL AUTO_INCREMENT,
   `artist_id` INT(11) NOT NULL,
+  `artist_name` VARCHAR(255) NOT NULL,
   `category_id` INT(11) NOT NULL,
   `product_name` VARCHAR(255) NOT NULL,
   `product_content` TEXT NOT NULL,
@@ -333,18 +377,18 @@ CREATE TABLE IF NOT EXISTS `todayart`.`product` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `todayart`.`product`(`artist_id`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
-VALUE(1, 1, '멋있는 그림', '멋있는그림 내용', '매우 크다', 50000, 2, 10000);
-INSERT INTO `todayart`.`product`(`artist_id`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
-VALUE(1, 1, '예쁜 그림', '멋있는그림 내용', '매우 크다', 50000, 2, 10000);
-INSERT INTO `todayart`.`product`(`artist_id`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
-VALUE(1, 2, '시집', '멋있는그림 내용', '작음', 5000, 3, 0);
-INSERT INTO `todayart`.`product`(`artist_id`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
-VALUE(2, 1, '굉장한 그림', '멋있는그림 내용', '엄청나게 크다', 780000, 4, 20000);
-INSERT INTO `todayart`.`product`(`artist_id`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
-VALUE(2, 1, '미인화', '멋있는그림 내용', '중간크기', 150000, 5, 5000);
-INSERT INTO `todayart`.`product`(`artist_id`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`, `remain`)
-VALUE(1, 2, '잡동사니', '멋있는그림 내용', '매우 작음', 100, 6, 2500, 1000);
+INSERT INTO `todayart`.`product`(`artist_id`, `artist_name`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
+VALUE(1, '홍길동', 1, '멋있는 그림', '멋있는그림 내용', '매우 크다', 50000, 2, 10000);
+INSERT INTO `todayart`.`product`(`artist_id`, `artist_name`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
+VALUE(1, '홍길동', 1, '예쁜 그림', '멋있는그림 내용', '매우 크다', 50000, 2, 10000);
+INSERT INTO `todayart`.`product`(`artist_id`, `artist_name`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
+VALUE(1, '홍길동', 2, '시집', '멋있는그림 내용', '작음', 5000, 3, 0);
+INSERT INTO `todayart`.`product`(`artist_id`, `artist_name`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
+VALUE(2, '장길산', 1, '굉장한 그림', '멋있는그림 내용', '엄청나게 크다', 780000, 4, 20000);
+INSERT INTO `todayart`.`product`(`artist_id`, `artist_name`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`)
+VALUE(2, '장길산', 1, '미인화', '멋있는그림 내용', '중간크기', 150000, 5, 5000);
+INSERT INTO `todayart`.`product`(`artist_id`, `artist_name`, `category_id`, `product_name`, `product_content`, `product_size`, `product_price`, `thumbnail_id`, `shipping_fee`, `remain`)
+VALUE(1, '홍길동', 2, '잡동사니', '멋있는그림 내용', '매우 작음', 100, 6, 2500, 1000);
 
 
 -- -----------------------------------------------------
@@ -694,11 +738,12 @@ CREATE TABLE IF NOT EXISTS `todayart`.`shipping` (
   `consignee` VARCHAR(255) NOT NULL,
   `postal_code` INT NOT NULL,
   `receive_addr` VARCHAR(255) NOT NULL,
-  `consignee_phone` INT(11) NOT NULL,
+  `consignee_phone` VARCHAR(255) NOT NULL,
   `artist_id` INT(11) NOT NULL,
   `member_id` INT(11) NOT NULL,
   `courier` VARCHAR(255) NULL DEFAULT NULL,
   `tracking_number` VARCHAR(255) NULL DEFAULT NULL,
+  `is_delete` INT(11) NOT NULL DEFAULT '0' COMMENT '0:미삭제, 1:삭제',
   PRIMARY KEY (`shipping_id`),
   UNIQUE INDEX `tracking_number` (`tracking_number` ASC) VISIBLE,
   INDEX `fk_shipping_ordered_idx` (`ordered_id` ASC) VISIBLE,
@@ -722,8 +767,8 @@ CREATE TABLE IF NOT EXISTS `todayart`.`shipping` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO `todayart`.`shipping` VALUE (1, 1, now(), 2500, "비트캠프 신촌", 04108, "서울특별시 마포구 백범로 23 지하 1층", 01012345678, 1, 3000, "우체국택배", "1002243905116");
-INSERT INTO `todayart`.`shipping` VALUE (2, 2, now(), 2500, "청와대", 03048, "서울 특별시 종로구 청와대대로1", 0288888888, 2, 3000, "우체국택배", "8012550995032");
+INSERT INTO `todayart`.`shipping` VALUE (1, 1, now(), 2500, "비트캠프 신촌", 04108, "서울특별시 마포구 백범로 23 지하 1층", 01012345678, 1, 3000, "우체국택배", "1002243905116", 0);
+INSERT INTO `todayart`.`shipping` VALUE (2, 2, now(), 2500, "청와대", 03048, "서울 특별시 종로구 청와대대로1", 0288888888, 2, 3000, "우체국택배", "8012550995032", 0);
 
 -- -----------------------------------------------------
 -- Table `todayart`.`shipping_items`
@@ -915,7 +960,13 @@ CREATE TABLE IF NOT EXISTS `todayart`.`wishlist` (
   `wishlist_id` INT(11) NOT NULL AUTO_INCREMENT,
   `member_id` INT(11) NOT NULL,
   `product_id` INT(11) NOT NULL,
-  `enroll_dated` DATETIME NULL DEFAULT NULL,
+  `artist_name` varchar(255) not NULL,
+  `thumbnail_id` INT(11) NOT NULL,
+  `product_price` int not null,
+  `product_size` varchar(255) not null,
+  `enroll_dated` DATETIME NULL DEFAULT current_timestamp,
+  `is_deleted` int(11) not null default 0 comment '0: not deleted, 1: deleted ',
+  `is_stock` INT(11) NOT NULL DEFAULT 1 COMMENT '0:재고없음, 1:재고있음',
   PRIMARY KEY (`wishlist_id`),
   INDEX `fk_wishlist_member_idx` (`member_id` ASC) VISIBLE,
   INDEX `fk_wishlist_product_idx` (`product_id` ASC) VISIBLE,
@@ -931,6 +982,18 @@ CREATE TABLE IF NOT EXISTS `todayart`.`wishlist` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO `todayart`.`wishlist`(`member_id`, `product_id`, `artist_name`, `thumbnail_id`, `product_price`, `product_size`)
+VALUE(1, 1, '홍길동', 1 , 10000 ,'10x20'); 
+INSERT INTO `todayart`.`wishlist`(`member_id`, `product_id`, `artist_name`, `thumbnail_id`, `product_price`, `product_size`)
+VALUE(1, 3000, '장길산', 1 , 20000 ,'20x20'); 
+INSERT INTO `todayart`.`wishlist`(`member_id`, `product_id`, `artist_name`, `thumbnail_id`, `product_price`, `product_size`)
+VALUE(1, 10001, '홍길동', 1 , 30000 ,'30x20'); 
+INSERT INTO `todayart`.`wishlist`(`member_id`, `product_id`, `artist_name`, `thumbnail_id`, `product_price`, `product_size`)
+VALUE(1, 1, '장길산', 1 , 450000 ,'40x20'); 
+INSERT INTO `todayart`.`wishlist`(`member_id`, `product_id`, `artist_name`, `thumbnail_id`, `product_price`, `product_size`)
+VALUE(1, 3000, '장길산', 1 , 25000 ,'60x20'); 
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

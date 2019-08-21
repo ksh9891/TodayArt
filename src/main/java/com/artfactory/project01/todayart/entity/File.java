@@ -2,6 +2,8 @@ package com.artfactory.project01.todayart.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.Column;
@@ -12,6 +14,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "file")
+@DynamicUpdate
+@DynamicInsert
 public class File {
     @Id
     @Column(name = "file_id")
@@ -32,7 +36,7 @@ public class File {
     @Column(name = "file_size")
     @Getter
     @Setter
-    private long fileSize;
+    private Long fileSize;
 
     @Column(name = "file_reg_dated", updatable = false, insertable = false)
     @Getter
@@ -47,7 +51,7 @@ public class File {
     @Column(name = "member_id")
     @Getter
     @Setter
-    private int memberId;
+    private Integer memberId;
 
     @Column(name = "file_content_type")
     @Getter

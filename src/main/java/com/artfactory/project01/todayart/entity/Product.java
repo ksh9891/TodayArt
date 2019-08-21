@@ -15,7 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 
-import java.time.LocalDate;
+
 import java.util.Date;
 
 @Entity
@@ -31,15 +31,18 @@ public class Product {
     @Column(columnDefinition = "int", name = "product_id", nullable = false, updatable = false)
     private Integer productId;
 
+
     @Column(name = "product_name")
     private String productName;
-
-
 
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
     private Artist artist;
+
+
+    @Column(name = "artist_name", nullable = true)
+    private String artistName;
 
 
     @Column(name = "product_size")
