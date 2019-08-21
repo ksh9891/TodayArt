@@ -42,7 +42,6 @@ public class OrderController {
     public Ordered createOrder(@RequestBody OrderForm orderForm, Principal principal){
         member = getMember(principal);
 
-
         try {
             return orderService.createOrder(member, orderForm);
         }catch(Exception e){

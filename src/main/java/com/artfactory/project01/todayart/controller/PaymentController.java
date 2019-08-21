@@ -37,6 +37,7 @@ public class PaymentController {
         String paymentMethod = payment.getPayMethod();
         switch(paymentMethod){
             case "카카오페이":
+                System.out.println("카카오페이 결제시도 성공");
                 break;
             case "신용카드":
                 break;

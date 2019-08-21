@@ -54,7 +54,7 @@ public class OrderService {
         ordered.setTotalPrice(orderForm.getTotalPrice());
         ordered.setShippingFee(orderForm.getShippingFee());
         ordered = orderedRepository.save(ordered);
-        ArrayList<Integer> cartIdList = orderForm.getCartIdList();
+        List<Integer> cartIdList = orderForm.getCartIdList();
 
         for(Integer cartId : cartIdList){
             Payment payment = orderForm.getPayment();
