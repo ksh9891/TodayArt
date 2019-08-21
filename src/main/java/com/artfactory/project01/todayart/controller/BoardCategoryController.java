@@ -1,8 +1,6 @@
 package com.artfactory.project01.todayart.controller;
 
-import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.entity.BoardCategory;
-import com.artfactory.project01.todayart.model.ArticleForm;
 import com.artfactory.project01.todayart.model.BoardCategoryForm;
 import com.artfactory.project01.todayart.model.ResultItems;
 import com.artfactory.project01.todayart.service.BoardCategoryService;
@@ -34,7 +32,7 @@ public class BoardCategoryController {
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(
-            path = "/boardCreate",
+            path = "/board",
             method = RequestMethod.POST,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -55,7 +53,7 @@ public class BoardCategoryController {
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(
-            path = "/boardList",
+            path = "/board",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -79,7 +77,7 @@ public class BoardCategoryController {
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(
-            path = "/{board_id}",
+            path = "/board/{board_id}",
             method = RequestMethod.PATCH,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -98,7 +96,7 @@ public class BoardCategoryController {
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(
-            path = "/delete",
+            path = "board/delete/{board_id}",
             method = RequestMethod.DELETE,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -106,7 +104,11 @@ public class BoardCategoryController {
             }
     )
     public BoardCategory dataDelete(@PathVariable("board_id") Integer id) {
-        boardCategoryService.deleteBoardCartegory(id);
+        try {
+            boardCategoryService.deleteBoardCartegory(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         BoardCategory boardCategory = new BoardCategory();
         boardCategory.setBoardId(id);

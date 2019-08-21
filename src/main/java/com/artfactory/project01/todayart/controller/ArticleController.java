@@ -66,8 +66,9 @@ public class ArticleController {
             }
     )
     public ResultItems<Article> listOf(
+            @RequestParam(name = "boardCategory") Integer boardId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size, Integer boardId) {
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Article> articleList = articleService.listOfArticle(boardId, pageable);
         return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
@@ -157,7 +158,7 @@ public class ArticleController {
     /*
      작성자: 진표
      기능 : 검색조건별 검색(제목,내용,유져아이디,제목+내용)
-     @param value(검색값),boardId(찾는 보드아이디),where(제목,내용,아이디,제목+내용)
+     @param value(검색값),boardCategory(찾는 보드아이디),where(제목,내용,아이디,제목+내용)
      @return 해당조건의 Page<Article>
      */
     @RequestMapping(
@@ -170,7 +171,7 @@ public class ArticleController {
     )
     public ResultItems<Article> search(
             @RequestParam (name = "value") String value,
-            @RequestParam (name = "boardId") Integer boardId,
+            @RequestParam (name = "boardCategory") Integer boardId,
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
             @RequestParam (name = "where") String where) {

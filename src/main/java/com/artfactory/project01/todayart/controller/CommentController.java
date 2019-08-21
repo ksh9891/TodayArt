@@ -1,14 +1,10 @@
 package com.artfactory.project01.todayart.controller;
 
-
-import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.entity.Comments;
 import com.artfactory.project01.todayart.model.CommentForm;
 import com.artfactory.project01.todayart.model.ResultItems;
-import com.artfactory.project01.todayart.service.ArticleService;
 import com.artfactory.project01.todayart.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.stream.Collectors;
 
 @RestController
@@ -64,8 +58,9 @@ public class CommentController {
             }
     )
     public ResultItems<Comments> listOf(
+            @RequestParam(name = "articleId") Integer articleId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size, Integer articleId) {
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Comments> commentList = commentService.listOfComments(articleId, pageable);
         return new ResultItems<Comments>(commentList.stream().collect(Collectors.toList()), page, size, commentList.getTotalElements());
@@ -137,7 +132,7 @@ public class CommentController {
     /*
      작성자: 진표
      기능 : 전체 댓글 검색(내용,유져아이디) //어드민전용
-     @param value(검색값),boardId(찾는 보드아이디),where(내용,아이디)
+     @param value(검색값),boardCategory(찾는 보드아이디),where(내용,아이디)
      @return 해당조건의 Page<Comments>
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -151,7 +146,7 @@ public class CommentController {
     )
     public ResultItems<Comments> search(
             @RequestParam (name = "value") String value,
-            @RequestParam (name = "boardId") Integer boardId,
+            @RequestParam (name = "boardCategory") Integer boardId,
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
             @RequestParam (name = "where") String where) {

@@ -1,5 +1,6 @@
 package com.artfactory.project01.todayart.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,18 +27,30 @@ public class Article implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer articleId;
 
-    @JoinColumn(table="board_category", name = "board_id")
-    @Column(name="board_id")
-    private Integer boardId;
-//
-//    @ManyToOne(fetch=FetchType.EAGER, targetEntity = BoardCategory.class)
-//    @JoinColumn(name = "borad_id")
-//    private BoardCategory boardCategory;
 
+    @ManyToOne(fetch = FetchType.EAGER,targetEntity = BoardCategory.class)
+    @JoinColumn(name = "board_id",nullable = false, updatable = false)
+    @JsonIgnore
+    private BoardCategory boardCategory;
+//    @JoinColumn(table="board_category", name = "board_id")
+//    @Column(name="board_id")
+//    private Integer boardCategory;
 
-    @JoinColumn(table = "member", name = "member_id")
-    @Column(name = "member_id")
-    private Integer memberId;
+//    @JoinColumn(table = "board_category", name = "board_name")
+//    @Column(name = "board_name")
+//    private String boardName;
+
+    @ManyToOne(fetch = FetchType.EAGER,targetEntity = Member.class)
+    @JoinColumn(name = "member_id",nullable = false,updatable = false)
+    private Member memberId;
+
+//    @JoinColumn(table = "member", name = "member_id")
+//    @Column(name = "member_id")
+//    private Integer memberId;
+
+//    @JoinColumn(table = "member" ,name = "nick_name")
+//    @Column(name = "nick_name")
+//    private String nickName;
 
     @Column(name = "write_dated", updatable = false, nullable = false)
     @CreationTimestamp
@@ -86,4 +99,12 @@ public class Article implements Serializable {
     @Column(name = "product_id")
     private Integer productId;
 
+    @Transient
+    private Integer commentNum;
+
+    @Transient
+    private String boardName;
+
+    @Transient
+    private Integer boardId;
 }

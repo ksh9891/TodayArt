@@ -37,13 +37,19 @@ public class ArticleService {
     */
     @Transactional(readOnly = true)
     public Page<Article> listOfArticle(Integer boardId, Pageable pageable) {
-        return articleRepository.findByBoard_id(boardId, pageable);
+        Page<Article> temp = articleRepository.findByBoardId(boardId, pageable);
+        for(Article article:temp){
+            article.setBoardName(article.getBoardCategory().getBoardName());
+            article.setBoardId(article.getBoardCategory().getBoardId());
+        }
+
+        return temp;
     }
 
     /*
        작성자: 진표
        기능 : 조건별 검색
-       @param value(검색값),boardId(찾는 보드아이디),where(제목,내용,아이디,제목+내용)
+       @param value(검색값),boardCategory(찾는 보드아이디),where(제목,내용,아이디,제목+내용)
        @return 검색된 Page<Article>
     */
     @Transactional(readOnly = true)
@@ -116,7 +122,5 @@ public class ArticleService {
     public void dataDeleteArticle(Integer id) {
         articleRepository.deleteById(id);
     }
-
-
 
 }
