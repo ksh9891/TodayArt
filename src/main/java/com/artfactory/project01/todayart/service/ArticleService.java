@@ -41,6 +41,8 @@ public class ArticleService {
         for(Article article:temp){
             article.setBoardName(article.getBoardCategory().getBoardName());
             article.setBoardId(article.getBoardCategory().getBoardId());
+            article.setMemberId(article.getMember().getMemberId());
+            article.setNickname(article.getMember().getNickname());
         }
 
         return temp;

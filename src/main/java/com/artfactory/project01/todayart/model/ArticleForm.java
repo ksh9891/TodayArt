@@ -177,7 +177,7 @@ public class ArticleForm implements Serializable {
             article.setBoardCategory(this.board_id);
         }
         if(member_id != null){
-            article.setMemberId(this.member_id);
+            article.setMember(this.member_id);
         }
         if(write_dated != null){
             article.setWriteDated(this.write_dated);

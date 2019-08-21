@@ -3,7 +3,6 @@ package com.artfactory.project01.todayart.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -32,25 +31,11 @@ public class Article implements Serializable {
     @JoinColumn(name = "board_id",nullable = false, updatable = false)
     @JsonIgnore
     private BoardCategory boardCategory;
-//    @JoinColumn(table="board_category", name = "board_id")
-//    @Column(name="board_id")
-//    private Integer boardCategory;
-
-//    @JoinColumn(table = "board_category", name = "board_name")
-//    @Column(name = "board_name")
-//    private String boardName;
 
     @ManyToOne(fetch = FetchType.EAGER,targetEntity = Member.class)
     @JoinColumn(name = "member_id",nullable = false,updatable = false)
-    private Member memberId;
-
-//    @JoinColumn(table = "member", name = "member_id")
-//    @Column(name = "member_id")
-//    private Integer memberId;
-
-//    @JoinColumn(table = "member" ,name = "nick_name")
-//    @Column(name = "nick_name")
-//    private String nickName;
+    @JsonIgnore
+    private Member member;
 
     @Column(name = "write_dated", updatable = false, nullable = false)
     @CreationTimestamp
@@ -101,6 +86,12 @@ public class Article implements Serializable {
 
     @Transient
     private Integer commentNum;
+
+    @Transient
+    private Integer memberId;
+
+    @Transient
+    private String nickname;
 
     @Transient
     private String boardName;
