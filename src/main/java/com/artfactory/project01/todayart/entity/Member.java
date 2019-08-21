@@ -1,6 +1,10 @@
 package com.artfactory.project01.todayart.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,9 +17,12 @@ import java.util.Collection;
 import java.util.Date;
 
 
+@ToString
 @Entity
 @Table(name="member")
 @DynamicInsert
+@Getter
+@Setter
 public class Member implements UserDetails, Serializable {
 
     @Id
@@ -32,8 +39,9 @@ public class Member implements UserDetails, Serializable {
     @Column(name="nickname")
     private String nickname;
 
-    @Column(name="username")
-    private String username;
+    @Column(name="realname")
+    private String realName;
+
 
     @Column(name="reg_dated")
     @Temporal(TemporalType.TIMESTAMP)
@@ -105,11 +113,15 @@ public class Member implements UserDetails, Serializable {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public Date getRegDated() {
@@ -167,7 +179,6 @@ public class Member implements UserDetails, Serializable {
     public void setEmailChecked(Integer emailChecked) {
         this.emailChecked = emailChecked;
     }
-
 
     @JsonIgnore
     @Override

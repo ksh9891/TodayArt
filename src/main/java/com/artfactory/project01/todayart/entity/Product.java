@@ -15,7 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 
-import java.time.LocalDate;
+
 import java.util.Date;
 
 @Entity
@@ -30,6 +30,7 @@ public class Product {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(columnDefinition = "int", name = "product_id", nullable = false, updatable = false)
     private Integer productId;
+
 
     @Column(name = "product_name")
     private String productName;

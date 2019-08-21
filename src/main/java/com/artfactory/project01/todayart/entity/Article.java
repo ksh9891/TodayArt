@@ -1,5 +1,6 @@
 package com.artfactory.project01.todayart.entity;
 
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -15,28 +16,24 @@ import java.util.Date;
 @DynamicUpdate
 public class Article implements Serializable {
 
-//    `articleId` int not null, `boardId` int not null, `writter_id` int not null, `writeDated` datetime not null default now(),
-//	`updateDated` datetime null, `title` varchar(255) not null, `content` text not null, `group` int null, `depth` int not null default 0,
-//   `replyOrder` int null,`isDeleted` int not null default 0 comment "0:미삭제, 1:삭제", `delete_dated` datetime null,
-//    `isHidden`	int not null default 0 comment "0:공개글, 1:비밀글", `password` varchar(255) null, `isReply` int not null default 0 comment "0:미답변, 1:답변",
-//   `views` int not null default 0, `productId` int null
 
     @Id
-    @Column(columnDefinition = "INT", name = "articleId", updatable = false, nullable = false)
+    @Column(columnDefinition = "INT", name = "article_id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer articleId;
 
-    @Column(name = "boardId", nullable = false)
+    @Column(name = "board_id", nullable = false)
     private Integer boardId;
 
-    @Column(name = "memberId", updatable = false, nullable = false)
+    @Column(name = "member_id", updatable = false, nullable = false)
     private Integer memberId;
 
-    @Column(name = "writeDated", updatable = false, nullable = false)
+    @Column(name = "write_dated", updatable = false, nullable = false)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date writeDated;
 
-    @Column(name = "updateDated", nullable = true)
+    @Column(name = "update_dated", nullable = true)
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDated;
@@ -53,29 +50,29 @@ public class Article implements Serializable {
     @Column(name = "depth")
     private Integer depth;
 
-    @Column(name = "replyOrder")
+    @Column(name = "reply_order")
     private Integer replyOrder;
 
-    @Column(name = "isDeleted")
+    @Column(name = "is_deleted")
     private Integer isDeleted;
 
     @Column(name = "delete_dated", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDated;
 
-    @Column(name = "isHidden")
+    @Column(name = "is_hidden")
     private Integer isHidden;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "isReply")
+    @Column(name = "is_reply")
     private Integer isReply;
 
     @Column(name = "views")
     private Integer views;
 
-    @Column(name = "productId")
+    @Column(name = "product_id")
     private Integer productId;
 
     public Integer getArticleId() {

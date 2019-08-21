@@ -21,59 +21,59 @@ public class MileageStatement {
     @Column(name = "trade_id")
     @Getter
     @Setter
-    private int tradeId;
+    private Integer tradeId;
 
     @Column(name = "artist_id")
     @Getter
     @Setter
-    private int artistId;
+    private Integer artistId;
 
     @Column(name = "order_id")
     @Getter
     @Setter
-    private int orderId;
+    private Integer orderId;
 
     @Column(name = "balance")
     @Nullable
     @Getter
     @Setter
-    private int balance;
+    private Integer balance;
 
     @Column(name = "income")
     @Nullable
     @Getter
     @Setter
-    private int income;
+    private Integer income;
 
     @Column(name = "commission_rate")
     @Nullable
     @Getter
     @Setter
-    private int commissionRate;
+    private Integer commissionRate;
 
     @Column(name = "commission")
     @Nullable
     @Getter
     @Setter
-    private int commission;
+    private Integer commission;
 
     @Column(name = "deposit_mileage")
     @Nullable
     @Getter
     @Setter
-    private int depositMileage;
+    private Integer depositMileage;
 
     @Column(name = "invoice_id")
     @Nullable
     @Getter
     @Setter
-    private int invoiceId;
+    private Integer invoiceId;
 
     @Column(name = "withdraw_mileage")
     @Nullable
     @Getter
     @Setter
-    private int withdrawMileage;
+    private Integer withdrawMileage;
 
     @Column(name = "create_dated")
     @Getter
@@ -82,5 +82,5 @@ public class MileageStatement {
     @Column(name = "is_delete")
     @Getter
     @Setter
-    private int isDelete;
+    private Integer isDelete;
 }

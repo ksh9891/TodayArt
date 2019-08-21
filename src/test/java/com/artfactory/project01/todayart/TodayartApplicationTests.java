@@ -23,7 +23,7 @@ public class TodayartApplicationTests {
     public void contextLoads() throws Exception{
         Date regDate = new Date();
         Member regMember = new Member();
-        regMember.setUsername("test1234");
+        regMember.setRealName("test1234");
         regMember.setPassword("test1234");
         regMember.setNickname("test1234");
         regMember.setEmail("test1234@bit.co.nz");

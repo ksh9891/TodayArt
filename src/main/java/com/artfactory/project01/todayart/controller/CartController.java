@@ -11,7 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,12 +31,30 @@ public class CartController {
     @Param Cart
     @Return Cart
     */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST','ADMIN')")
     @RequestMapping(method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Cart createCart(@RequestBody Cart cart, Principal principal){
         member = getMember(principal);
         return cartService.createCart(member, cart);
     }
+
+
+    /*
+    작성자: 채경
+    찜하기에서 장바구니로 이동을 누르면 장바구니로 이동됨
+    (장바구니로 이동을 누르면 자동 찜하기에서는 삭제)
+    @param Integer
+    @return null
+    */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @RequestMapping(path="/{wishListId}",
+            method = RequestMethod.POST,
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public Cart createWishToCart (@PathVariable Integer wishListId, Principal principal) {
+        member = getMember(principal);
+        return cartService.createWishToCart(member, wishListId);
+    }
+
 
 
      /*
@@ -47,7 +65,7 @@ public class CartController {
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ArrayList<Cart> retrieveCart(Principal principal){
+    public List<Cart> retrieveCart(Principal principal){
         member = getMember(principal);
         return cartService.retrieveCart(member);
     }
@@ -61,7 +79,7 @@ public class CartController {
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.PATCH, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ArrayList<Cart> updateCart(@RequestBody Map<String, ChangedCartItem> changedCartItem, Principal principal){
+    public List<Cart> updateCart(@RequestBody Map<String, ChangedCartItem> changedCartItem, Principal principal){
         member = getMember(principal);
         return cartService.updateCart(member,changedCartItem);
     }
@@ -74,9 +92,11 @@ public class CartController {
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(path="/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public void deleteCart(@PathVariable("id")int cartId){
+    public Cart deleteCart(@PathVariable("id")int cartId){
         cartService.deleteCart(cartId);
-
+        Cart cart= new Cart();
+        cart.setCartId(cartId);
+        return cart;
     }
 
 }

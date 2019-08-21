@@ -29,31 +29,47 @@ public class WishListService {
     CartRepository cartRepository;
 
 
-
     /*
       작성자: 채경
       새로운 wishList 레코드 작성
+      찜하기에 중복상품 있으면 시스템에 중복 출력하고
+      productid만 다시 리턴
     */
     @Transactional
-    public WishList createWishList(Member member, WishList wishList){
+    public WishList createWishList(Member member, WishList wishList) {
         int productId = wishList.getProduct().getProductId();
-        Product product = productRepository.findById(productId).get();
-        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
-        ProductForm productForm = new ProductForm();
-        productForm.setProduct(product);
-        product.setCountWishlist(product.getCountWishlist()+1);
-        //
-        wishList.setMemberId(member.getMemberId());
-        wishList.setProductPrice(product.getProductPrice());
-        wishList.setProductSize(product.getProductSize());
-        wishList.setThumbnailId(product.getThumbnailId());
-        wishList.setArtistName(product.getArtistName());
-        wishList.setIsStock(product.getRemain());
+                   Product product = productRepository.findById(productId).get();
+            Integer memberId = member.getMemberId();
+            if (wishListRepository.findByMemberIdAndProducIdtAndIsDelete(memberId, productId) != null) {
+                System.out.println("중복");
 
-        productRepository.save(product);
 
-        return wishListRepository.save(wishList);
+            } else if (wishListRepository.findByMemberIdAndProducIdtAndIsDelete(memberId, productId) == null) {
+
+            // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
+            ProductForm productForm = new ProductForm();
+            productForm.setProduct(product);
+            product.setCountWishlist(product.getCountWishlist() + 1);
+            //
+            wishList.setMemberId(member.getMemberId());
+            wishList.setProductPrice(product.getProductPrice());
+            wishList.setProductSize(product.getProductSize());
+            wishList.setThumbnailId(product.getThumbnailId());
+            wishList.setArtistName(product.getArtistName());
+            wishList.setIsStock(product.getRemain());
+
+            productRepository.save(product);
+            wishList = wishListRepository.save(wishList);
+
+        }
+        return wishList;
+
     }
+
+
+
+
+
 
 
 
@@ -74,33 +90,7 @@ public class WishListService {
 
 
 
-    /*
-     작성자: 채경
-     기능 : 찜하기에서 장바구니로 이동시켜줌
-     @param int
-     @return null
-   */
-    @Transactional
-    public Cart createWishToCart(Integer wishListId){
-        WishList wishList = wishListRepository.findByWishlistIdAndIsDelete(wishListId, 0);
-        Cart cart = new Cart();
-        int productId = wishList.getProduct().getProductId();
-        Product product = productRepository.findById(productId).get();
-        cart.setMemberId(wishList.getMemberId());
-        cart.setProduct(wishList.getProduct());
-        cart.setProductPrice(wishList.getProductPrice());
-        cart.setProductSize(wishList.getProductSize());
-        cart.setShippingFee(product.getShippingFee());
-        cart.setIsStock(wishList.getIsStock());
-        cart.setQuantity(1);
-        // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
-        ProductForm productForm = new ProductForm();
-        productForm.setProduct(product);
-        product.setCountWishlist(product.getCountWishlist()+1);
-        //
-        productRepository.save(product);
-       return cartRepository.save(cart);
-    }
+
 
 
     /*

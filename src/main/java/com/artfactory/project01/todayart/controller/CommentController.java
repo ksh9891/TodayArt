@@ -2,7 +2,8 @@ package com.artfactory.project01.todayart.controller;
 
 
 import com.artfactory.project01.todayart.entity.Article;
-import com.artfactory.project01.todayart.model.ArticleForm;
+import com.artfactory.project01.todayart.entity.Comments;
+import com.artfactory.project01.todayart.model.CommentForm;
 import com.artfactory.project01.todayart.model.ResultItems;
 import com.artfactory.project01.todayart.service.ArticleService;
 import com.artfactory.project01.todayart.service.CommentService;
@@ -19,10 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/article")
+@RequestMapping("/comment")
 @CrossOrigin
 @ResponseStatus(HttpStatus.OK)
-public class ArticleController {
+public class CommentController {
 
     @Autowired
     private ArticleService articleService;
@@ -31,121 +32,101 @@ public class ArticleController {
 
     /*
         작성자: 진표
-        기능 : 새로운 게시글 생성
-        @param Article
-        @return Article
+        기능 : 새로운 댓글 생성
+        @param Comment
+        @return Comment
      */
     @RequestMapping(
-            path = "/create",
             method = RequestMethod.POST,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article create(
-            @RequestBody Article article) {
+    public Comments create(
+            @RequestBody Comments comments) {
 
-        return articleService.cretateArticle(article);
+        return commentService.createComments(comments);
     }
 
     /*
      작성자: 진표
-     기능 : Board_id별 게시물 전체 출력
-     @param Article
-     @return 페이징 처리가된 Article List
+     기능 : Artcle_Id별 댓글 전체 출력
+     @param Comments
+     @return 페이징 처리가된 Comments List
      */
     @RequestMapping(
-            path = "/list",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ResultItems<Article> listOf(
+    public ResultItems<Comments> listOf(
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size, Integer boardId) {
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size, Integer articleId) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Article> articleList = articleService.listOfArticle(boardId, pageable);
-        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
+        Page<Comments> commentList = commentService.listOfComments(articleId, pageable);
+        return new ResultItems<Comments>(commentList.stream().collect(Collectors.toList()), page, size, commentList.getTotalElements());
     }
 
 
     /*
      작성자: 진표
-     기능 : article_id로 찾은 게시글 상세 표기
-     @param Article
-     @return Article
+     기능 : comment_id로 찾은 댓글 업데이트
+     @param Comments
+     @return Comments
      */
     @RequestMapping(
-            path = "/{article_id}",
-            method = RequestMethod.GET,
-            produces = {
-                    MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_XML_VALUE
-            }
-    )
-    public Article retrieve(@PathVariable("article_id") Integer id){
-        return articleService.itemOfArticle(id).get();
-    }
-
-    /*
-     작성자: 진표
-     기능 : article_id로 찾은 게시글 업데이트
-     @param Article
-     @return Article
-     */
-    @RequestMapping(
-            path = "/{article_id}",
+            path = "/{commentId}",
             method = RequestMethod.PATCH,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article update(@PathVariable("article_id") Integer id, @RequestBody ArticleForm articleForm) {
-        return articleService.updateArticle(id, articleForm);
+    public Comments update(@PathVariable("commentId") Integer id, @RequestBody CommentForm commentForm) {
+        return commentService.updateCommments(id, commentForm);
     }
 
     /*
      작성자: 진표
-     기능 : article_id별 is_delete의 값을 1로 수정
-     @param Article
-     @return Article
+     기능 : Comments의  is_delete의 값을 1로 수정
+     @param Comments
+     @return Comments
      */
     @RequestMapping(
-            path = "/{article_id}",
+            path = "/{commentId}",
             method = RequestMethod.DELETE,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article delete(@PathVariable("article_id") Integer id) {
-        return articleService.deleteArticle(id);
+    public Comments delete(@PathVariable("commentId") Integer id) {
+        return commentService.deleteComments(id);
     }
 
     /*
      작성자: 진표
-     기능 : article_id별 DB데이터 삭제
-     @param Article
-     @return 삭제완료된 Article
+     기능 : commentId별 DB데이터 삭제
+     @param Comments
+     @return 삭제완료된 Comments
      */
     @RequestMapping(
-            path = "/admin/{article_id}",
+            path = "/admin/{commentId}",
             method = RequestMethod.DELETE,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article dataDelete(@PathVariable("article_id") Integer id) {
-        articleService.dataDeleteArticle(id);
+    public Comments dataDelete(@PathVariable("commentId") Integer id) {
+        commentService.dataDeleteComments(id);
 
-        Article article = new Article();
-        article.setArticleId(id);
-        return article;
+        Comments comments = new Comments();
+        comments.setCommentId(id);
+        return comments;
     }
 
 
