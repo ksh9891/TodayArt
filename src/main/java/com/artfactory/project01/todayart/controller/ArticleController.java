@@ -66,7 +66,7 @@ public class ArticleController {
             }
     )
     public ResultItems<Article> listOf(
-            @RequestParam(name = "boardCategory") Integer boardId,
+            @RequestParam(name = "boardId") Integer boardId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -171,7 +171,7 @@ public class ArticleController {
     )
     public ResultItems<Article> search(
             @RequestParam (name = "value") String value,
-            @RequestParam (name = "boardCategory") Integer boardId,
+            @RequestParam (name = "boardId") Integer boardId,
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
             @RequestParam (name = "where") String where) {
