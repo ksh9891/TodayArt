@@ -9,7 +9,9 @@ import com.artfactory.project01.todayart.model.Period;
 import com.artfactory.project01.todayart.service.OrderService;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,14 +41,15 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Ordered createOrder(@RequestBody OrderForm orderForm, Principal principal){
+    public ResponseEntity<String> createOrder(@RequestBody OrderForm orderForm, Principal principal){
         member = getMember(principal);
 
-        try {
+
+//        try {
             return orderService.createOrder(member, orderForm);
-        }catch(Exception e){
-            return null;
-        }
+//        }catch(Exception e){
+//            return new ResponseEntity<String>("Error!", HttpStatus.NOT_FOUND);
+//        }
     }
 
 

@@ -1,7 +1,10 @@
 package com.artfactory.project01.todayart.service;
 
 import com.artfactory.project01.todayart.entity.Member;
+import com.artfactory.project01.todayart.entity.Ordered;
 import com.artfactory.project01.todayart.entity.Payment;
+import com.artfactory.project01.todayart.kakao.KakaoController;
+import com.artfactory.project01.todayart.kakao.KakaoPay;
 import com.artfactory.project01.todayart.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,8 @@ public class PaymentService {
 
     @Autowired
     PaymentRepository paymentRepository;
+    @Autowired
+    private KakaoController kakaoController;
 
 
     /*
@@ -36,8 +41,13 @@ public class PaymentService {
       @param
       @return null
     */
-    public Boolean callKakaoPay(){
-        return false;
+    public String callKakaoPay(Ordered ordered){
+        try {
+            kakaoController.kakaoPay(ordered);
+            return "kakaoPaySuccess";
+        }catch (Exception e){
+            return "kakaoPaySuccessFail";
+        }
     }
 
     /*
