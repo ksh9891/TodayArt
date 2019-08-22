@@ -47,9 +47,9 @@ public class BoardCategoryController {
 
     /*
      작성자: 진표
-     기능 : Board_id별 게시물 전체 출력
-     @param Article
-     @return 페이징 처리가된 Article List
+     기능 : 게시판 카테고리 출력
+     @param BoardCategory
+     @return 페이징 처리가된 BoardCategory
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(

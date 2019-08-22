@@ -1,5 +1,6 @@
 package com.artfactory.project01.todayart.service;
 
+import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.entity.Comments;
 import com.artfactory.project01.todayart.model.CommentForm;
 import com.artfactory.project01.todayart.repository.CommentRepository;
@@ -38,7 +39,12 @@ public class CommentService {
     */
     @Transactional(readOnly = true)
     public Page<Comments> listOfComments(Integer id,Pageable pageable) {
-        return commentRepository.findByArticleId(id, pageable);
+        Page<Comments> temp = commentRepository.findByArticleId(id, pageable);
+        for(Comments comments:temp){
+            comments.setMemberId(comments.getMember().getMemberId());
+            comments.setNickname(comments.getMember().getNickname());
+        }
+        return temp;
     }
 
 
@@ -83,7 +89,7 @@ public class CommentService {
     /*
       작성자: 진표
       기능 : 조건별 검색
-      @param value(검색값),boardCategory(찾는 보드아이디),where(제목,내용,아이디,제목+내용)
+      @param value(검색값),boardCategory(찾는 보드아이디),where(내용,아이디)
       @return 검색된 Page<Article>
    */
     @Transactional(readOnly = true)

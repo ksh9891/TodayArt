@@ -1,5 +1,6 @@
 package com.artfactory.project01.todayart.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,9 +29,10 @@ public class Comments implements Serializable {
     @Column(name = "article_id", updatable = false, nullable = false)
     private Integer articleId;
 
-    @JoinColumn(table = "member", name = "member_id")
-    @Column(name = "member_id", updatable = false, nullable = false)
-    private Integer memberId;
+    @ManyToOne(fetch = FetchType.EAGER,targetEntity = Member.class)
+    @JoinColumn(name = "member_id",nullable = false,updatable = false)
+    @JsonIgnore
+    private Member member;
 
     @Column(name = "comment")
     private String comment;
@@ -52,4 +54,9 @@ public class Comments implements Serializable {
     @Column(name = "is_deleted")
     private Integer isDeleted;
 
+    @Transient
+    private Integer memberId;
+
+    @Transient
+    private String nickname;
 }
