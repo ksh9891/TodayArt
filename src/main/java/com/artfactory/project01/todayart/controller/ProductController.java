@@ -100,11 +100,11 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/detail/{product_id}",
+            path = "/detail/{productId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public Product retrieveProductByProductId(@PathVariable("product_id") Integer productId) {
+    public Product retrieveProductByProductId(@PathVariable("productId") Integer productId) {
         return productService.retrieveProductDetail(productId);
     }
 
@@ -145,6 +145,31 @@ public class ProductController {
 
         return productService.retrieveByCategory(categoryId);
     }
+
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @RequestMapping(
+            path = "/category={categoryId}/asc",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public List<Product> retrieveProductByCategoryAsc(@PathVariable("categoryId") Integer categoryId) {
+
+        return productService.retrieveByCategoryAsc(categoryId);
+    }
+
+
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @RequestMapping(
+            path = "/category={categoryId}/desc",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public List<Product> retrieveProductByCategoryDesc(@PathVariable("categoryId") Integer categoryId) {
+
+        return productService.retrieveByCategoryDesc(categoryId);
+    }
+
+
 
 
 
