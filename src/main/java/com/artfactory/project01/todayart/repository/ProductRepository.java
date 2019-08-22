@@ -45,12 +45,19 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
 
+
+
+
     /*
     작성자: 채경
     기능 설명 : ProductService의 searchByCategory에서 사용/
                사용자가 선택한 카테고리별로 검색
     */
-    List<Product> findByProductCategory_CategoryIdAndIsDelete(Integer categoryId, Integer isDelete);
+    List<Product> findByProductCategory_CategoryIdAndIsDeleteOrderByEnrollDatedDesc(Integer categoryId, Integer isDelete);
+
+    List<Product> findByProductCategory_CategoryIdAndIsDeleteOrderByProductPriceAsc(Integer categoryId, Integer isDelete);
+
+    List<Product> findByProductCategory_CategoryIdAndIsDeleteOrderByProductPriceDesc(Integer categoryId, Integer isDelete);
 
 
 
