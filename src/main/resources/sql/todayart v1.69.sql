@@ -286,7 +286,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `todayart`.`article` (
   `article_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `board_id` INT(11) NOT NULL,
+  `board_id` INT(11) NOT NULL DEFAULT '1',
   `member_id` INT(11) NOT NULL,
   `write_dated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_dated` DATETIME NULL DEFAULT NULL,

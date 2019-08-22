@@ -2,10 +2,13 @@ package com.artfactory.project01.todayart.controller;
 
 
 import com.artfactory.project01.todayart.entity.Article;
+import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.model.ArticleForm;
 import com.artfactory.project01.todayart.model.ResultItems;
 import com.artfactory.project01.todayart.service.ArticleService;
 import com.artfactory.project01.todayart.service.CommentService;
+import com.artfactory.project01.todayart.util.MemberDetailServiceImpl;
+import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -17,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,6 +32,10 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    private Article article;
+    private static Member getMember(Principal principal){
+        return (Member) PrincipalUtil.from(principal);
+    }
 
     /*
         작성자: 진표
@@ -44,9 +52,8 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article create(
-            @RequestBody Article article) {
-
+    public Article create(@RequestBody Article article, Principal principal) {
+        article.setMember(getMember(principal));
         return articleService.cretateArticle(article);
     }
 
@@ -89,7 +96,8 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article retrieve(@PathVariable("article_id") Integer id){
+    public Article retrieve(@PathVariable("article_id") Integer id, Article article, Principal principal){
+        article.setMember(getMember(principal));
         return articleService.itemOfArticle(id).get();
     }
 
@@ -108,7 +116,8 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article update(@PathVariable("article_id") Integer id, @RequestBody ArticleForm articleForm) {
+    public Article update(@PathVariable("article_id") Integer id, @RequestBody ArticleForm articleForm , Principal principal) {
+        articleForm.setMember_id(getMember(principal));
         return articleService.updateArticle(id, articleForm);
     }
 
@@ -127,7 +136,8 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article delete(@PathVariable("article_id") Integer id) {
+    public Article delete(@PathVariable("article_id") Integer id,Principal principal) {
+        article.setMember(getMember(principal));
         return articleService.deleteArticle(id);
     }
 
@@ -146,8 +156,9 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article dataDelete(@PathVariable("article_id") Integer id) {
+    public Article dataDelete(@PathVariable("article_id") Integer id, Principal principal) {
         articleService.dataDeleteArticle(id);
+        article.setMember(getMember(principal));
 
         Article article = new Article();
         article.setArticleId(id);
@@ -161,6 +172,7 @@ public class ArticleController {
      @param value(검색값),boardCategory(찾는 보드아이디),where(제목,내용,아이디,제목+내용)
      @return 해당조건의 Page<Article>
      */
+    @PreAuthorize("isAnonymous()")
     @RequestMapping(
             path = "/search",
             method = RequestMethod.GET,
