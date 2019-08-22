@@ -79,18 +79,18 @@ public class KakaoService {
 
 
 
-    public ResponseEntity kakaoPayInfo(Ordered ordered, String pg_token){
+    public ResponseEntity kakaoPayInfo(Ordered ordered, String pg_token, String tid){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = headers();
 
-        MultiValueMap<String, String> params = infoParams(ordered, pg_token);
+        MultiValueMap<String, String> params = infoParams(ordered, pg_token, tid);
 
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
 
         try{
             kakaoInfoRequest = restTemplate.postForObject(new URI(HOST+"/v1/payment/approve"), body, KakaoInfoRequest.class);
             log.info(""+kakaoInfoRequest);
-
+            log.info("!!!!!!!!!!!!결제 승인 성공!!!!!!!!!!!!!");
             return new ResponseEntity<KakaoInfoRequest>(kakaoInfoRequest, HttpStatus.OK);
         }catch(RestClientException e){
             e.printStackTrace();
@@ -100,10 +100,12 @@ public class KakaoService {
         return new ResponseEntity<String>("결제 정보를 찾을 수 없습니다", HttpStatus.NOT_FOUND);
     }
 
-    public MultiValueMap<String, String> infoParams(Ordered ordered,String pg_token){
+    public MultiValueMap<String, String> infoParams(Ordered ordered,String pg_token, String tid){
+        log.info("ordered : "+ordered);
+        log.info("ordered.getOrderedId : "+ordered.getOrderId());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("cid", "TC0ONETIME");
-        params.add("tid", kakaoRequest.getTid());
+        params.add("tid", tid);
         params.add("partner_order_id", ordered.getOrderId().toString());
         params.add("partner_user_id", ordered.getMemberId().toString());
         params.add("pg_token", pg_token);

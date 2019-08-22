@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Response;
+import java.util.Map;
 
 @Log
 @RestController
@@ -31,12 +32,14 @@ public class KakaoController {
 
     }
 
-    @GetMapping("/kakaoPaySuccess")
-    public ResponseEntity kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Ordered ordered) {
+    @RequestMapping("/kakaoPaySuccess")
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public ResponseEntity kakaoPaySuccess(@RequestBody Ordered ordered,
+                                          @RequestParam("pg_token") String pg_token, @RequestParam("tid") String tid) {
         log.info("kakaoPaySuccess get............................................");
         log.info("kakaoPaySuccess pg_token : " + pg_token);
 
-        return kakaoService.kakaoPayInfo(ordered, pg_token);
+        return kakaoService.kakaoPayInfo(ordered, pg_token, tid);
 
     }
 
