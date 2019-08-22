@@ -1,6 +1,7 @@
 package com.artfactory.project01.todayart.service;
 
 import com.artfactory.project01.todayart.entity.Article;
+import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.model.ArticleForm;
 import com.artfactory.project01.todayart.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.Optional;
 
@@ -26,6 +28,8 @@ public class ArticleService {
     */
     @Transactional
     public Article cretateArticle(Article article) {
+
+
         return articleRepository.save(article);
     }
 
@@ -78,11 +82,16 @@ public class ArticleService {
     */
     @Transactional
     public Optional<Article> itemOfArticle(Integer id) {
-        Article originalVO = articleRepository.findById(id).get();
+        Article article = articleRepository.findById(id).get();
+
+        article.setBoardName(article.getBoardCategory().getBoardName());
+        article.setBoardId(article.getBoardCategory().getBoardId());
+        article.setMemberId(article.getMember().getMemberId());
+        article.setNickname(article.getMember().getNickname());
 
         //view 값을 가져와서  +1
-        originalVO.setViews(originalVO.getViews()+1);
-        articleRepository.save(originalVO);
+        article.setViews(article.getViews()+1);
+        articleRepository.save(article);
 
         return articleRepository.findById(id);
     }

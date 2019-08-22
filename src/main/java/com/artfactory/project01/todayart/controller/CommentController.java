@@ -1,9 +1,12 @@
 package com.artfactory.project01.todayart.controller;
 
+import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.entity.Comments;
+import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.model.CommentForm;
 import com.artfactory.project01.todayart.model.ResultItems;
 import com.artfactory.project01.todayart.service.CommentService;
+import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,6 +28,10 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    private Comments comments;
+    private static Member getMember(Principal principal){
+        return (Member) PrincipalUtil.from(principal);
+    }
     /*
         작성자: 진표
         기능 : 새로운 댓글 생성
@@ -38,8 +47,8 @@ public class CommentController {
             }
     )
     public Comments create(
-            @RequestBody Comments comments) {
-
+            @RequestBody Comments comments, Principal principal) {
+        comments.setMember(getMember(principal));
         return commentService.createComments(comments);
     }
 
@@ -60,7 +69,9 @@ public class CommentController {
     public ResultItems<Comments> listOf(
             @RequestParam(name = "articleId") Integer articleId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size,
+            Principal principal) {
+        comments.setMember(getMember(principal));
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Comments> commentList = commentService.listOfComments(articleId, pageable);
         return new ResultItems<Comments>(commentList.stream().collect(Collectors.toList()), page, size, commentList.getTotalElements());
@@ -82,7 +93,9 @@ public class CommentController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Comments update(@PathVariable("commentId") Integer id, @RequestBody CommentForm commentForm) {
+    public Comments update(@PathVariable("commentId") Integer id,
+                           @RequestBody CommentForm commentForm, Principal principal) {
+        comments.setMember(getMember(principal));
         return commentService.updateCommments(id, commentForm);
     }
 
@@ -101,7 +114,8 @@ public class CommentController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Comments delete(@PathVariable("commentId") Integer id) {
+    public Comments delete(@PathVariable("commentId") Integer id, Principal principal) {
+        comments.setMember(getMember(principal));
         return commentService.deleteComments(id);
     }
 
@@ -120,7 +134,8 @@ public class CommentController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Comments dataDelete(@PathVariable("commentId") Integer id) {
+    public Comments dataDelete(@PathVariable("commentId") Integer id, Principal principal) {
+        comments.setMember(getMember(principal));
         commentService.dataDeleteComments(id);
 
         Comments comments = new Comments();
@@ -149,7 +164,9 @@ public class CommentController {
             @RequestParam (name = "boardCategory") Integer boardId,
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
-            @RequestParam (name = "where") String where) {
+            @RequestParam (name = "where") String where,
+            Principal principal) {
+        comments.setMember(getMember(principal));
 
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Comments> commentList = commentService.search(value,boardId,where,pageable);

@@ -5,10 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "board_category")
@@ -24,4 +21,5 @@ public class BoardCategory {
 
     @Column(name = "board_name")
     private String boardName;
+
 }
