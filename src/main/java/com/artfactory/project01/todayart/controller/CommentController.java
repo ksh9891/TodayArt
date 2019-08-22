@@ -1,22 +1,17 @@
 package com.artfactory.project01.todayart.controller;
 
-
-import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.entity.Comments;
 import com.artfactory.project01.todayart.model.CommentForm;
 import com.artfactory.project01.todayart.model.ResultItems;
-import com.artfactory.project01.todayart.service.ArticleService;
 import com.artfactory.project01.todayart.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,8 +21,6 @@ import java.util.stream.Collectors;
 public class CommentController {
 
     @Autowired
-    private ArticleService articleService;
-    @Autowired
     private CommentService commentService;
 
     /*
@@ -36,6 +29,7 @@ public class CommentController {
         @param Comment
         @return Comment
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
             method = RequestMethod.POST,
             produces = {
@@ -55,6 +49,7 @@ public class CommentController {
      @param Comments
      @return 페이징 처리가된 Comments List
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
             method = RequestMethod.GET,
             produces = {
@@ -63,8 +58,9 @@ public class CommentController {
             }
     )
     public ResultItems<Comments> listOf(
+            @RequestParam(name = "articleId") Integer articleId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size, Integer articleId) {
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Comments> commentList = commentService.listOfComments(articleId, pageable);
         return new ResultItems<Comments>(commentList.stream().collect(Collectors.toList()), page, size, commentList.getTotalElements());
@@ -77,6 +73,7 @@ public class CommentController {
      @param Comments
      @return Comments
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
             path = "/{commentId}",
             method = RequestMethod.PATCH,
@@ -95,6 +92,7 @@ public class CommentController {
      @param Comments
      @return Comments
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
             path = "/{commentId}",
             method = RequestMethod.DELETE,
@@ -113,6 +111,7 @@ public class CommentController {
      @param Comments
      @return 삭제완료된 Comments
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(
             path = "/admin/{commentId}",
             method = RequestMethod.DELETE,
@@ -132,10 +131,11 @@ public class CommentController {
 
     /*
      작성자: 진표
-     기능 : 검색조건별 검색(제목,내용,유져아이디,제목+내용)
-     @param Article
-     @return 해당조건의 페이지네이션된 Article
+     기능 : 전체 댓글 검색(내용,유져아이디) //어드민전용
+     @param value(검색값),boardCategory(찾는 보드아이디),where(내용,아이디)
+     @return 해당조건의 Page<Comments>
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(
             path = "/search",
             method = RequestMethod.GET,
@@ -144,16 +144,16 @@ public class CommentController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public ResultItems<Article> Search(
+    public ResultItems<Comments> search(
             @RequestParam (name = "value") String value,
-            @RequestParam (name = "boardId") Integer boardId,
+            @RequestParam (name = "boardCategory") Integer boardId,
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
             @RequestParam (name = "where") String where) {
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Article> articleList = articleService.search(value,boardId,where,pageable);
-        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
+        Page<Comments> commentList = commentService.search(value,boardId,where,pageable);
+        return new ResultItems<Comments>(commentList.stream().collect(Collectors.toList()), page, size, commentList.getTotalElements());
     }
 
 }
