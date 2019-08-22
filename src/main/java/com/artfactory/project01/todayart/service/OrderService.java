@@ -46,10 +46,7 @@ public class OrderService {
       @return Ordered
     */
     @Transactional(rollbackFor = VerificateFailException.class)
-    public ResponseEntity<String> createOrder(Member member, OrderForm orderForm)/* throws VerificateFailException*/{
-
-        int totalShippingFee=0;
-        int totalPrice=0;
+    public ResponseEntity<Ordered> createOrder(Member member, OrderForm orderForm){
 
         Ordered ordered = new Ordered();
         ordered.setMemberId(member.getMemberId());
@@ -57,7 +54,7 @@ public class OrderService {
         ordered.setShippingFee(orderForm.getShippingFee());
         ordered = orderedRepository.save(ordered);
         List<Integer> cartIdList = orderForm.getCartIdList();
-        List<OrderedDetail> orderedDetails = new ArrayList<OrderedDetail>();
+        List<OrderedDetail> orderedDetails = new ArrayList<>();
 
 
         for(Integer cartId : cartIdList){
@@ -66,33 +63,17 @@ public class OrderService {
             Product product = cart.getProduct();
             OrderedDetail orderedDetail = setOrderDetail(ordered, product, cart);
             orderedDetailRepository.save(orderedDetail);
-            totalShippingFee+=orderedDetail.getShippingFee();
-            totalPrice+=orderedDetail.getTotalPrice();
-            cart.setIsDeleted(1);
             cartRepository.save(cart);
+
             orderedDetails.add(orderedDetail);
             paymentController.createPayment(payment, ordered.getOrderId(),orderedDetail.getOrderDetailId(), orderedDetail.getTotalPrice());
         }
         ordered.setOrderDetails(orderedDetails);
-        System.out.println("shippingFee : "+totalShippingFee+" / totalPrice : "+totalPrice);
-        System.out.println("Ordered.shippingFee : "+ordered.getShippingFee()+" / Ordered.totalPrice : "+ordered.getTotalPrice());
-
-
-//        try{
-//        if(ordered.getShippingFee()==totalShippingFee
-//        &&ordered.getTotalPrice()==totalPrice){
-//        } else{
-//            throw new VerificateFailException("값 검증 실패");
-//        }
-
-        System.out.println("orderedDetails Is Empty? ; "+ordered.getOrderDetails());
-        return paymentController.updatePayment(ordered, orderForm.getPayment());
-
-
-//        }catch(VerificateFailException e) {
-//            e.printStackTrace();
-//            throw new VerificateFailException();
-//        }
+        try {
+            return new ResponseEntity(ordered, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity(ordered, HttpStatus.BAD_REQUEST);
+        }
 
     }
 

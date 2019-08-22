@@ -41,15 +41,10 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<String> createOrder(@RequestBody OrderForm orderForm, Principal principal){
+    public ResponseEntity<Ordered> createOrder(@RequestBody OrderForm orderForm, Principal principal){
         member = getMember(principal);
 
-
-//        try {
-            return orderService.createOrder(member, orderForm);
-//        }catch(Exception e){
-//            return new ResponseEntity<String>("Error!", HttpStatus.NOT_FOUND);
-//        }
+        return orderService.createOrder(member, orderForm);
     }
 
 

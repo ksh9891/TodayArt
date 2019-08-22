@@ -2,7 +2,6 @@ package com.artfactory.project01.todayart.controller;
 
 import com.artfactory.project01.todayart.entity.Ordered;
 import com.artfactory.project01.todayart.entity.Payment;
-import com.artfactory.project01.todayart.kakao.KakaoPay;
 import com.artfactory.project01.todayart.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +38,7 @@ public class PaymentController {
       @return null
     */
     @PatchMapping
-    public ResponseEntity<String> updatePayment(Ordered ordered, Payment payment){
+    public ResponseEntity updatePayment(Ordered ordered, Payment payment){
         String paymentMethod = payment.getPayMethod();
         switch(paymentMethod){
             case "카카오페이":
