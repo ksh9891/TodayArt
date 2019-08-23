@@ -63,7 +63,7 @@ public class ArticleController {
      @param Article
      @return 페이징 처리가된 Article List
      */
-    @PreAuthorize("isAnonymous()")
+//    @PreAuthorize("isAnonymous()")
     @RequestMapping(
             path = "/list",
             method = RequestMethod.GET,
@@ -96,8 +96,9 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article retrieve(@PathVariable("article_id") Integer id, Article article, Principal principal){
-        article.setMember(getMember(principal));
+    public Article retrieve(@PathVariable("article_id") Integer id, Article article,Principal principal){
+        Member member = getMember(principal);
+        article.setMember(member);
         return articleService.itemOfArticle(id).get();
     }
 
@@ -117,7 +118,8 @@ public class ArticleController {
             }
     )
     public Article update(@PathVariable("article_id") Integer id, @RequestBody ArticleForm articleForm , Principal principal) {
-        articleForm.setMember_id(getMember(principal));
+        Member member = getMember(principal);
+        article.setMember(member);
         return articleService.updateArticle(id, articleForm);
     }
 
@@ -137,7 +139,8 @@ public class ArticleController {
             }
     )
     public Article delete(@PathVariable("article_id") Integer id,Principal principal) {
-        article.setMember(getMember(principal));
+        Member member = getMember(principal);
+        article.setMember(member);
         return articleService.deleteArticle(id);
     }
 
@@ -156,9 +159,11 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article dataDelete(@PathVariable("article_id") Integer id, Principal principal) {
+    public Article dataDelete(@PathVariable("article_id") Integer id,Principal principal) {
+        Member member = getMember(principal);
+        article.setMember(member);
+
         articleService.dataDeleteArticle(id);
-        article.setMember(getMember(principal));
 
         Article article = new Article();
         article.setArticleId(id);
@@ -172,7 +177,7 @@ public class ArticleController {
      @param value(검색값),boardCategory(찾는 보드아이디),where(제목,내용,아이디,제목+내용)
      @return 해당조건의 Page<Article>
      */
-    @PreAuthorize("isAnonymous()")
+
     @RequestMapping(
             path = "/search",
             method = RequestMethod.GET,
