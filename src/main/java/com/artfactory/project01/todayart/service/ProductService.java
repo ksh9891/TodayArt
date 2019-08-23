@@ -116,7 +116,18 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveByCategory(Integer category_id) {
-        return productRepository.findByProductCategory_CategoryIdAndIsDelete(category_id, 0);
+        return productRepository.findByProductCategory_CategoryIdAndIsDeleteOrderByEnrollDatedDesc(category_id, 0);
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<Product> retrieveByCategoryAsc(Integer category_id) {
+        return productRepository.findByProductCategory_CategoryIdAndIsDeleteOrderByProductPriceAsc(category_id, 0);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> retrieveByCategoryDesc(Integer category_id) {
+        return productRepository.findByProductCategory_CategoryIdAndIsDeleteOrderByProductPriceDesc(category_id, 0);
     }
 
 

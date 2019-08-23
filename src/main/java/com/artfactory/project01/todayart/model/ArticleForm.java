@@ -1,6 +1,9 @@
 package com.artfactory.project01.todayart.model;
 
 import com.artfactory.project01.todayart.entity.Article;
+import com.artfactory.project01.todayart.entity.BoardCategory;
+import com.artfactory.project01.todayart.entity.Member;
+
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,8 +11,8 @@ import java.util.Date;
 public class ArticleForm implements Serializable {
 
     private Integer article_id;
-    private Integer board_id;
-    private Integer member_id;
+    private BoardCategory board_id;
+    private Member member_id;
     private Date write_dated;
     private Date update_dated;
     private String title;
@@ -34,19 +37,19 @@ public class ArticleForm implements Serializable {
         this.article_id = article_id;
     }
 
-    public Integer getBoard_id() {
+    public BoardCategory getBoard_id() {
         return board_id;
     }
 
-    public void setBoard_id(Integer board_id) {
+    public void setBoard_id(BoardCategory board_id) {
         this.board_id = board_id;
     }
 
-    public Integer getMember_id() {
+    public Member getMember_id() {
         return member_id;
     }
 
-    public void setMember_id(Integer member_id) {
+    public void setMember_id(Member member_id) {
         this.member_id = member_id;
     }
 
@@ -171,10 +174,10 @@ public class ArticleForm implements Serializable {
             article.setArticleId(this.article_id);
         }
         if(board_id != null){
-            article.setBoardId(this.board_id);
+            article.setBoardCategory(this.board_id);
         }
         if(member_id != null){
-            article.setMemberId(this.member_id);
+            article.setMember(this.member_id);
         }
         if(write_dated != null){
             article.setWriteDated(this.write_dated);

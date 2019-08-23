@@ -1,5 +1,6 @@
 package com.artfactory.project01.todayart.model;
 
+import com.artfactory.project01.todayart.entity.File;
 import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.entity.ProductCategory;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class ProductForm implements Serializable {
     private String productName;
     private String productSize;
     private Integer productPrice;
-    private Integer thumbnailId;
+    private File thumbnail;
     private Integer remain;
     private Integer shippingFee;
     private Integer isSoldOut;
@@ -60,27 +61,27 @@ public class ProductForm implements Serializable {
         if(productSize != null){
             product.setProductSize(this.productSize);
         }
-        if(thumbnailId != null){
-            product.setThumbnailId(this.thumbnailId);
+        if(thumbnail != null){
+            product.setThumbnail(this.thumbnail);
         }
-//        if(productCategory != null){
-//            product.setProductCategory(productCategory);
-//        }
-//        if(remain!= null){
-//            product.setRemain(this.remain);
-//        }
-//        if(shippingFee != null){
-//            product.setShippingFee(this.shippingFee);
-//        }
-//        if(isSoldOut != null){
-//            product.setIsSoldOut(this.isSoldOut);
-//        }
-//        if(productPrice != null){
-//            product.setProductPrice(this.productPrice);
-//        }
-//        if(productContent != null){
-//            product.setProductContent(this.productContent);
-//        }
+        if(productCategory != null){
+            product.setProductCategory(productCategory);
+        }
+        if(remain!= null){
+            product.setRemain(this.remain);
+        }
+        if(shippingFee != null){
+            product.setShippingFee(this.shippingFee);
+        }
+        if(isSoldOut != null){
+            product.setIsSoldOut(this.isSoldOut);
+        }
+        if(productPrice != null){
+            product.setProductPrice(this.productPrice);
+        }
+        if(productContent != null){
+            product.setProductContent(this.productContent);
+        }
 
 
 
@@ -89,84 +90,4 @@ public class ProductForm implements Serializable {
     }
 
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getProductSize() {
-        return productSize;
-    }
-
-    public void setProductSize(String productSize) {
-        this.productSize = productSize;
-    }
-
-    public Integer getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(Integer productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public Integer getThumbnailId() {
-        return thumbnailId;
-    }
-
-    public void setThumbnailId(Integer thumbnailId) {
-        this.thumbnailId = thumbnailId;
-    }
-
-
-    public Integer getRemain() {
-        return remain;
-    }
-
-    public void setRemain(Integer remain) {
-        this.remain = remain;
-    }
-
-    public Integer getShippingFee() {
-        return shippingFee;
-    }
-
-    public void setShippingFee(Integer shippingFee) {
-        this.shippingFee = shippingFee;
-    }
-
-    public Integer getIsSoldOut() {
-        return isSoldOut;
-    }
-
-    public void setIsSoldOut(Integer isSoldOut) {
-        this.isSoldOut = isSoldOut;
-    }
-
-    public String getProductContent() {
-        return productContent;
-    }
-
-    public void setProductContent(String productContent) {
-        this.productContent = productContent;
-    }
-
-    public Date getDeleteDated() {
-        return deleteDated;
-    }
-
-    public void setDeleteDated(Date deleteDated) {
-        this.deleteDated = deleteDated;
-    }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
 }
