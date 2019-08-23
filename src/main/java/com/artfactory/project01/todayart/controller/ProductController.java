@@ -50,7 +50,7 @@ public class ProductController {
               (상품 전체 리스트 : 구매 고객)
    @return 전체 List<Product>객체
    */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
