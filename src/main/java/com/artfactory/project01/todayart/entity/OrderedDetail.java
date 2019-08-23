@@ -22,7 +22,7 @@ public class OrderedDetail implements Serializable {
     @Column(name = "ordered_id")
     private Integer orderId;
 
-    @Column(name = "product_id", insertable = false, updatable = false)
+    @Column(name = "product_id")
     private Integer productId;
 
     @Column(name = "cart_id")
@@ -55,7 +55,7 @@ public class OrderedDetail implements Serializable {
     @Column(name = "status")
     private String status;
 
-    @OneToOne(targetEntity = Product.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
-    private Product product;
+//    @OneToOne(targetEntity = Product.class, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+//    private Product product;
 }
