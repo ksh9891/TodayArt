@@ -1,9 +1,6 @@
 package com.artfactory.project01.todayart.service;
 
-import com.artfactory.project01.todayart.entity.Cart;
-import com.artfactory.project01.todayart.entity.Member;
-import com.artfactory.project01.todayart.entity.Product;
-import com.artfactory.project01.todayart.entity.WishList;
+import com.artfactory.project01.todayart.entity.*;
 import com.artfactory.project01.todayart.model.ChangedCartItem;
 import com.artfactory.project01.todayart.model.ProductForm;
 import com.artfactory.project01.todayart.repository.CartRepository;
@@ -131,10 +128,22 @@ public class CartService implements Serializable {
       @return null
     */
     @Transactional
-    public void deleteCart(int cartId){
+    public boolean deleteCart(int cartId){
         Cart cart = cartRepository.findById(cartId).get();
         cart.setIsDeleted(1);
         cartRepository.save(cart);
+        return true;
+    }
+
+    public boolean deleteCart(List<OrderedDetail> list) throws Exception{
+        try {
+            for (OrderedDetail item : list) {
+                deleteCart(item.getCartId());
+            }
+            return true;
+        }catch(Exception ex){
+            throw new Exception();
+        }
     }
 
 

@@ -4,13 +4,19 @@ import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.entity.Ordered;
 import com.artfactory.project01.todayart.entity.OrderedDetail;
 import com.artfactory.project01.todayart.model.ChangeOrderDetail;
+import com.artfactory.project01.todayart.entity.KakaoInfoRequest;
 import com.artfactory.project01.todayart.model.OrderForm;
 import com.artfactory.project01.todayart.model.Period;
+import com.artfactory.project01.todayart.repository.KakaoInfoRequestRepository;
+import com.artfactory.project01.todayart.service.CartService;
 import com.artfactory.project01.todayart.service.OrderService;
+import com.artfactory.project01.todayart.service.PaymentService;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -23,6 +29,12 @@ public class OrderController {
 
     @Autowired
     OrderService orderService;
+    @Autowired
+    PaymentService paymentService;
+    @Autowired
+    CartService cartService;
+    @Autowired
+    KakaoInfoRequestRepository kakaoInfoRequestRepository;
 
     private Member member;
     private static Member getMember(Principal principal){
@@ -39,14 +51,29 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Ordered createOrder(@RequestBody OrderForm orderForm, Principal principal){
+    public ResponseEntity<Ordered> createOrder(@RequestBody OrderForm orderForm, Principal principal){
         member = getMember(principal);
+        return orderService.createOrder(member, orderForm);
+    }
 
-        try {
-            return orderService.createOrder(member, orderForm);
+    /**
+     * 작성자 : 국화
+     * kakaoPay 승인 후 연관 데이터 업데이트
+     * @return
+     */
+    @Transactional
+    public Boolean updateKakaoOrders(Ordered ordered, KakaoInfoRequest kakao){
+        List<OrderedDetail> orderedDetails = ordered.getOrderDetails();
+        try{
+            cartService.deleteCart(orderedDetails);
+            orderService.updateOrderDetailForKakao(orderedDetails);
+            paymentService.updatePaymentForKakao(orderedDetails, kakao);
+            kakaoInfoRequestRepository.save(kakao);
+            return true;
         }catch(Exception e){
-            return null;
+            e.printStackTrace();
         }
+        return false;
     }
 
 

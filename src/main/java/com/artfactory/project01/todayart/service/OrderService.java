@@ -10,6 +10,8 @@ import com.artfactory.project01.todayart.repository.CartRepository;
 import com.artfactory.project01.todayart.repository.OrderedDetailRepository;
 import com.artfactory.project01.todayart.repository.OrderedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,32 +31,29 @@ public class OrderService {
     PaymentController paymentController;
 
 
-    /*
+    /**
       작성자: 국화
       1. orderForm 을 받아 ordered을 생성한다
       2. 각 ordered 와 연결되는 shipping 레코드를 생성한다
       3. orderForm 의 CartIdList 에 따라 orderedDetail 를 생성한다
       4. 각 orderedDetail 과 연결되는 payment 레코드를 생성한다
-      5. 주문서와 DB 사이의 값을 검증
-      6. paymentMethod에 따라 paymentController 를 호출한다 (결제 api 호출은 paymentService에서 실행)
-      7. paymentController의 반환값(결제성공, 결제실패)에 따라 결과를 return 한다
-        (결제성공시 Ordered return, 실패시 error return)
+      5. 주문생성이 완료되면 HttpStatus.OK , 실패하면 HttpStatus.BAD_REQUEST 를 return 한다
       @param member
-      @param OrderedForm
-      @return Ordered
+      @param orderForm
+      @return ResponseEntity<Ordered>
     */
     @Transactional(rollbackFor = VerificateFailException.class)
-    public Ordered createOrder(Member member, OrderForm orderForm) throws VerificateFailException{
-
-        int totalShippingFee=0;
-        int totalPrice=0;
+    public ResponseEntity<Ordered> createOrder(Member member, OrderForm orderForm){
 
         Ordered ordered = new Ordered();
         ordered.setMemberId(member.getMemberId());
         ordered.setTotalPrice(orderForm.getTotalPrice());
         ordered.setShippingFee(orderForm.getShippingFee());
         ordered = orderedRepository.save(ordered);
-        ArrayList<Integer> cartIdList = orderForm.getCartIdList();
+
+        List<Integer> cartIdList = orderForm.getCartIdList();
+        List<OrderedDetail> orderedDetails = new ArrayList<>();
+
 
         for(Integer cartId : cartIdList){
             Payment payment = orderForm.getPayment();
@@ -62,24 +61,17 @@ public class OrderService {
             Product product = cart.getProduct();
             OrderedDetail orderedDetail = setOrderDetail(ordered, product, cart);
             orderedDetailRepository.save(orderedDetail);
-            totalShippingFee+=orderedDetail.getShippingFee();
-            totalPrice+=orderedDetail.getTotalPrice();
-            cart.setIsDeleted(1);
-            cartRepository.save(cart);
+
+            orderedDetails.add(orderedDetail);
             paymentController.createPayment(payment, ordered.getOrderId(),orderedDetail.getOrderDetailId(), orderedDetail.getTotalPrice());
         }
-            paymentController.updatePayment(orderForm.getPayment());
 
-        try{
-        if(ordered.getShippingFee()==totalShippingFee
-        &&ordered.getTotalPrice()==totalPrice){
-        } else{
-            throw new VerificateFailException("값 검증 실패");
-        }
-        return ordered;
-        }catch(VerificateFailException e) {
-            e.printStackTrace();
-            throw new VerificateFailException();
+        ordered.setOrderDetails(orderedDetails);
+
+        try {
+            return new ResponseEntity(ordered, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity(ordered, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -127,7 +119,7 @@ public class OrderService {
       작성자: 국화
       멤버 Id 로 모든 주문을 조회한다
       @param Member
-      @return ArrayList<Ordered>
+      @return List<Ordered>
     */
     @Transactional
     public List<Ordered> retrieveOrdersByMemberId(int id){
@@ -263,6 +255,29 @@ public class OrderService {
     return null;
     }
 
+    /**
+     * 작성자 : 국화
+     * orderedDetail 업데이트를 위한 사전작업으로 ChangeOrderDetail 을 세팅 후 각 OrderedDetail을 순회하며 updateStatus를 호출한다
+     * @param list
+     * @return ; 모든 작업이 끝난 후 true 를 return
+     * @throws Exception ; 작업중 exception 이 발생하면 false 대신 exception 을 throw
+     */
+    public Boolean updateOrderDetailForKakao(List<OrderedDetail> list) throws Exception{
+        ChangeOrderDetail changeOrderDetail = new ChangeOrderDetail();
+        changeOrderDetail.setChangeCode("ADMIN");
+        try {
+            for (OrderedDetail item : list) {
+                changeOrderDetail.setStatus("결제완료");
+                changeOrderDetail.setOrderDetailId(item.getOrderDetailId());
+                updateStatus(null, changeOrderDetail);
+            }
+            return true;
+
+        }catch(Exception e){
+            throw new Exception();
+        }
+    }
+
     /*
       작성자: 국화
       특정 주문을 감춘다(삭제한다)
@@ -275,5 +290,7 @@ public class OrderService {
         ordered.setIsHidden(1);
         orderedRepository.save(ordered);
     }
+
+
 
 }
