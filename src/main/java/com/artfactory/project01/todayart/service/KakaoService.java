@@ -1,10 +1,12 @@
 package com.artfactory.project01.todayart.service;
 
+import com.artfactory.project01.todayart.controller.OrderController;
 import com.artfactory.project01.todayart.entity.Ordered;
 import com.artfactory.project01.todayart.entity.OrderedDetail;
-import com.artfactory.project01.todayart.model.KakaoInfoRequest;
-import com.artfactory.project01.todayart.model.KakaoRequest;
+import com.artfactory.project01.todayart.entity.KakaoInfoRequest;
+import com.artfactory.project01.todayart.model.kakao.KakaoRequest;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -22,6 +24,8 @@ public class KakaoService {
     private static final String HOST = "https://kapi.kakao.com";
     private KakaoRequest kakaoRequest;
     private KakaoInfoRequest kakaoInfoRequest;
+    @Autowired
+    OrderController orderController;
 
 
     public ResponseEntity kakaoPayReady(Ordered ordered){
@@ -44,7 +48,6 @@ public class KakaoService {
         }catch (URISyntaxException e){
             e.printStackTrace();
         }
-
         return new ResponseEntity<String>("/kakaoPaySuccessFail", HttpStatus.BAD_REQUEST);
 
     }
@@ -89,8 +92,9 @@ public class KakaoService {
 
         try{
             kakaoInfoRequest = restTemplate.postForObject(new URI(HOST+"/v1/payment/approve"), body, KakaoInfoRequest.class);
-            log.info(""+kakaoInfoRequest);
+            log.info("kakaoInfoRequest"+kakaoInfoRequest);
             log.info("!!!!!!!!!!!!결제 승인 성공!!!!!!!!!!!!!");
+            orderController.updateKakaoOrders(ordered, kakaoInfoRequest);
             return new ResponseEntity<KakaoInfoRequest>(kakaoInfoRequest, HttpStatus.OK);
         }catch(RestClientException e){
             e.printStackTrace();

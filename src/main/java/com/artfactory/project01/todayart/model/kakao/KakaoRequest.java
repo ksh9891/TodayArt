@@ -1,4 +1,4 @@
-package com.artfactory.project01.todayart.model;
+package com.artfactory.project01.todayart.model.kakao;
 
 import lombok.Data;
 

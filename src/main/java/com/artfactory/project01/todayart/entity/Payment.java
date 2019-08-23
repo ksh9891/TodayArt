@@ -66,7 +66,7 @@ public class Payment {
     @Getter
     @Setter
     @Column(name = "pg_number")
-    private Long pgNumber;
+    private String pgNumber;
 
     @Getter
     @Setter
