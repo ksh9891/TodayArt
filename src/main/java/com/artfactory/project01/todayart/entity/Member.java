@@ -67,17 +67,6 @@ public class Member implements UserDetails, Serializable {
     @Column(name="email_checked")
     private Integer emailChecked;
 
-    @OneToOne(mappedBy = "memberId")
-    private Artist artist;
-
-    public Artist getArtist() {
-        return artist;
-    }
-
-    public void setArtist(Artist artist) {
-        this.artist = artist;
-    }
-
     public void setMemberId(Integer memberId) {
         this.memberId = memberId;
     }
