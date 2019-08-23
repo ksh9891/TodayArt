@@ -62,14 +62,13 @@ public class OrderController {
     @return List<Ordered>
     */
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<Ordered> retrieveOrders(@RequestParam(value = "type", required = false)String type, Principal principal){
+    public List<Ordered> retrieveOrders(@RequestParam(value = "type", required = false) String type, Principal principal){
         member = getMember(principal);
         int id = member.getMemberId();
         String role = member.getRole();
         if(type==null){
             return ((role.equals("ROLE_ADMIN"))?orderService.retrieveOrders():orderService.retrieveOrdersByMemberId(id));}
         else{
-
             return orderService.retrieveOrdersByStatus(role, id, type);
         }
     }

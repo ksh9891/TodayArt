@@ -31,19 +31,15 @@ public class Product {
     @Column(columnDefinition = "int", name = "product_id", nullable = false, updatable = false)
     private Integer productId;
 
-
     @Column(name = "product_name")
     private String productName;
-
 
     @ManyToOne
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
-
-    @Column(name = "artist_name", nullable = true)
+    @Column(name = "artist_name")
     private String artistName;
-
 
     @Column(name = "product_size")
     private String productSize;
@@ -51,14 +47,11 @@ public class Product {
     @Column(name = "product_price")
     private Integer productPrice;
 
-
-    @Column(name = "thumbnail_id")
+    @Column(name = "thumbnail_id", insertable = false, updatable = false)
     private Integer thumbnailId;
 
     @Column(name = "is_delete")
     private Integer isDelete;
-
-
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "delete_dated", nullable = true)
@@ -73,7 +66,6 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_dated", nullable = true)
     private Date updateDated;
-
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -97,7 +89,8 @@ public class Product {
     @Column(name = "product_content")
     private String productContent;
 
-
-
+    @OneToOne(targetEntity=File.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "thumbnail_id", referencedColumnName = "file_id")
+    private File thumbnail;
 }
 

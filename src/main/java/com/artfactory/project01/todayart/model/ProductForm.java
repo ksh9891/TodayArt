@@ -60,9 +60,9 @@ public class ProductForm implements Serializable {
         if(productSize != null){
             product.setProductSize(this.productSize);
         }
-        if(thumbnailId != null){
-            product.setThumbnailId(this.thumbnailId);
-        }
+//        if(thumbnailId != null){
+//            product.setThumbnailId(this.thumbnailId);
+//        }
 //        if(productCategory != null){
 //            product.setProductCategory(productCategory);
 //        }

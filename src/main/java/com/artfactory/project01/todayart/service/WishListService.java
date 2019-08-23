@@ -54,7 +54,7 @@ public class WishListService {
             wishList.setMemberId(member.getMemberId());
             wishList.setProductPrice(product.getProductPrice());
             wishList.setProductSize(product.getProductSize());
-            wishList.setThumbnailId(product.getThumbnailId());
+            // wishList.setThumbnailId(product.getThumbnailId());
             wishList.setArtistName(product.getArtistName());
             wishList.setIsStock(product.getRemain());
 
