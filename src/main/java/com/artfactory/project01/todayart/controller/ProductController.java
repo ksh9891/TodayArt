@@ -65,7 +65,7 @@ public class ProductController {
    기능 설명 : 상품 리스트 가격 오름차순 정렬 후 출력
    @return 오름차순 정렬된 List<Product> 객체
    */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
             path = "/priceasc",
             method = RequestMethod.GET,
@@ -81,7 +81,7 @@ public class ProductController {
    기능 설명 : 상품 리스트 가격 내림차순 정렬 후 출력
    @return 내림차순 정렬된 List<Product> 객체
    */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
             path = "/pricedesc",
             method = RequestMethod.GET,
@@ -98,7 +98,7 @@ public class ProductController {
     @param Integer productId
     @return 오름차순 정렬된 List<Product> 객체
     */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
             path = "/detail/{productId}",
             method = RequestMethod.GET,
@@ -116,7 +116,7 @@ public class ProductController {
     @return 상품 이름으로 검색된 List<Product> 객체
     path /productlist?name="상품명"
     */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
             path = "/productname",
             method = RequestMethod.GET,
@@ -135,7 +135,7 @@ public class ProductController {
     @param Integer categoryId
     @return 각 카테고리별 List<Product> 객체
     */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
             path = "/category={categoryId}",
             method = RequestMethod.GET,
@@ -146,7 +146,7 @@ public class ProductController {
         return productService.retrieveByCategory(categoryId);
     }
 
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
             path = "/category={categoryId}/asc",
             method = RequestMethod.GET,
@@ -158,7 +158,7 @@ public class ProductController {
     }
 
 
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
             path = "/category={categoryId}/desc",
             method = RequestMethod.GET,
@@ -198,7 +198,7 @@ public class ProductController {
     @return 각 판매자별 List<Product> 객체
     /artistlist?name=작가명
     */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
             path = "/artistname",
             method = RequestMethod.GET,
