@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
 import java.security.Principal;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,8 +27,6 @@ public class MemberController {
 
     @Autowired
     private MemberDetailServiceImpl memberDetailsService;
-
-    private boolean isResult;
 
     /*
       작성자:  희창
@@ -75,19 +72,6 @@ public class MemberController {
 
     /*
        작성자:  희창
-       기능 설명 : 전체 회원 조회
-      @param X
-      @return List<Member> 화 된 Member 객체
-    */
-    // 관리자 기능
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-//    public List<Member> retrieveMembers() {
-//        return memberService.retrieveMembers();
-//    }
-
-    /*
-       작성자:  희창
        기능 설명 : 회원 정보 조회(개인)
       @param id(PathVariable), passwordMap, principal
       @return id에 맞는 Member객체
@@ -113,7 +97,7 @@ public class MemberController {
                                     Principal principal) {
 
         // JSON받을때 확인용으로 현재 비밀번호 받아서 비교
-        if(PrincipalUtil.from(principal).getPassword().equals(updateMap.get("checkPassword"))) {
+        if(PrincipalUtil.from(principal).getPassword().equals(updateMap.get("chkPassword"))) {
             return memberService.updateMember(principal, updateMap);
         } else{
             throw new BadCredentialsException("정보가 일치하지 않습니다");
@@ -138,48 +122,21 @@ public class MemberController {
     /*
        작성자:  희창
        기능 설명 : 비밀번호 확인
-      @param int id(PathVariable), Map<String, String> passwordMap
-      @return 같으면 true, 다르면 false
+      @param @RequestParam String password, Principal principal
+      @return http 상태메시지
     */
     @GetMapping(path = "/checkPassword", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public boolean retrieveMemberPassword(@RequestBody Map<String, String> passwordMap, Principal principal) {
-        String password = passwordMap.get("password");
-        String userPassword = PrincipalUtil.from(principal).getPassword();
-        isResult = password.equals(userPassword) ? true : false;
-        return isResult;
+    public HttpStatusMessage checkPassword(@RequestParam String password, Principal principal) {
+        HttpStatusMessage httpStatusMessage = new HttpStatusMessage();
+        if(PrincipalUtil.from(principal).getPassword().equals(password)) {
+            httpStatusMessage.setStatusCode(HttpStatus.OK);
+            httpStatusMessage.setStatusMessage("현재 비밀번호와 일치합니다.");
+        } else {
+            httpStatusMessage.setStatusCode(HttpStatus.CONFLICT);
+            httpStatusMessage.setStatusMessage("현재 비밀번호와 일치하지 않습니다.");
+        }
+        return httpStatusMessage;
     }
-
-    /*
-       작성자:  희창
-       기능 설명 : 닉네임 중복 체크(회원정보 수정에서)
-      @param Member entity
-      @return 중복이면 true, 중복 아니면 false
-    */
-
-    // 닉네임 중복체크 로직 진행해야 함.
-    @GetMapping(path = "/nickname", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public boolean checkNickname(@RequestBody Member member) {
-        return memberService.findByNickname(member.getNickname()) != null ? true : false;
-        // 닉네임 중복체크 로직 완료+
-    }
-
-    /*
-       작성자:  희창
-       기능 설명 : 중복체크 결과로 비밀번호 변경
-      @param int id(PathVariable), Map<String, String> passwordMap
-      @return true면 변경될 값 전달
-    */
-    // 이 메서드가 있어야 하는지 헷갈립니다
-//    @PatchMapping(path = "/{id}/updatePassword", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public UserDetails updatePassword(@PathVariable("id") int id, @RequestBody Map<String, String> passwordMap, Principal principal) {
-//        String password = passwordMap.get("password");
-//        String checkPassword = PrincipalUtil.from(principal).getPassword();
-//        if(isResult == true) {
-//            return memberService.updatePassword(id, password);
-//        } else{
-//            return memberService.updatePassword(id, checkPassword);
-//        }
-//    }
 
     /*
      * 작성자 : 상현
