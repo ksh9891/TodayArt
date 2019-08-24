@@ -27,11 +27,6 @@ public class TodayartApplication {
     @Autowired
     private EmailService emailService;
 
-    @PostConstruct
-    void started() {
-        TimeZone.setDefault(TimeZone.getTimeZone("GMT+9:00"));
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(TodayartApplication.class, args);
     }

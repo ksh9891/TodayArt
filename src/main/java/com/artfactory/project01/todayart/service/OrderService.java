@@ -88,7 +88,7 @@ public class OrderService {
     public OrderedDetail setOrderDetail(Ordered ordered, Product product, Cart cart){
         OrderedDetail orderedDetail = new OrderedDetail();
         orderedDetail.setOrderId(ordered.getOrderId());
-        orderedDetail.setProductId(product.getProductId());
+        orderedDetail.setProduct(product);
         orderedDetail.setCartId(cart.getCartId());
         orderedDetail.setProductName(product.getProductName());
         orderedDetail.setProductPrice(cart.getProductPrice());

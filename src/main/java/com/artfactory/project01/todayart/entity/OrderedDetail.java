@@ -22,9 +22,6 @@ public class OrderedDetail implements Serializable {
     @Column(name = "ordered_id")
     private Integer orderId;
 
-    @Column(name = "product_id", insertable = false, updatable = false)
-    private Integer productId;
-
     @Column(name = "cart_id")
     private Integer cartId;
 
