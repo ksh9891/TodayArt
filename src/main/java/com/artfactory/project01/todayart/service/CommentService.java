@@ -71,7 +71,7 @@ public class CommentService {
     @Transactional
     public Comments deleteComments(Integer id) {
         Comments comments = commentRepository.findById(id).get();
-        comments.setIsDeleted(1);
+        comments.setIsDeleted("y");
         comments.setDeleteDated(new Date());
         return commentRepository.save(comments);
     }

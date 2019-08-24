@@ -20,8 +20,8 @@ public class ProductForm implements Serializable {
     private File thumbnail;
     private Integer remain;
     private Integer shippingFee;
-    private Integer isSoldOut;
-    private Integer isDelete;
+    private String isSoldOut;
+    private String isDelete;
     private String productContent;
     private Product product;
     private Date deleteDated;
@@ -32,11 +32,11 @@ public class ProductForm implements Serializable {
 
 
 
-    public Integer getIsDelete() {
+    public String getIsDelete() {
         return isDelete;
     }
 
-    public void setIsDelete(Integer isDelete) {
+    public void setIsDelete(String isDelete) {
 
         this.isDelete = isDelete;
 

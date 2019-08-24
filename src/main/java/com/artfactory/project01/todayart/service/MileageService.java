@@ -30,7 +30,7 @@ public class MileageService {
     }
 
     @Transactional
-    public MileageStatement deleteMileageStatement(int id, int isDelete) {
+    public MileageStatement deleteMileageStatement(int id, String isDelete) {
         MileageStatement mileageStatement = mileageStatementRepository.findById(id).get();
         mileageStatement.setIsDelete(isDelete);
         return mileageStatementRepository.save(mileageStatement);
@@ -47,7 +47,7 @@ public class MileageService {
     }
 
     @Transactional
-    public MileageInvoice deleteMileageInvoice(int id, int isDelete) {
+    public MileageInvoice deleteMileageInvoice(int id, String isDelete) {
         MileageInvoice mileageInvoice = mileageInvoiceRepository.findById(id).get();
         mileageInvoice.setIsDelete(isDelete);
         return mileageInvoiceRepository.save(mileageInvoice);

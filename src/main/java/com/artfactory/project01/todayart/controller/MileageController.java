@@ -30,7 +30,7 @@ public class MileageController {
     }
 
     @DeleteMapping(value = "/statement/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public MileageStatement deleteMileageStatement(@PathVariable("id") int id, @RequestParam int isDelete) {
+    public MileageStatement deleteMileageStatement(@PathVariable("id") int id, @RequestParam String isDelete) {
         return mileageService.deleteMileageStatement(id, isDelete);
     }
 
@@ -45,7 +45,7 @@ public class MileageController {
     }
 
     @DeleteMapping(value = "/invoice/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public MileageInvoice deleteMileageInvoice(@PathVariable("id") int id, @RequestParam int isDelete) {
+    public MileageInvoice deleteMileageInvoice(@PathVariable("id") int id, @RequestParam String isDelete) {
         return mileageService.deleteMileageInvoice(id, isDelete);
     }
 }

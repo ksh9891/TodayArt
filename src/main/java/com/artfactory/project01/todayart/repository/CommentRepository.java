@@ -13,18 +13,18 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comments,Integer> {
 
     //게시물 아이디에 해당하는 댓글 목록 가져오기
-    @Query(value = "SELECT * FROM comments WHERE article_id = ?1 AND is_deleted = 0 ORDER BY create_dated ASC ", nativeQuery = true)
+    @Query(value = "SELECT * FROM comments WHERE article_id = ?1 AND is_deleted = 'n' ORDER BY create_dated ASC ", nativeQuery = true)
     Page<Comments> findByArticleId(Integer articleId , Pageable pageable);
 
 
 
 
     //content검색
-    @Query(value = "SELECT * FROM comments WHERE board_id = ?2 AND is_deleted = 0 AND content LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM comments WHERE board_id = ?2 AND is_deleted = 'n' AND content LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
     Page<Comments> searchContent(String value, Integer boardId ,String where, Pageable pageable);
 
     //memberId검색
-    @Query(value = "SELECT * FROM comments WHERE board_id = ?2 AND is_deleted = 0 AND member_id LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM comments WHERE board_id = ?2 AND is_deleted = 'n' AND member_id LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
     Page<Comments> searchMemberId(String value, Integer boardId ,String where, Pageable pageable);
 
 

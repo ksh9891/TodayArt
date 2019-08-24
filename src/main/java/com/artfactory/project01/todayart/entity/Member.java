@@ -58,14 +58,14 @@ public class Member implements UserDetails, Serializable {
     private Date lastConnectDated;
 
     @Column(name="expired")
-    private Integer expired;
+    private String expired;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="expired_dated")
     private Date expiredDated;
 
     @Column(name="email_checked")
-    private Integer emailChecked;
+    private String emailChecked;
 
     public void setMemberId(Integer memberId) {
         this.memberId = memberId;
@@ -145,14 +145,6 @@ public class Member implements UserDetails, Serializable {
         this.lastConnectDated = lastConnectDated;
     }
 
-    public Integer getExpired() {
-        return expired;
-    }
-
-    public void setExpired(Integer expired) {
-        this.expired = expired;
-    }
-
     public Date getExpiredDated() {
         return expiredDated;
     }
@@ -161,11 +153,19 @@ public class Member implements UserDetails, Serializable {
         this.expiredDated = expiredDated;
     }
 
-    public Integer getEmailChecked() {
+    public String getExpired() {
+        return expired;
+    }
+
+    public void setExpired(String expired) {
+        this.expired = expired;
+    }
+
+    public String getEmailChecked() {
         return emailChecked;
     }
 
-    public void setEmailChecked(Integer emailChecked) {
+    public void setEmailChecked(String emailChecked) {
         this.emailChecked = emailChecked;
     }
 

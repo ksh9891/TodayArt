@@ -20,11 +20,11 @@ public class ArticleForm implements Serializable {
     private Integer group;
     private Integer depth;
     private Integer reply_order;
-    private Integer is_deleted;
+    private String is_deleted;
     private Date deleted_dated;
-    private Integer is_hidden;
+    private String is_hidden;
     private String password;
-    private Integer is_reply;
+    private String is_reply;
     private Integer views;
     private Integer product_id;
     private Article article;
@@ -109,11 +109,11 @@ public class ArticleForm implements Serializable {
         this.reply_order = reply_order;
     }
 
-    public Integer getIs_deleted() {
+    public String getIs_deleted() {
         return is_deleted;
     }
 
-    public void setIs_deleted(Integer is_deleted) {
+    public void setIs_deleted(String is_deleted) {
         this.is_deleted = is_deleted;
     }
 
@@ -125,11 +125,11 @@ public class ArticleForm implements Serializable {
         this.deleted_dated = deleted_dated;
     }
 
-    public Integer getIs_hidden() {
+    public String getIs_hidden() {
         return is_hidden;
     }
 
-    public void setIs_hidden(Integer is_hidden) {
+    public void setIs_hidden(String is_hidden) {
         this.is_hidden = is_hidden;
     }
 
@@ -141,11 +141,11 @@ public class ArticleForm implements Serializable {
         this.password = password;
     }
 
-    public Integer getIs_reply() {
+    public String getIs_reply() {
         return is_reply;
     }
 
-    public void setIs_reply(Integer is_reply) {
+    public void setIs_reply(String is_reply) {
         this.is_reply = is_reply;
     }
 

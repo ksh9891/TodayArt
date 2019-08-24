@@ -36,7 +36,7 @@ public class ArtistService {
         Date admCheckDated = new Date();
         Artist artist = artistRepository.findById(id).get();
 //        if(admBtn == true)
-        artist.setAdmCheck(0);
+        artist.setAdmCheck("n");
         artist.setAdmCheckDated(admCheckDated);
         return artistRepository.save(artist);
     }

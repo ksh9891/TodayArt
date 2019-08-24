@@ -87,5 +87,5 @@ public class Shipping {
     @Column(name = "is_delete")
     @Getter
     @Setter
-    private Integer isDelete; // 삭제여부
+    private String isDelete; // 삭제여부
 }

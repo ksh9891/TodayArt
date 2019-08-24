@@ -10,8 +10,8 @@ import java.util.ArrayList;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 
-    ArrayList<Cart> findAllByMemberIdAndIsDeleted(int memberId, int isDeleted);
+    ArrayList<Cart> findAllByMemberIdAndIsDeleted(int memberId, String isDeleted);
 
-    @Query(value = "SELECT * FROM cart WHERE member_id = ?1 AND product_id = ?2 And is_deleted = 0", nativeQuery = true)
+    @Query(value = "SELECT * FROM cart WHERE member_id = ?1 AND product_id = ?2 And is_deleted = 'n'", nativeQuery = true)
     Cart findByMemberIdAndProductIdtAndIsDelete(Integer memberId, Integer productId);
 }

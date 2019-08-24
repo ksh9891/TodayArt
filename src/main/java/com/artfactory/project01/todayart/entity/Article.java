@@ -63,20 +63,20 @@ public class Article implements Serializable {
     private Integer replyOrder;
 
     @Column(name = "is_deleted")
-    private Integer isDeleted;
+    private String isDeleted;
 
     @Column(name = "delete_dated", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDated;
 
     @Column(name = "is_hidden")
-    private Integer isHidden;
+    private String isHidden;
 
     @Column(name = "password")
     private String password;
 
     @Column(name = "is_reply")
-    private Integer isReply;
+    private String isReply;
 
     @Column(name = "views")
     private Integer views;

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface OrderedRepository extends JpaRepository<Ordered, Integer> {
-    @Query(value = "SELECT * FROM ordered WHERE member_id = ?1 and isHidden = 0", nativeQuery = true)
+    @Query(value = "SELECT * FROM ordered WHERE member_id = ?1 and isHidden = 'n'", nativeQuery = true)
     List<Ordered> findByMemberId(Integer memberId);
 
 
