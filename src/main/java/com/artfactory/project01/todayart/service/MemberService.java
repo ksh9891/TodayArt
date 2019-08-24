@@ -30,11 +30,6 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<Member> retrieveMembers() {
-        return memberRepository.findAll();
-    }
-
-    @Transactional(readOnly = true)
     public Member retrieveMember(int id) {
         return memberRepository.findById(id).get();
     }
@@ -42,7 +37,6 @@ public class MemberService {
     @Transactional
     public Member updateMember(Principal principal, Map<String, String> updateMap) {
         Member member = (Member) PrincipalUtil.from(principal);
-        member.getEmail();
 
         if(updateMap.get("password") != null &&
                 (updateMap.get("password")!= (member.getPassword()))) { // 입력받은값이 null이 아니면 값 변경
@@ -62,7 +56,7 @@ public class MemberService {
     }
 
 
-        @Transactional
+    @Transactional
     public Member deleteMember(Member member){
         Date expiredDated = new Date();
         member.setExpired(1);
@@ -75,13 +69,8 @@ public class MemberService {
         return memberRepository.findByNickname(nickname);
     }
 
+    @Transactional
     public Member findByEmail(String email){
         return memberRepository.findByEmail(email);
     }
-
-//    public Member updatePassword(int id,String password){
-//        Member member = memberRepository.findById(id).get();
-//        member.setPassword(password);
-//        return memberRepository.save(member);
-//    }
 }
