@@ -24,7 +24,7 @@ public class ShippingForm {
     private String courier; // 택배사
     private String trackingNumber; // 송장 번호
 
-    private int isDelete; // 배송 취소 유무
+    private String isDelete; // 배송 취소 유무
 
     public Shipping updateShippingBefore(Shipping shipping) {
         shipping.setConsignee(getConsignee());

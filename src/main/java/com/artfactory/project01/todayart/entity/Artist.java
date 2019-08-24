@@ -42,7 +42,7 @@ public class Artist implements Serializable {
     private String admProductDesc;
 
     @Column(name = "adm_check")
-    private Integer admCheck;
+    private String admCheck;
 
     @JoinColumn(table = "artist_level", name = "artist_level_id")
     @Column(name = "artist_level_id")

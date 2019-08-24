@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,33 +28,57 @@ public class CartService implements Serializable {
     ProductRepository productRepository;
 
     /*
-      작성자: 국화 // 190815 채경 수정
-      새로운 cart 레코드 작성 // 카트에 추가 시 중복체크 기능 추가
+      작성자: 국화
+      // -> 190815 채경 수정
+      // 새로운 cart 레코드 작성 후 불러옴
+      // 카트에 추가 시 중복체크 기능 추가
+      // -> 190824 DB 입력을 다른 메소드로 분리함
       @param int
       @return null
     */
-    @Transactional
     public Cart createCart(Member member, Cart cart){
-        int productId = cart.getProduct().getProductId();
-        Product product = productRepository.findById(productId).get();
+        Product product = cart.getProduct();
+        int productId = product.getProductId();
+        int quantity = cart.getQuantity();
         Integer memberId = member.getMemberId();
-        if (cartRepository.findByMemberIdAndProductIdtAndIsDelete(memberId, productId) != null) {
-            System.out.println("중복");
-        }else if(cartRepository.findByMemberIdAndProductIdtAndIsDelete(memberId, productId) == null){
+
+        writeCartToDB(product, memberId, quantity);
+        cart = cartRepository.findByMemberIdAndProductIdtAndIsDelete(memberId, productId);
+        return cart;
+    }
+
+    /**
+     * 작성자: 국화
+     * createCart를 하기 위해 중복을 체크하고, DB에 실제 데이터를 입력하는 단계
+     * @param product
+     * @param memberId
+     * @param quantity
+     */
+    @Transactional
+    public void writeCartToDB(Product product, int memberId, int quantity){
+        Cart cart = cartRepository.findByMemberIdAndProductIdtAndIsDelete(memberId, product.getProductId());
+        if (cart != null) {
+            cart.setQuantity(cart.getQuantity()+quantity);
+            cartRepository.save(cart);
+        }else if(cart == null){
             // 찜하기 클릭했을 때 프로덕트의 count 컬럼 1 증가
             ProductForm productForm = new ProductForm();
             productForm.setProduct(product);
-            product.setCountCart(product.getCountCart()+1);
-            //
+            product.setCountCart(product.getCountCart()==null?1:+product.getCountCart()+1);
+            product.setCountWishlist(product.getCountWishlist()==null?0:product.getCountWishlist());
+            product.setRemain(product.getRemain()==null?0:product.getRemain());
+            product.setShippingFee(product.getShippingFee()==null?0:product.getShippingFee());
+
+            cart = new Cart();
+            cart.setQuantity(quantity);
+            cart.setProduct(product);
             cart.setProductPrice(product.getProductPrice());
             cart.setProductSize(product.getProductSize());
-            cart.setMemberId(member.getMemberId());
+            cart.setShippingFee(product.getShippingFee());
+            cart.setMemberId(memberId);
             productRepository.save(product);
-            cart = cartRepository.save(cart);
+            cartRepository.save(cart);
         }
-
-        return cart;
-
     }
 
 
@@ -86,7 +111,7 @@ public class CartService implements Serializable {
         product.setCountCart(product.getCountCart()+1);
         //
         productRepository.save(product);
-        wishList.setIsDelete(1);
+        wishList.setIsDelete("y");
         return cartRepository.save(cart);
     }
 
@@ -100,7 +125,7 @@ public class CartService implements Serializable {
     */
     @Transactional
     public List<Cart> retrieveCart(Member member){
-        ArrayList<Cart> cartList = cartRepository.findAllByMemberIdAndIsDeleted(member.getMemberId(), 0);
+        ArrayList<Cart> cartList = cartRepository.findAllByMemberIdAndIsDeleted(member.getMemberId(), "n");
         return cartList;
     }
 
@@ -130,7 +155,7 @@ public class CartService implements Serializable {
     @Transactional
     public boolean deleteCart(int cartId){
         Cart cart = cartRepository.findById(cartId).get();
-        cart.setIsDeleted(1);
+        cart.setIsDeleted("y");
         cartRepository.save(cart);
         return true;
     }

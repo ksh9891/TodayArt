@@ -35,7 +35,7 @@ public class Ordered implements Serializable {
     private Integer shippingFee;
 
     @Column(name="isHidden")
-    private int isHidden;
+    private String isHidden;
 
     @OneToMany(targetEntity=OrderedDetail.class, fetch = FetchType.EAGER)
     @JoinColumn(name="ordered_id")
@@ -83,11 +83,11 @@ public class Ordered implements Serializable {
         this.shippingFee = shippingFee;
     }
 
-    public int getIsHidden() {
+    public String getIsHidden() {
         return isHidden;
     }
 
-    public void setIsHidden(int hidden) {
+    public void setIsHidden(String hidden) {
         this.isHidden = isHidden;
     }
 

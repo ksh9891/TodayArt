@@ -52,7 +52,7 @@ public class Comments implements Serializable {
     private Date deleteDated;
 
     @Column(name = "is_deleted")
-    private Integer isDeleted;
+    private String isDeleted;
 
     @Transient
     private Integer memberId;

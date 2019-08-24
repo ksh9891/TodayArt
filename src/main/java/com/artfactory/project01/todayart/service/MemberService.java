@@ -65,7 +65,7 @@ public class MemberService {
         @Transactional
     public Member deleteMember(Member member){
         Date expiredDated = new Date();
-        member.setExpired(1);
+        member.setExpired("y");
         member.setExpiredDated(expiredDated);
         return memberRepository.save(member);
     }

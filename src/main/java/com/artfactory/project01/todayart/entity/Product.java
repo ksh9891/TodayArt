@@ -51,7 +51,7 @@ public class Product {
     private Integer thumbnailId;
 
     @Column(name = "is_delete")
-    private Integer isDelete;
+    private String isDelete;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "delete_dated", nullable = true)
@@ -72,15 +72,15 @@ public class Product {
     private ProductCategory productCategory;
 
     @Column(name = "is_sold_out")
-    private Integer isSoldOut;
+    private String isSoldOut;
 
     @Column(name = "remain")
     private Integer remain;
 
-    @Column(name = "count_cart", nullable = true)
+    @Column(name = "count_cart")
     private Integer countCart;
 
-    @Column(name = "count_wishlist", nullable = true)
+    @Column(name = "count_wishlist")
     private Integer countWishlist;
 
     @Column(name = "shipping_fee")

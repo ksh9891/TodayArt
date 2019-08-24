@@ -58,11 +58,11 @@ public class WishList {
 
 
     @Column(name = "is_deleted")
-    private Integer isDelete;
+    private String isDelete;
 
 
     @Column(name = "is_stock")
-    private Integer isStock;
+    private String isStock;
 
 
 }

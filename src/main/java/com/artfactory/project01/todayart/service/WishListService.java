@@ -56,7 +56,7 @@ public class WishListService {
             wishList.setProductSize(product.getProductSize());
             // wishList.setThumbnailId(product.getThumbnailId());
             wishList.setArtistName(product.getArtistName());
-            wishList.setIsStock(product.getRemain());
+            wishList.setIsStock(product.getRemain()>0?"y":"n");
 
             productRepository.save(product);
             wishList = wishListRepository.save(wishList);
@@ -84,7 +84,7 @@ public class WishListService {
     @Transactional
     public ArrayList<WishList> retrieveWishList(Member member){
         ArrayList<WishList> wishLists =
-                wishListRepository.findAllByMemberIdAndIsDelete(member.getMemberId(), 0);
+                wishListRepository.findAllByMemberIdAndIsDelete(member.getMemberId(), "n");
         return wishLists;
     }
 
@@ -102,7 +102,7 @@ public class WishListService {
     @Transactional
     public void deleteWishList(Integer wishListId){
         WishList wishList = wishListRepository.findById(wishListId).get();
-        wishList.setIsDelete(1);
+        wishList.setIsDelete("y");
         wishListRepository.save(wishList);
     }
 

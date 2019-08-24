@@ -287,7 +287,7 @@ public class OrderService {
     @Transactional
     public void deleteOrdered(int orderedId){
         Ordered ordered = orderedRepository.findByOrderId(orderedId);
-        ordered.setIsHidden(1);
+        ordered.setIsHidden("y");
         orderedRepository.save(ordered);
     }
 

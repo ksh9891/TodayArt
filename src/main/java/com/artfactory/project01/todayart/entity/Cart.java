@@ -27,12 +27,6 @@ public class Cart {
     @Column(name ="member_id", nullable = false, updatable = false)
     private int memberId;
 
-/*
-    @Getter
-    @Setter
-    @Column(name="product_id")
-    private int productId;
-*/
     @Getter
     @Setter
     @ManyToOne(fetch=FetchType.EAGER, targetEntity = Product.class)
@@ -69,12 +63,12 @@ public class Cart {
     @Getter
     @Setter
     @Column(name="is_deleted")
-    private int isDeleted;
+    private String isDeleted;
 
     @Getter
     @Setter
     @Column(name="is_stock")
-    private int isStock;
+    private String isStock;
 
 
 }

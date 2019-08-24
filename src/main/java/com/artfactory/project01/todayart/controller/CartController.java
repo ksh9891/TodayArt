@@ -2,6 +2,7 @@ package com.artfactory.project01.todayart.controller;
 
 import com.artfactory.project01.todayart.entity.Cart;
 import com.artfactory.project01.todayart.entity.Member;
+import com.artfactory.project01.todayart.entity.Product;
 import com.artfactory.project01.todayart.model.ChangedCartItem;
 import com.artfactory.project01.todayart.service.CartService;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
@@ -31,9 +32,10 @@ public class CartController {
     @Param Cart
     @Return Cart
     */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST','ADMIN')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
     @RequestMapping(method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Cart createCart(@RequestBody Cart cart, Principal principal){
+
         member = getMember(principal);
         return cartService.createCart(member, cart);
     }

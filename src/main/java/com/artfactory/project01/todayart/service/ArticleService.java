@@ -119,7 +119,7 @@ public class ArticleService {
     @Transactional
     public Article deleteArticle(Integer id) {
         Article originalVO = articleRepository.findById(id).get();
-        originalVO.setIsDeleted(1);
+        originalVO.setIsDeleted("y");
         originalVO.setDeletedDated(new Date());
         return articleRepository.save(originalVO);
     }

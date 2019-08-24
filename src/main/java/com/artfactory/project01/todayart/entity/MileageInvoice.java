@@ -61,5 +61,5 @@ public class MileageInvoice {
     @Column(name = "is_delete")
     @Getter
     @Setter
-    private Integer isDelete;
+    private String isDelete;
 }

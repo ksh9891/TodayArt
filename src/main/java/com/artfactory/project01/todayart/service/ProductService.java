@@ -48,7 +48,7 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveProduct() {
-        return productRepository.findByIsDeleteOrderByEnrollDatedDesc(0);
+        return productRepository.findByIsDeleteOrderByEnrollDatedDesc("n");
     }
 
 
@@ -60,7 +60,7 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceAsc() {
-        return productRepository.findAllByIsDeleteOrderByProductPriceAsc(0);
+        return productRepository.findAllByIsDeleteOrderByProductPriceAsc("n");
     }
 
 
@@ -72,7 +72,7 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveProductPriceDesc() {
-        return productRepository.findAllByIsDeleteOrderByProductPriceDesc(0);
+        return productRepository.findAllByIsDeleteOrderByProductPriceDesc("n");
     }
 
 
@@ -103,7 +103,7 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveByProductName(String productName) {
-        return productRepository.findByProductNameContainingAndIsDelete(productName, 0);
+        return productRepository.findByProductNameContainingAndIsDelete(productName, "n");
     }
 
 
@@ -116,18 +116,18 @@ public class ProductService {
     */
     @Transactional(readOnly = true)
     public List<Product> retrieveByCategory(Integer category_id) {
-        return productRepository.findByProductCategory_CategoryIdAndIsDeleteOrderByEnrollDatedDesc(category_id, 0);
+        return productRepository.findByProductCategory_CategoryIdAndIsDeleteOrderByEnrollDatedDesc(category_id, "n");
     }
 
 
     @Transactional(readOnly = true)
     public List<Product> retrieveByCategoryAsc(Integer category_id) {
-        return productRepository.findByProductCategory_CategoryIdAndIsDeleteOrderByProductPriceAsc(category_id, 0);
+        return productRepository.findByProductCategory_CategoryIdAndIsDeleteOrderByProductPriceAsc(category_id, "n");
     }
 
     @Transactional(readOnly = true)
     public List<Product> retrieveByCategoryDesc(Integer category_id) {
-        return productRepository.findByProductCategory_CategoryIdAndIsDeleteOrderByProductPriceDesc(category_id, 0);
+        return productRepository.findByProductCategory_CategoryIdAndIsDeleteOrderByProductPriceDesc(category_id, "n");
     }
 
 
@@ -144,7 +144,7 @@ public class ProductService {
         Artist artist = artistRepository.findByMemberId(member.getMemberId());
         Integer artistId = artist.getArtistId();
 
-        return productRepository.findByArtist_ArtistIdAndIsDelete(artistId, 0);
+        return productRepository.findByArtist_ArtistIdAndIsDelete(artistId, "n");
     }
 
 

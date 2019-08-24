@@ -17,7 +17,7 @@ public class CommentForm implements Serializable {
     private Date createDated;
     private Date updateDated;
     private Date deleteDated;
-    private Integer isDeleted;
+    private String isDeleted;
     private Comments comments;
 
     public Integer getCommentId() {
@@ -76,11 +76,11 @@ public class CommentForm implements Serializable {
         this.deleteDated = deleteDated;
     }
 
-    public Integer getIsDelete() {
+    public String getIsDelete() {
         return isDeleted;
     }
 
-    public void setIsDelete(Integer isDelete) {
+    public void setIsDelete(String isDelete) {
         this.isDeleted = isDelete;
     }
 

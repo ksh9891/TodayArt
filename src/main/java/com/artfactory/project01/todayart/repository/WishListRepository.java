@@ -12,12 +12,12 @@ import java.util.ArrayList;
 public interface WishListRepository extends JpaRepository<WishList, Integer> {
 
 
-    ArrayList<WishList> findAllByMemberIdAndIsDelete(int memberId, int isDelete);
+    ArrayList<WishList> findAllByMemberIdAndIsDelete(int memberId, String isDelete);
 
 
 
 
-    @Query(value = "SELECT * FROM wishlist WHERE member_id = ?1 AND product_id = ?2 And is_deleted = 0", nativeQuery = true)
+    @Query(value = "SELECT * FROM wishlist WHERE member_id = ?1 AND product_id = ?2 And is_deleted = 'n'", nativeQuery = true)
     WishList findByMemberIdAndProducIdtAndIsDelete(Integer memberId, Integer productId);
 
 
