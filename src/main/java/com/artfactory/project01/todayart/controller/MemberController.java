@@ -1,7 +1,8 @@
 package com.artfactory.project01.todayart.controller;
 
 import com.artfactory.project01.todayart.entity.Member;
-import com.artfactory.project01.todayart.entity.MemberRegister;
+import com.artfactory.project01.todayart.model.MemberRegister;
+import com.artfactory.project01.todayart.model.MemberUpdate;
 import com.artfactory.project01.todayart.model.HttpStatusMessage;
 import com.artfactory.project01.todayart.service.MemberService;
 import com.artfactory.project01.todayart.util.MemberDetailServiceImpl;
@@ -91,18 +92,19 @@ public class MemberController {
       @param int id(PathVariable), UpdateMember Model
       @return id,updateMember에 맞게 수정된 Member 객체
     */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
-    @PatchMapping(path = "/update", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public UserDetails updateMember(@RequestBody Map<String, String> updateMap,
-                                    Principal principal) {
+//    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST')")
+//    @PatchMapping(path = "/update", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+//    public UserDetails updateMember(@RequestBody Map<String, String> updateMap,
+//                                    Principal principal) {
+//
+//        // JSON받을때 확인용으로 현재 비밀번호 받아서 비교
+//        if(PrincipalUtil.from(principal).getPassword().equals(updateMap.get("chkPassword"))) {
+//            return memberService.updateMember(principal, updateMap);
+//        } else{
+//            throw new BadCredentialsException("정보가 일치하지 않습니다");
+//        }
+//    }
 
-        // JSON받을때 확인용으로 현재 비밀번호 받아서 비교
-        if(PrincipalUtil.from(principal).getPassword().equals(updateMap.get("chkPassword"))) {
-            return memberService.updateMember(principal, updateMap);
-        } else{
-            throw new BadCredentialsException("정보가 일치하지 않습니다");
-        }
-    }
     /*
        작성자:  희창
        기능 설명 : 회원 삭제(탈퇴 여부 체크)
@@ -187,6 +189,35 @@ public class MemberController {
             httpStatusMessage.setStatusCode(HttpStatus.CONFLICT);
             httpStatusMessage.setStatusMessage("이미 사용중인 닉네임 입니다.");
         }
+
+        return httpStatusMessage;
+    }
+
+    /*
+     * 작성자 : 상현
+     * 용도 : 닉네임 업데이트
+     */
+    @PatchMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public HttpStatusMessage updateNickname(Principal principal, @RequestBody MemberUpdate memberUpdate) {
+        HttpStatusMessage httpStatusMessage = new HttpStatusMessage();
+        Member member = memberService.findByEmail(PrincipalUtil.from(principal).getUsername());
+
+        if(memberUpdate.getNickname() != null) {
+            member.setNickname(memberUpdate.getNickname());
+        } else if(memberUpdate.getRealName() != null) {
+            member.setRealName(memberUpdate.getRealName());
+        } else if(memberUpdate.getPhone() != null) {
+            member.setPhone(memberUpdate.getPhone());
+        } else {
+            httpStatusMessage.setStatusCode(HttpStatus.CONFLICT);
+            httpStatusMessage.setStatusMessage("변경 중 오류가 발생 했습니다.");
+
+            return httpStatusMessage;
+        }
+
+        memberService.updateMember(member);
+        httpStatusMessage.setStatusCode(HttpStatus.OK);
+        httpStatusMessage.setStatusMessage("변경이 완료되었습니다.");
 
         return httpStatusMessage;
     }
