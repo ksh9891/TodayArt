@@ -1,6 +1,5 @@
 package com.artfactory.project01.todayart.controller;
 
-import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.entity.Comments;
 import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.model.CommentForm;
@@ -165,9 +164,8 @@ public class CommentController {
             @RequestParam (name = "boardCategory") Integer boardId,
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
-            @RequestParam (name = "where") String where,
-            Principal principal) {
-        member = getMember(principal);
+
+            @RequestParam (name = "where") String where) {
 
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Comments> commentList = commentService.search(value,boardId,where,pageable);
