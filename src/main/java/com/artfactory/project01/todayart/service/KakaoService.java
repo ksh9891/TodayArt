@@ -68,9 +68,9 @@ public class KakaoService {
         params.add("quantity", totalQuantity+"");
         params.add("total_amount", ordered.getTotalPrice().toString());
         params.add("tax_free_amount", ordered.getTotalPrice().toString());
-        params.add("approval_url", "http://localhost:3000/kakaoSuccess");
-        params.add("cancel_url", "http://localhost:3000/kakaoCancel");
-        params.add("fail_url", "http://localhost:3000/kakaoSuccessFail");
+        params.add("approval_url", "http://localhost:3000/checkout/kakaoSuccess");
+        params.add("cancel_url", "http://localhost:3000/checkout/kakaoCancel");
+        params.add("fail_url", "http://localhost:3000/checkout/kakaoSuccessFail");
 
         return params;
 

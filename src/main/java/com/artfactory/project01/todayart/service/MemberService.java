@@ -35,24 +35,8 @@ public class MemberService {
     }
 
     @Transactional
-    public Member updateMember(Principal principal, Map<String, String> updateMap) {
-        Member member = (Member) PrincipalUtil.from(principal);
-
-        if(updateMap.get("password") != null &&
-                (updateMap.get("password")!= (member.getPassword()))) { // 입력받은값이 null이 아니면 값 변경
-
-            member.setPassword(updateMap.get("password"));
-        }
-        if (updateMap.get("realname") != null) {
-            member.setRealName(updateMap.get("realname"));
-        }
-        if (updateMap.get("nickname") != null && findByNickname(member.getNickname()) == null) {
-            member.setNickname(updateMap.get("nickname"));
-        }
-        if (updateMap.get("phone") != null) {
-            member.setPhone(updateMap.get("phone"));
-        }
-        return memberRepository.save(member); // 수정된 값으로 업데이트 실행
+    public Member updateMember(Member member) {
+        return memberRepository.save(member);
     }
 
 

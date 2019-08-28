@@ -1,5 +1,6 @@
-package com.artfactory.project01.todayart.entity;
+package com.artfactory.project01.todayart.model;
 
+import com.artfactory.project01.todayart.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 
