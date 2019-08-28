@@ -1,7 +1,6 @@
 package com.artfactory.project01.todayart.service;
 
 import com.artfactory.project01.todayart.entity.Article;
-import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.model.ArticleForm;
 import com.artfactory.project01.todayart.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,6 @@ public class ArticleService {
     */
     @Transactional
     public Article cretateArticle(Article article) {
-
 
         return articleRepository.save(article);
     }
@@ -105,7 +103,6 @@ public class ArticleService {
     @Transactional
     public Article updateArticle(Integer id, ArticleForm articleForm) {
         Article originalVO = articleRepository.findById(id).get();
-
         articleForm.setArticle(originalVO);
         return articleRepository.save(originalVO);
     }

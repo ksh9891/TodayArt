@@ -2,6 +2,7 @@ package com.artfactory.project01.todayart.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Optional;
 
 public class ResultItems<T extends Object> implements Serializable {
 
@@ -13,11 +14,22 @@ public class ResultItems<T extends Object> implements Serializable {
 
     private long totalCount;
 
+    private Optional boardName;
+
     public ResultItems(Collection<T> items, int page, int size, long totalCount) {
         this.items = items;
         this.page = page;
         this.size = size;
         this.totalCount = totalCount;
+
+    }
+
+    public ResultItems(Collection<T> items, int page, int size, long totalCount, Optional boardName) {
+        this.items = items;
+        this.page = page;
+        this.size = size;
+        this.totalCount = totalCount;
+        this.boardName = boardName;
     }
 
     public Collection<T> getItems() {
@@ -51,4 +63,14 @@ public class ResultItems<T extends Object> implements Serializable {
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
     }
+
+    public Optional getBoardName() {
+        return boardName;
+    }
+
+    public void setBoardName(Optional boardName) {
+        this.boardName = boardName;
+    }
+
+
 }

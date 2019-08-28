@@ -4,27 +4,22 @@ import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.entity.BoardCategory;
 import com.artfactory.project01.todayart.entity.Member;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
 public class ArticleForm implements Serializable {
 
     private Integer article_id;
-    private BoardCategory board_id;
+    private BoardCategory boardCategory;
     private Member member_id;
     private Date write_dated;
     private Date update_dated;
     private String title;
     private String content;
-    private Integer group;
-    private Integer depth;
-    private Integer reply_order;
     private String is_deleted;
     private Date deleted_dated;
     private String is_hidden;
     private String password;
-    private String is_reply;
     private Integer views;
     private Integer product_id;
     private Article article;
@@ -37,12 +32,12 @@ public class ArticleForm implements Serializable {
         this.article_id = article_id;
     }
 
-    public BoardCategory getBoard_id() {
-        return board_id;
+    public BoardCategory getBoardCategory() {
+        return boardCategory;
     }
 
-    public void setBoard_id(BoardCategory board_id) {
-        this.board_id = board_id;
+    public void setBoardCategory(BoardCategory boardCategory) {
+        this.boardCategory = boardCategory;
     }
 
     public Member getMember_id() {
@@ -85,30 +80,6 @@ public class ArticleForm implements Serializable {
         this.content = content;
     }
 
-    public Integer getGroup() {
-        return group;
-    }
-
-    public void setGroup(Integer group) {
-        this.group = group;
-    }
-
-    public Integer getDepth() {
-        return depth;
-    }
-
-    public void setDepth(Integer depth) {
-        this.depth = depth;
-    }
-
-    public Integer getReply_order() {
-        return reply_order;
-    }
-
-    public void setReply_order(Integer reply_order) {
-        this.reply_order = reply_order;
-    }
-
     public String getIs_deleted() {
         return is_deleted;
     }
@@ -141,13 +112,6 @@ public class ArticleForm implements Serializable {
         this.password = password;
     }
 
-    public String getIs_reply() {
-        return is_reply;
-    }
-
-    public void setIs_reply(String is_reply) {
-        this.is_reply = is_reply;
-    }
 
     public Integer getViews() {
         return views;
@@ -170,55 +134,43 @@ public class ArticleForm implements Serializable {
     }
 
     public void setArticle(Article article) {
-        if(article_id != null){
+        if (article_id != null) {
             article.setArticleId(this.article_id);
         }
-        if(board_id != null){
-            article.setBoardCategory(this.board_id);
+        if (boardCategory != null) {
+            article.setBoardCategory(this.boardCategory);
         }
-        if(member_id != null){
+        if (member_id != null) {
             article.setMember(this.member_id);
         }
-        if(write_dated != null){
+        if (write_dated != null) {
             article.setWriteDated(this.write_dated);
         }
-        if(update_dated != null){
+        if (update_dated != null) {
             article.setUpdateDated(new Date());
         }
-        if(title != null){
+        if (title != null) {
             article.setTitle(this.title);
         }
-        if(content != null){
+        if (content != null) {
             article.setContent(this.content);
         }
-        if(group != null){
-            article.setGroup(this.group);
-        }
-        if(depth != null){
-            article.setDepth(this.depth);
-        }
-        if(reply_order != null){
-            article.setReplyOrder(this.reply_order);
-        }
-        if(is_deleted != null){
+        if (is_deleted != null) {
             article.setIsDeleted(this.is_deleted);
         }
-        if(deleted_dated != null){
+        if (deleted_dated != null) {
             article.setDeletedDated(this.deleted_dated);
         }
-        if(is_hidden != null){
+        if (is_hidden != null) {
             article.setIsHidden(this.is_hidden);
         }
-        if(password != null){
+        if (password != null) {
             article.setPassword(this.password);
         }
-        if(is_reply != null){
-            article.setIsReply(this.is_reply);
-        }
-        if(views != null){
+        if (views != null) {
             article.setViews(this.views);
         }
-        if(product_id != null){
+        if (product_id != null) {
             article.setProductId(this.product_id);
         }
         this.article = article;

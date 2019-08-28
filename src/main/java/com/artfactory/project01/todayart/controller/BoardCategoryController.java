@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -114,5 +116,7 @@ public class BoardCategoryController {
         boardCategory.setBoardId(id);
         return boardCategory;
     }
+
+
 
 }

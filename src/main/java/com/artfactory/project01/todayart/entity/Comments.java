@@ -47,12 +47,24 @@ public class Comments implements Serializable {
     @UpdateTimestamp
     private Date updateDated;
 
+    @Column(name = "group")
+    private Integer group;
+
+    @Column(name = "depth")
+    private Integer depth;
+
+    @Column(name = "reply_order")
+    private Integer order;
+
     @Column(name = "delete_dated")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deleteDated;
 
     @Column(name = "is_deleted")
     private String isDeleted;
+
+    @Column(name = "password")
+    private String password;
 
     @Transient
     private Integer memberId;

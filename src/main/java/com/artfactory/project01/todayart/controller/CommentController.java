@@ -28,6 +28,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    private Member member;
     private Comments comments;
     private static Member getMember(Principal principal){
         return (Member) PrincipalUtil.from(principal);
@@ -69,9 +70,8 @@ public class CommentController {
     public ResultItems<Comments> listOf(
             @RequestParam(name = "articleId") Integer articleId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "10", required = false) int size,
-            Principal principal) {
-        comments.setMember(getMember(principal));
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
+
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Comments> commentList = commentService.listOfComments(articleId, pageable);
         return new ResultItems<Comments>(commentList.stream().collect(Collectors.toList()), page, size, commentList.getTotalElements());
@@ -95,7 +95,7 @@ public class CommentController {
     )
     public Comments update(@PathVariable("commentId") Integer id,
                            @RequestBody CommentForm commentForm, Principal principal) {
-        comments.setMember(getMember(principal));
+        member = getMember(principal);
         return commentService.updateCommments(id, commentForm);
     }
 
@@ -115,7 +115,7 @@ public class CommentController {
             }
     )
     public Comments delete(@PathVariable("commentId") Integer id, Principal principal) {
-        comments.setMember(getMember(principal));
+        member = getMember(principal);
         return commentService.deleteComments(id);
     }
 
@@ -135,7 +135,8 @@ public class CommentController {
             }
     )
     public Comments dataDelete(@PathVariable("commentId") Integer id, Principal principal) {
-        comments.setMember(getMember(principal));
+        member = getMember(principal);
+
         commentService.dataDeleteComments(id);
 
         Comments comments = new Comments();
@@ -166,7 +167,7 @@ public class CommentController {
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
             @RequestParam (name = "where") String where,
             Principal principal) {
-        comments.setMember(getMember(principal));
+        member = getMember(principal);
 
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Comments> commentList = commentService.search(value,boardId,where,pageable);

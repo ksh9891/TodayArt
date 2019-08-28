@@ -11,6 +11,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 public class BoardCategoryService {
@@ -68,5 +70,13 @@ public class BoardCategoryService {
         } else{
             boardCategoryRepository.deleteById(id);
         }
+    }
+
+
+    @Transactional
+    public Optional<BoardCategory> itemOfBoardCategory(Integer id) {
+        BoardCategory boardCategory = boardCategoryRepository.findById(id).get();
+
+        return boardCategoryRepository.findByBoardId(id);
     }
 }

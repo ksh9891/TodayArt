@@ -28,7 +28,7 @@ public class Article implements Serializable {
 
 
     @ManyToOne(fetch = FetchType.EAGER,targetEntity = BoardCategory.class)
-    @JoinColumn(name = "board_id",nullable = false, updatable = false)
+    @JoinColumn(name = "board_id",nullable = false)
     @JsonIgnore
     private BoardCategory boardCategory;
 
@@ -53,15 +53,6 @@ public class Article implements Serializable {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "group")
-    private Integer group;
-
-    @Column(name = "depth")
-    private Integer depth;
-
-    @Column(name = "reply_order")
-    private Integer replyOrder;
-
     @Column(name = "is_deleted")
     private String isDeleted;
 
@@ -74,9 +65,6 @@ public class Article implements Serializable {
 
     @Column(name = "password")
     private String password;
-
-    @Column(name = "is_reply")
-    private String isReply;
 
     @Column(name = "views")
     private Integer views;
@@ -98,4 +86,7 @@ public class Article implements Serializable {
 
     @Transient
     private Integer boardId;
+
+    @Transient
+    private Article article;
 }

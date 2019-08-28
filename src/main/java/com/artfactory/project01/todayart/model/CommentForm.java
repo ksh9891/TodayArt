@@ -18,6 +18,9 @@ public class CommentForm implements Serializable {
     private Date updateDated;
     private Date deleteDated;
     private String isDeleted;
+    private Integer group;
+    private Integer depth;
+    private Integer order;
     private Comments comments;
 
     public Integer getCommentId() {
@@ -76,12 +79,36 @@ public class CommentForm implements Serializable {
         this.deleteDated = deleteDated;
     }
 
-    public String getIsDelete() {
+    public String getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDelete(String isDelete) {
-        this.isDeleted = isDelete;
+    public void setIsDeleted(String isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public Integer getGroup() {
+        return group;
+    }
+
+    public void setGroup(Integer group) {
+        this.group = group;
+    }
+
+    public Integer getDepth() {
+        return depth;
+    }
+
+    public void setDepth(Integer depth) {
+        this.depth = depth;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 
     public Comments getComments() {
@@ -114,6 +141,15 @@ public class CommentForm implements Serializable {
         }
         if (isDeleted != null) {
             comments.setIsDeleted(this.isDeleted);
+        }
+        if (group != null){
+            comments.setGroup(this.group);
+        }
+        if (depth != null){
+            comments.setDepth(this.depth);
+        }
+        if (order != null){
+            comments.setOrder(this.order);
         }
         this.comments = comments;
 

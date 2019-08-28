@@ -2,12 +2,12 @@ package com.artfactory.project01.todayart.controller;
 
 
 import com.artfactory.project01.todayart.entity.Article;
+import com.artfactory.project01.todayart.entity.BoardCategory;
 import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.model.ArticleForm;
 import com.artfactory.project01.todayart.model.ResultItems;
 import com.artfactory.project01.todayart.service.ArticleService;
-import com.artfactory.project01.todayart.service.CommentService;
-import com.artfactory.project01.todayart.util.MemberDetailServiceImpl;
+import com.artfactory.project01.todayart.service.BoardCategoryService;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,7 +32,15 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private BoardCategoryService boardCategoryService;
+
     private Article article;
+
+    private Member member;
+
+    private static BoardCategory boardCategory;
+
     private static Member getMember(Principal principal){
         return (Member) PrincipalUtil.from(principal);
     }
@@ -78,7 +86,8 @@ public class ArticleController {
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Article> articleList = articleService.listOfArticle(boardId, pageable);
-        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
+        boardCategoryService.itemOfBoardCategory(boardId);
+        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements(),boardCategoryService.itemOfBoardCategory(boardId));
     }
 
     /*
@@ -96,9 +105,8 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article retrieve(@PathVariable("article_id") Integer id, Article article,Principal principal){
-        Member member = getMember(principal);
-        article.setMember(member);
+    public Article retrieve(@PathVariable("article_id") Integer id,Principal principal){
+        member = getMember(principal);
         return articleService.itemOfArticle(id).get();
     }
 
@@ -118,8 +126,7 @@ public class ArticleController {
             }
     )
     public Article update(@PathVariable("article_id") Integer id, @RequestBody ArticleForm articleForm , Principal principal) {
-        Member member = getMember(principal);
-        article.setMember(member);
+        member = getMember(principal);
         return articleService.updateArticle(id, articleForm);
     }
 
@@ -139,8 +146,7 @@ public class ArticleController {
             }
     )
     public Article delete(@PathVariable("article_id") Integer id,Principal principal) {
-        Member member = getMember(principal);
-        article.setMember(member);
+        member = getMember(principal);
         return articleService.deleteArticle(id);
     }
 
@@ -160,8 +166,7 @@ public class ArticleController {
             }
     )
     public Article dataDelete(@PathVariable("article_id") Integer id,Principal principal) {
-        Member member = getMember(principal);
-        article.setMember(member);
+        member = getMember(principal);
 
         articleService.dataDeleteArticle(id);
 
@@ -195,7 +200,7 @@ public class ArticleController {
 
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Article> articleList = articleService.search(value,boardId,where,pageable);
-        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements());
+        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements(),boardCategoryService.itemOfBoardCategory(boardId));
     }
 
 }
