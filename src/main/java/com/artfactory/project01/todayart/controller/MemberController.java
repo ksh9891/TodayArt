@@ -208,6 +208,8 @@ public class MemberController {
             member.setRealName(memberUpdate.getRealName());
         } else if(memberUpdate.getPhone() != null) {
             member.setPhone(memberUpdate.getPhone());
+        } else if(memberUpdate.getPassword() != null) {
+            member.setPassword(memberUpdate.getPassword());
         } else {
             httpStatusMessage.setStatusCode(HttpStatus.CONFLICT);
             httpStatusMessage.setStatusMessage("변경 중 오류가 발생 했습니다.");
