@@ -29,7 +29,12 @@ public class CommentService {
         return commentRepository.save(comments);
     }
 
+    @Transactional
+    public Comments replyComments(Integer id, Comments comments) {
+        comments = commentRepository.findById(id).get();
 
+        return commentRepository.save(comments);
+    }
     /*
        작성자: 진표
        기능 : articleId별 Comments리스트 리턴
