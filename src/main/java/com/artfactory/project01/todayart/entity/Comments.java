@@ -34,13 +34,13 @@ public class Comments implements Serializable {
     @JsonIgnore
     private Member member;
 
-    @Column(name = "comment")
+    @Column(name = "content")
     private String comment;
 
-    @Column(name = "create_dated", nullable = false)
+    @Column(name = "write_dated", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Date createDated;
+    private Date writeDated;
 
     @Column(name = "update_dated")
     @Temporal(TemporalType.TIMESTAMP)

@@ -1,6 +1,5 @@
 package com.artfactory.project01.todayart.service;
 
-import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.entity.Comments;
 import com.artfactory.project01.todayart.model.CommentForm;
 import com.artfactory.project01.todayart.repository.CommentRepository;
@@ -38,7 +37,7 @@ public class CommentService {
        @return Page<Comments>
     */
     @Transactional(readOnly = true)
-    public Page<Comments> listOfComments(Integer id,Pageable pageable) {
+    public Page<Comments> listOfComments(Integer id, Pageable pageable) {
         Page<Comments> temp = commentRepository.findByArticleId(id, pageable);
         for(Comments comments:temp){
             comments.setMemberId(comments.getMember().getMemberId());
@@ -93,7 +92,7 @@ public class CommentService {
       @return 검색된 Page<Article>
    */
     @Transactional(readOnly = true)
-    public Page<Comments> search(String value, Integer boardId ,String where, Pageable pageable) {
+    public Page<Comments> search(String value, Integer boardId , String where, Pageable pageable) {
 
         Page<Comments> result = null;
         if(where.equals("content")){

@@ -35,8 +35,8 @@ public class CommentController {
     /*
         작성자: 진표
         기능 : 새로운 댓글 생성
-        @param Comment
-        @return Comment
+        @param Comments
+        @return Comments
      */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
@@ -53,6 +53,26 @@ public class CommentController {
     }
 
     /*
+        작성자: 진표
+        기능 : 새로운 답글 생성
+        @param Comments
+        @return Comments
+     */
+    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
+    @RequestMapping(
+            method = RequestMethod.POST,
+            produces = {
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            }
+    )
+    public Comments reply(
+            @RequestBody Comments comments, Principal principal) {
+        comments.setMember(getMember(principal));
+        return commentService.createComments(comments);
+    }
+
+    /*
      작성자: 진표
      기능 : Artcle_Id별 댓글 전체 출력
      @param Comments
@@ -60,6 +80,7 @@ public class CommentController {
      */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
+            path = "/{commentId}",
             method = RequestMethod.GET,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
