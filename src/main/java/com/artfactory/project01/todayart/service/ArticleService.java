@@ -101,7 +101,7 @@ public class ArticleService {
        @return 업데이트 된 Article
     */
     @Transactional
-    public Article updateArticle(Integer id, ArticleForm articleForm) {
+    public Article updateArticle(Integer id,ArticleForm articleForm) {
         Article originalVO = articleRepository.findById(id).get();
         articleForm.setArticle(originalVO);
         return articleRepository.save(originalVO);

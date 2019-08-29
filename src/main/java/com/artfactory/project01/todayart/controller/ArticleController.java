@@ -10,7 +10,6 @@ import com.artfactory.project01.todayart.service.ArticleService;
 import com.artfactory.project01.todayart.service.BoardCategoryService;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -105,6 +104,7 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
+
     public Article retrieve(@PathVariable("article_id") Integer id,Principal principal){
         member = getMember(principal);
         return articleService.itemOfArticle(id).get();
@@ -125,6 +125,7 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
+
     public Article update(@PathVariable("article_id") Integer id, @RequestBody ArticleForm articleForm , Principal principal) {
         member = getMember(principal);
         return articleService.updateArticle(id, articleForm);
@@ -145,6 +146,7 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
+
     public Article delete(@PathVariable("article_id") Integer id,Principal principal) {
         member = getMember(principal);
         return articleService.deleteArticle(id);
@@ -165,6 +167,7 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
+
     public Article dataDelete(@PathVariable("article_id") Integer id,Principal principal) {
         member = getMember(principal);
 
