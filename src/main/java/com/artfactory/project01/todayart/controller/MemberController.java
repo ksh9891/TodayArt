@@ -1,9 +1,12 @@
 package com.artfactory.project01.todayart.controller;
 
 import com.artfactory.project01.todayart.entity.Member;
+import com.artfactory.project01.todayart.model.EmailVerifyModel;
 import com.artfactory.project01.todayart.model.MemberRegister;
 import com.artfactory.project01.todayart.model.MemberUpdate;
 import com.artfactory.project01.todayart.model.HttpStatusMessage;
+import com.artfactory.project01.todayart.service.EmailService;
+import com.artfactory.project01.todayart.service.EmailVerifyService;
 import com.artfactory.project01.todayart.service.MemberService;
 import com.artfactory.project01.todayart.util.MemberDetailServiceImpl;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
@@ -28,6 +31,12 @@ public class MemberController {
 
     @Autowired
     private MemberDetailServiceImpl memberDetailsService;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private EmailVerifyService emailVerifyService;
 
     /*
       작성자:  희창
@@ -223,4 +232,31 @@ public class MemberController {
 
         return httpStatusMessage;
     }
+
+    /*
+     * 작성자 : 상현
+     * 용도 : 비밀번호 재설정 / 회원 승인 메일 발송 기능
+     */
+    @PostMapping(path="/sendEmail", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public HttpStatusMessage sendEmail(@RequestBody EmailVerifyModel emailVerity) {
+        HttpStatusMessage httpStatusMessage = new HttpStatusMessage();
+
+        if(emailVerity == null) {
+            httpStatusMessage.setStatusCode(HttpStatus.BAD_REQUEST);
+            httpStatusMessage.setStatusMessage("오류가 발생 했습니다.");
+        } else {
+            String subject = "[오늘의아트] 회원가입을 환영합니다.";
+            emailVerifyService.createEmailVerify();
+            // 랜덤 문자열 생성 (한... 180자정도?)
+            String text = "오늘의아트에서 다양한 작가들의 작품을 감상하고 구매해보세요!";
+
+
+            emailService.sendSimpleMessage(emailVerity.getEmail(), subject, text);
+
+            httpStatusMessage.setStatusCode(HttpStatus.OK);
+            httpStatusMessage.setStatusMessage("발송 성공");
+        }
+
+        return httpStatusMessage;
+    };
 }
