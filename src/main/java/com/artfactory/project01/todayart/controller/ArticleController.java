@@ -86,7 +86,8 @@ public class ArticleController {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Article> articleList = articleService.listOfArticle(boardId, pageable);
         boardCategoryService.itemOfBoardCategory(boardId);
-        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements(),boardCategoryService.itemOfBoardCategory(boardId));
+        return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size,
+                articleList.getTotalElements(),boardCategoryService.itemOfBoardCategory(boardId));
     }
 
     /*
