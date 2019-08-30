@@ -13,8 +13,12 @@ import java.util.List;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article,Integer> {
 
-    //게시판 아이디가 ?인게시물만 가져오기기
-   @Query(value = "SELECT * FROM article WHERE board_id = ?1 AND is_deleted = 'n' ORDER BY write_dated DESC ", nativeQuery = true)
+    //게시판 아이디가 ?인게시물만 가져오기(게시글에 달려있는
+   @Query(value = "SELECT a.* ,(SELECT ifnull(COUNT(*),0) FROM comments WHERE article_id = a.article_id) as cnt\n" +
+           "FROM article a \n" +
+           "WHERE a.board_id = ?1\n" +
+           "AND a.is_deleted = 'n'  \n" +
+           "ORDER BY a.write_dated DESC ", nativeQuery = true)
    Page<Article> findByBoardId(Integer boardId , Pageable pageable);
 
    //title 검색

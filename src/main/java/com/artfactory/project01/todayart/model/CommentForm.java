@@ -1,8 +1,6 @@
 package com.artfactory.project01.todayart.model;
 
-import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.entity.Comments;
-import com.artfactory.project01.todayart.entity.Member;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -131,7 +129,7 @@ public class CommentForm implements Serializable {
             comments.setComment(this.comment);
         }
         if (createDated != null) {
-            comments.setCreateDated(this.createDated);
+            comments.setWriteDated(this.createDated);
         }
         if (updateDated != null) {
             comments.setUpdateDated(this.updateDated);
