@@ -51,7 +51,7 @@ public class Shipping {
     @Column(name = "postal_code")
     @Getter
     @Setter
-    private Integer postalCode; // 우편번호
+    private String postalCode; // 우편번호
 
     @Column(name = "receive_addr")
     @Getter
