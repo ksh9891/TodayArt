@@ -47,10 +47,10 @@ public class Comments implements Serializable {
     @UpdateTimestamp
     private Date updateDated;
 
-    @Column(name = "group")
+    @Column(name = "reply_group")
     private Integer group;
 
-    @Column(name = "depth")
+    @Column(name = "reply_depth")
     private Integer depth;
 
     @Column(name = "reply_order")

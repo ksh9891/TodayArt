@@ -52,7 +52,6 @@ public class ArticleController {
      */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/create",
             method = RequestMethod.POST,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -201,7 +200,6 @@ public class ArticleController {
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
             @RequestParam (name = "where") String where) {
-
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Article> articleList = articleService.search(value,boardId,where,pageable);
         return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements(),boardCategoryService.itemOfBoardCategory(boardId));
