@@ -1,6 +1,5 @@
 package com.artfactory.project01.todayart.service;
 
-import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.entity.Comments;
 import com.artfactory.project01.todayart.model.CommentForm;
 import com.artfactory.project01.todayart.repository.CommentRepository;
@@ -27,10 +26,18 @@ public class CommentService {
     */
     @Transactional
     public Comments createComments(Comments comments) {
+        comments.setGroup(comments.getArticleId());
         return commentRepository.save(comments);
     }
 
-
+    @Transactional
+    public Comments replyComments(Integer id,Comments comments) {
+        Comments temp = commentRepository.findById(id).get();
+        comments.setGroup(temp.getGroup());
+        comments.setOrder(temp.getOrder()+1);
+        comments.setDepth(temp.getDepth()+1);
+        return commentRepository.save(comments);
+    }
     /*
        작성자: 진표
        기능 : articleId별 Comments리스트 리턴
@@ -38,7 +45,7 @@ public class CommentService {
        @return Page<Comments>
     */
     @Transactional(readOnly = true)
-    public Page<Comments> listOfComments(Integer id,Pageable pageable) {
+    public Page<Comments> listOfComments(Integer id, Pageable pageable) {
         Page<Comments> temp = commentRepository.findByArticleId(id, pageable);
         for(Comments comments:temp){
             comments.setMemberId(comments.getMember().getMemberId());
@@ -93,7 +100,7 @@ public class CommentService {
       @return 검색된 Page<Article>
    */
     @Transactional(readOnly = true)
-    public Page<Comments> search(String value, Integer boardId ,String where, Pageable pageable) {
+    public Page<Comments> search(String value, Integer boardId , String where, Pageable pageable) {
 
         Page<Comments> result = null;
         if(where.equals("content")){

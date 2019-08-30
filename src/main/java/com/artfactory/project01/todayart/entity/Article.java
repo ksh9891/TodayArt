@@ -89,4 +89,6 @@ public class Article implements Serializable {
 
     @Transient
     private Article article;
+
+    private Integer cnt;
 }
