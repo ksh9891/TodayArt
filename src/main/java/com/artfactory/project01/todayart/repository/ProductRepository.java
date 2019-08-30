@@ -23,11 +23,21 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
 
-    @Query(value = "SELECT p.* FROM product p, artist a\n" +
+
+
+
+    /*
+    작성자: 채경
+    기능 설명 : ProductService의 retrieveProductBySearch에서 사용/
+            is_delete=0인 상품을 상품명/작가명으로 DB에서 LIKE SELECT
+    */
+    @Query(value = "SELECT p.* FROM todayart.product p, todayart.artist a\n" +
             "WHERE p.artist_id = a.artist_id\n" +
-            "AND p.is_delete = 'n'\n " +
-            "AND a.artist_name LIKE ? ", nativeQuery = true)
-    List<Product> findByArtistNameAndIsDelete(String artistName);
+            "AND p.is_delete = 'n'\n" +
+            "AND (a.artist_name LIKE ?1 \n" +
+            "OR p.product_name LIKE ?2 )"
+            , nativeQuery = true)
+    List<Product> findByArtistNameAndIsDeleteAndProductName(String search1, String search2);
 
 
 
