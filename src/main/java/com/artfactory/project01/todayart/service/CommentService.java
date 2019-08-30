@@ -26,13 +26,16 @@ public class CommentService {
     */
     @Transactional
     public Comments createComments(Comments comments) {
+        comments.setGroup(comments.getArticleId());
         return commentRepository.save(comments);
     }
 
     @Transactional
-    public Comments replyComments(Integer id, Comments comments) {
-        comments = commentRepository.findById(id).get();
-
+    public Comments replyComments(Integer id,Comments comments) {
+        Comments temp = commentRepository.findById(id).get();
+        comments.setGroup(temp.getGroup());
+        comments.setOrder(temp.getOrder()+1);
+        comments.setDepth(temp.getDepth()+1);
         return commentRepository.save(comments);
     }
     /*

@@ -60,6 +60,7 @@ public class CommentController {
      */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
+            path = "/{commentId}",
             method = RequestMethod.POST,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -67,9 +68,9 @@ public class CommentController {
             }
     )
     public Comments reply(
-            @RequestBody Comments comments, Principal principal) {
+            @PathVariable("commentId") Integer id, Principal principal) {
         comments.setMember(getMember(principal));
-        return commentService.createComments(comments);
+        return commentService.replyComments(id,comments);
     }
 
     /*
@@ -88,12 +89,12 @@ public class CommentController {
             }
     )
     public ResultItems<Comments> listOf(
-            @RequestParam(name = "articleId") Integer articleId,
+            @RequestParam(name = "commentId") Integer commentId,
             @RequestParam(name = "page", defaultValue = "1", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Comments> commentList = commentService.listOfComments(articleId, pageable);
+        Page<Comments> commentList = commentService.listOfComments(commentId, pageable);
         return new ResultItems<Comments>(commentList.stream().collect(Collectors.toList()), page, size, commentList.getTotalElements());
     }
 
