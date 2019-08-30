@@ -90,23 +90,6 @@ public class ProductService {
     }
 
 
-
-
-
-
-    /*
-    작성자: 수지
-    기능 설명 : 상품 이름(productName)으로 검색
-    <GET>
-    @param String productName
-    @return 상품명으로 조회된 List<Product> 객체
-    */
-    @Transactional(readOnly = true)
-    public List<Product> retrieveByProductName(String productName) {
-        return productRepository.findByProductNameContainingAndIsDelete(productName, "n");
-    }
-
-
     /*
     작성자: 수지
     기능 설명 : 상품 카테고리별 검색
@@ -149,21 +132,21 @@ public class ProductService {
 
 
 
+
     /*
-    작성자: 수지
-    기능 설명 : 아티스트 이름으로 검색
-    <GET>
-    @param String artistName
-    @return 아티스트 이름으로 검색한 List<Product> 객체
-    */
+   작성자: 수지
+   기능 설명 : 아티스트 이름/작품명으로 검색
+   <GET>
+   @param String search
+   @return 아티스트 이름/작품명으로 검색한 List<Product> 객체
+   */
     @Transactional(readOnly = true)
-    public List<Product> retrieveByArtistName(String artistName) {
+    public List<Product> retrieveProductBySearch(String search) {
         // Like 검색을 위해 앞뒤로 % 달아줌
-        artistName = "%" + artistName +"%";
+        search = "%" + search +"%";
 
-        return productRepository.findByArtistNameAndIsDelete(artistName);
+        return productRepository.findByArtistNameAndIsDeleteAndProductName(search,search);
     }
-
 
 
 
