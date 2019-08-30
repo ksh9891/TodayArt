@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface CommentRepository extends JpaRepository<Comments,Integer> {
 
@@ -21,11 +19,11 @@ public interface CommentRepository extends JpaRepository<Comments,Integer> {
 
     //content검색
     @Query(value = "SELECT * FROM comments WHERE board_id = ?2 AND is_deleted = 'n' AND content LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
-    Page<Comments> searchContent(String value, Integer boardId ,String where, Pageable pageable);
+    Page<Comments> searchContent(String value, Integer boardId , String where, Pageable pageable);
 
     //memberId검색
     @Query(value = "SELECT * FROM comments WHERE board_id = ?2 AND is_deleted = 'n' AND member_id LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
-    Page<Comments> searchMemberId(String value, Integer boardId ,String where, Pageable pageable);
+    Page<Comments> searchMemberId(String value, Integer boardId , String where, Pageable pageable);
 
 
 }
