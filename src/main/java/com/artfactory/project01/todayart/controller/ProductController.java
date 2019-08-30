@@ -109,27 +109,7 @@ public class ProductController {
     }
 
 
-    /*
-    작성자: 채경
-    기능 설명 : 상품 이름(부분 이름)으로 검색 후 결과 출력
-    @param String productName
-    @return 상품 이름으로 검색된 List<Product> 객체
-    path /productlist?name="상품명"
-    */
-    @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
-    @RequestMapping(
-            path = "/productname",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
-
-    )
-    public List<Product> retrieveProductByName(@RequestParam(value = "name", required = false) String productName) {
-
-        return productService.retrieveByProductName(productName);
-    }
-
-
-    /*
+     /*
     작성자: 채경
     기능 설명 : 카테고리를 선택하면 선택한 카테고리 상품만 출력
     @param Integer categoryId
@@ -191,23 +171,26 @@ public class ProductController {
     }
 
 
+
+
+
     /*
-    작성자: 채경
-    기능 설명 : 작가이름으로 상품 조회/출력
-    @param String artistName
-    @return 각 판매자별 List<Product> 객체
-    /artistlist?name=작가명
-    */
+   작성자: 채경
+   기능 설명 : 작가이름/상품명으로 상품 조회/출력
+   @param String artistName
+   @return 각 판매자별 List<Product> 객체
+   /search?search=검색어
+   */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
-            path = "/artistname",
+            path = "/search",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 
     )
-    public List<Product> retrieveProductByArtistName(@RequestParam(value = "name", required = false) String artistName) {
+    public List<Product> retrieveProduct(@RequestParam(value = "search", required = false) String search) {
 
-        return productService.retrieveByArtistName(artistName);
+        return productService.retrieveProductBySearch(search);
     }
 
 
