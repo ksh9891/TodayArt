@@ -106,7 +106,7 @@ public class ArticleController {
     )
 
     public Article retrieve(@PathVariable("article_id") Integer id,Principal principal){
-        member = getMember(principal);
+//        member = getMember(principal);
         return articleService.itemOfArticle(id).get();
     }
 

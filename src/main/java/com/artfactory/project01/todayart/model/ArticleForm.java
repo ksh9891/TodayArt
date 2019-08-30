@@ -22,6 +22,7 @@ public class ArticleForm implements Serializable {
     private String password;
     private Integer views;
     private Integer product_id;
+    private Integer cnt;
     private Article article;
 
     public Integer getArticle_id() {
@@ -129,6 +130,14 @@ public class ArticleForm implements Serializable {
         this.product_id = product_id;
     }
 
+    public Integer getCnt() {
+        return cnt;
+    }
+
+    public void setCnt(Integer cnt) {
+        this.cnt = cnt;
+    }
+
     public Article getArticle() {
         return article;
     }
@@ -172,6 +181,9 @@ public class ArticleForm implements Serializable {
         }
         if (product_id != null) {
             article.setProductId(this.product_id);
+        }
+        if (cnt != null) {
+            article.setCnt(this.cnt);
         }
         this.article = article;
     }

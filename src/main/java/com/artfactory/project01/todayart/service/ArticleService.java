@@ -45,7 +45,8 @@ public class ArticleService {
             article.setBoardId(article.getBoardCategory().getBoardId());
             article.setMemberId(article.getMember().getMemberId());
             article.setNickname(article.getMember().getNickname());
-//            article.setCnt(article.getCnt());
+            article.setCnt(article.getCnt());
+
         }
 
         return temp;
@@ -87,6 +88,7 @@ public class ArticleService {
         article.setBoardId(article.getBoardCategory().getBoardId());
         article.setMemberId(article.getMember().getMemberId());
         article.setNickname(article.getMember().getNickname());
+
 
         //view 값을 가져와서  +1
         article.setViews(article.getViews()+1);
