@@ -137,7 +137,7 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
-            path = "/category={categoryId}",
+            path = "/{categoryId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -148,7 +148,7 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
-            path = "/category={categoryId}/asc",
+            path = "/{categoryId}/asc",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
@@ -160,7 +160,7 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN', 'GUEST')")
     @RequestMapping(
-            path = "/category={categoryId}/desc",
+            path = "/{categoryId}/desc",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
