@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmailVerifyRepository extends JpaRepository<EmailVerify, Integer> {
+    EmailVerify findByMemberId(Integer memberId);
+    EmailVerify findByVerifyText(String verifyText);
 }

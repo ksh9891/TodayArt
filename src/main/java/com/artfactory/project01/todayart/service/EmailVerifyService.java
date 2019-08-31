@@ -16,4 +16,14 @@ public class EmailVerifyService {
     public EmailVerify createEmailVerify(EmailVerify emailVerify) {
         return emailVerifyRepository.save(emailVerify);
     }
+
+    @Transactional
+    public EmailVerify findByMemberId(Integer memberId) {
+        return emailVerifyRepository.findByMemberId(memberId);
+    }
+
+    @Transactional
+    public EmailVerify findByVerifyText(String verifyText) {
+        return emailVerifyRepository.findByVerifyText(verifyText);
+    }
 }

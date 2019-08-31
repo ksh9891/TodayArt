@@ -1,5 +1,6 @@
 package com.artfactory.project01.todayart.controller;
 
+import com.artfactory.project01.todayart.entity.EmailVerify;
 import com.artfactory.project01.todayart.entity.Member;
 import com.artfactory.project01.todayart.model.EmailVerifyModel;
 import com.artfactory.project01.todayart.model.MemberRegister;
@@ -8,6 +9,7 @@ import com.artfactory.project01.todayart.model.HttpStatusMessage;
 import com.artfactory.project01.todayart.service.EmailService;
 import com.artfactory.project01.todayart.service.EmailVerifyService;
 import com.artfactory.project01.todayart.service.MemberService;
+import com.artfactory.project01.todayart.util.HashingUtil;
 import com.artfactory.project01.todayart.util.MemberDetailServiceImpl;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestController
@@ -238,20 +241,29 @@ public class MemberController {
      * 용도 : 비밀번호 재설정 / 회원 승인 메일 발송 기능
      */
     @PostMapping(path="/sendEmail", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public HttpStatusMessage sendEmail(@RequestBody EmailVerifyModel emailVerity) {
+    public HttpStatusMessage sendEmail(@RequestBody EmailVerifyModel emailVerifyModel) {
         HttpStatusMessage httpStatusMessage = new HttpStatusMessage();
 
-        if(emailVerity == null) {
+        if(emailVerifyModel == null) {
             httpStatusMessage.setStatusCode(HttpStatus.BAD_REQUEST);
             httpStatusMessage.setStatusMessage("오류가 발생 했습니다.");
         } else {
+            Integer memberId = memberService.findByEmail(emailVerifyModel.getEmail()).getMemberId();
+            LocalDateTime localDateTime = LocalDateTime.now();
+            HashingUtil hashingUtil = new HashingUtil();
+
+            EmailVerify emailVerify = new EmailVerify();
+            emailVerify.setMemberId(memberId);
+            emailVerify.setType(emailVerifyModel.getType());
+            emailVerify.setExpireDated(localDateTime.plusHours(1));
+            emailVerify.setVerifyText(hashingUtil.sha256Encoding(emailVerifyModel.getEmail() + localDateTime));
+            emailVerifyService.createEmailVerify(emailVerify);
+
+            String token = emailVerifyService.findByMemberId(memberId).getVerifyText();
+
             String subject = "[오늘의아트] 회원가입을 환영합니다.";
-            emailVerifyService.createEmailVerify();
-            // 랜덤 문자열 생성 (한... 180자정도?)
-            String text = "오늘의아트에서 다양한 작가들의 작품을 감상하고 구매해보세요!";
-
-
-            emailService.sendSimpleMessage(emailVerity.getEmail(), subject, text);
+            String text = token;
+            emailService.sendSimpleMessage(emailVerifyModel.getEmail(), subject, text);
 
             httpStatusMessage.setStatusCode(HttpStatus.OK);
             httpStatusMessage.setStatusMessage("발송 성공");
@@ -259,4 +271,32 @@ public class MemberController {
 
         return httpStatusMessage;
     };
+
+    /*
+     * 작성자 : 상현
+     * 기능 : 가입 승인 메일 토큰 확인
+     * 인자 : token
+     * 리턴 : HttpStatusMessage 객체
+     */
+    @GetMapping(path = "/checkRegisterToken", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public HttpStatusMessage checkRegisterToken(@RequestParam String token) {
+        HttpStatusMessage httpStatusMessage = new HttpStatusMessage();
+
+        EmailVerify emailVerify = emailVerifyService.findByVerifyText(token);
+
+
+        if (emailVerify == null) {
+            httpStatusMessage.setStatusCode(HttpStatus.CONFLICT);
+            httpStatusMessage.setStatusMessage("오류가 발생 했습니다.");
+        } else {
+            Member member = memberService.retrieveMember(emailVerify.getMemberId());
+            member.setEmailChecked("Y");
+            memberService.updateMember(member);
+
+            httpStatusMessage.setStatusCode(HttpStatus.OK);
+            httpStatusMessage.setStatusMessage("승인 완료!");
+        }
+
+        return httpStatusMessage;
+    }
 }

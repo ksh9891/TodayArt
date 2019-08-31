@@ -5,10 +5,8 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @DynamicUpdate
@@ -19,6 +17,7 @@ import java.util.Date;
 @Setter
 public class EmailVerify {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "verify_id")
     private Integer verifyId;
 
@@ -29,8 +28,8 @@ public class EmailVerify {
     private String type;
 
     @Column(name = "expire_dated")
-    private Date expireDated;
+    private LocalDateTime expireDated;
 
-    @Column(name="verify_url")
-    private String verify_url;
+    @Column(name="verify_text")
+    private String verifyText;
 }
