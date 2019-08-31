@@ -10,7 +10,8 @@ import java.util.Date;
 public class ArticleForm implements Serializable {
 
     private Integer article_id;
-    private BoardCategory boardCategory;
+//    private BoardCategory boardCategory;
+    private Integer boardId;
     private Member member_id;
     private Date write_dated;
     private Date update_dated;
@@ -33,12 +34,21 @@ public class ArticleForm implements Serializable {
         this.article_id = article_id;
     }
 
-    public BoardCategory getBoardCategory() {
-        return boardCategory;
+//    public BoardCategory getBoardCategory() {
+//        return boardCategory;
+//    }
+//
+//    public void setBoardCategory(BoardCategory boardCategory) {
+//        this.boardCategory = boardCategory;
+//    }
+
+
+    public Integer getBoardId() {
+        return boardId;
     }
 
-    public void setBoardCategory(BoardCategory boardCategory) {
-        this.boardCategory = boardCategory;
+    public void setBoardId(Integer boardId) {
+        this.boardId = boardId;
     }
 
     public Member getMember_id() {
@@ -146,8 +156,11 @@ public class ArticleForm implements Serializable {
         if (article_id != null) {
             article.setArticleId(this.article_id);
         }
-        if (boardCategory != null) {
-            article.setBoardCategory(this.boardCategory);
+//        if (boardCategory != null) {
+//            article.setBoardCategory(this.boardCategory);
+//        }
+        if (boardId != null) {
+            article.setBoardId(this.boardId);
         }
         if (member_id != null) {
             article.setMember(this.member_id);

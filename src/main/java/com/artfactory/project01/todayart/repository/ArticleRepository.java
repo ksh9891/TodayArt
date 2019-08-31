@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.DiscriminatorColumn;
 import java.util.List;
 
 @Repository
@@ -41,5 +42,6 @@ public interface ArticleRepository extends JpaRepository<Article,Integer> {
     //게시글에 해당하는 댓글수 출력
     @Query(value = "SELECT COUNT(article_id) FROM comments WHERE article_id = ?1", nativeQuery = true)
     List<Comments> numberOfComments(Integer articleId);
+
 
 }

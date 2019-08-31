@@ -27,13 +27,16 @@ public class Article implements Serializable {
     private Integer articleId;
 
 
-    @ManyToOne(fetch = FetchType.EAGER,targetEntity = BoardCategory.class)
-    @JoinColumn(name = "board_id",nullable = false)
-    @JsonIgnore
-    private BoardCategory boardCategory;
+//    @ManyToOne(fetch = FetchType.EAGER, targetEntity = BoardCategory.class)
+//    @JoinColumn(name = "board_id", nullable = false)
+//    @JsonIgnore
+//    private BoardCategory boardCategory;
 
-    @ManyToOne(fetch = FetchType.EAGER,targetEntity = Member.class)
-    @JoinColumn(name = "member_id",nullable = false,updatable = false)
+    @Column(name = "board_id",nullable = false)
+    private Integer boardId;
+
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Member.class)
+    @JoinColumn(name = "member_id", nullable = false, updatable = false)
     @JsonIgnore
     private Member member;
 
@@ -42,7 +45,7 @@ public class Article implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date writeDated;
 
-    @Column(name = "update_dated", nullable = true)
+    @Column(name = "update_dated")
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDated;
@@ -56,7 +59,7 @@ public class Article implements Serializable {
     @Column(name = "is_deleted")
     private String isDeleted;
 
-    @Column(name = "delete_dated", nullable = true)
+    @Column(name = "delete_dated")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDated;
 
@@ -84,12 +87,12 @@ public class Article implements Serializable {
     @Transient
     private String boardName;
 
-    @Transient
-    private Integer boardId;
+//    @Transient
+//    private Integer boardId;
 
     @Transient
     private Article article;
 
-    @Transient
+    @Column(updatable = false)
     private Integer cnt;
 }

@@ -3,6 +3,7 @@ package com.artfactory.project01.todayart.service;
 import com.artfactory.project01.todayart.entity.Article;
 import com.artfactory.project01.todayart.model.ArticleForm;
 import com.artfactory.project01.todayart.repository.ArticleRepository;
+import com.artfactory.project01.todayart.repository.BoardCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,9 @@ public class ArticleService {
 
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private BoardCategoryRepository boardCategoryRepository;
+
 
     /*
        작성자: 진표
@@ -27,7 +31,8 @@ public class ArticleService {
     */
     @Transactional
     public Article cretateArticle(Article article) {
-
+//        articleRepository.save(article);
+//        article.setBoardId(article.getBoardId());
         return articleRepository.save(article);
     }
 
@@ -41,8 +46,9 @@ public class ArticleService {
     public Page<Article> listOfArticle(Integer boardId, Pageable pageable) {
         Page<Article> temp = articleRepository.findByBoardId(boardId, pageable);
         for(Article article:temp){
-            article.setBoardName(article.getBoardCategory().getBoardName());
-            article.setBoardId(article.getBoardCategory().getBoardId());
+//            article.setBoardName(article.getBoardCategory().getBoardName());
+//            article.setBoardId(article.getBoardCategory().getBoardId());
+
             article.setMemberId(article.getMember().getMemberId());
             article.setNickname(article.getMember().getNickname());
             article.setCnt(article.getCnt());
@@ -84,8 +90,8 @@ public class ArticleService {
     public Optional<Article> itemOfArticle(Integer id) {
         Article article = articleRepository.findById(id).get();
 
-        article.setBoardName(article.getBoardCategory().getBoardName());
-        article.setBoardId(article.getBoardCategory().getBoardId());
+//        article.setBoardName(article.getBoardCategory().getBoardName());
+//        article.setBoardId(article.getBoardCategory().getBoardId());
         article.setMemberId(article.getMember().getMemberId());
         article.setNickname(article.getMember().getNickname());
 

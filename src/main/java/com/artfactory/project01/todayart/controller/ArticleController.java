@@ -58,8 +58,9 @@ public class ArticleController {
                     MediaType.APPLICATION_XML_VALUE
             }
     )
-    public Article create(@RequestBody Article article, Principal principal) {
+    public Article create(@RequestBody Article article, Principal principal,BoardCategory boardCategory) {
         article.setMember(getMember(principal));
+//        article.setBoardCategory(boardCategory);
         return articleService.cretateArticle(article);
     }
 
