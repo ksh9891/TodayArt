@@ -22,7 +22,6 @@ public class ArticleService {
     @Autowired
     private BoardCategoryRepository boardCategoryRepository;
 
-
     /*
        작성자: 진표
        기능 : 새로운 게시글 생성
@@ -47,8 +46,7 @@ public class ArticleService {
         Page<Article> temp = articleRepository.findByBoardId(boardId, pageable);
         for(Article article:temp){
 //            article.setBoardName(article.getBoardCategory().getBoardName());
-//            article.setBoardId(article.getBoardCategory().getBoardId());
-
+            article.setBoardId(article.getBoardId());
             article.setMemberId(article.getMember().getMemberId());
             article.setNickname(article.getMember().getNickname());
             article.setCnt(article.getCnt());
@@ -91,7 +89,7 @@ public class ArticleService {
         Article article = articleRepository.findById(id).get();
 
 //        article.setBoardName(article.getBoardCategory().getBoardName());
-//        article.setBoardId(article.getBoardCategory().getBoardId());
+        article.setBoardId(article.getBoardId());
         article.setMemberId(article.getMember().getMemberId());
         article.setNickname(article.getMember().getNickname());
 

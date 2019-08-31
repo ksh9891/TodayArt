@@ -8,11 +8,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.DiscriminatorColumn;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article,Integer> {
+
+//    @Query(value = "INSERT INTO article (content,board_id,member_id,title,update_dated,write_dated) VALUES (?,?,?,?,?,?)")
+//    Article save(Article article);
+
+//    //cnt를 제외한 ID로 찾기
+//    @Query(value = "SELECT article_id,board_id,member_id,write_dated,update_dated,title,content,is_deleted,delete_dated,is_hidden,password,views,product_id FROM todayart.article", nativeQuery = true)
+//    Optional<Article> findById(Integer articleId);
 
     //게시판 아이디가 ?인게시물만 가져오기(게시글에 달려있는
    @Query(value = "SELECT a.* ,(SELECT ifnull(COUNT(*),0) FROM comments WHERE article_id = a.article_id) as cnt\n" +

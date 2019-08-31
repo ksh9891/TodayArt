@@ -93,6 +93,6 @@ public class Article implements Serializable {
     @Transient
     private Article article;
 
-    @Column(updatable = false)
+    @Transient
     private Integer cnt;
 }
