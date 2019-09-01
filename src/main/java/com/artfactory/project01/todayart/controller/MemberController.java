@@ -63,7 +63,7 @@ public class MemberController {
       @param Member
       @return Member
     */
-    @PreAuthorize("hasRole('GUEST')")
+//    @PreAuthorize("hasRole('GUEST')")
     @PostMapping(path = "/signIn", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public UserDetails signIn(@RequestBody Map<String, String> signMember) {
         String email = signMember.get("email");
