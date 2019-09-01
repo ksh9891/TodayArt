@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 
 @ToString
@@ -44,7 +45,6 @@ public class Member implements UserDetails, Serializable {
     @Column(name="realname")
     private String realName;
 
-
     @Column(name="reg_dated")
     @Temporal(TemporalType.TIMESTAMP)
     private Date regDated;
@@ -69,106 +69,18 @@ public class Member implements UserDetails, Serializable {
     @Column(name="email_checked")
     private String emailChecked;
 
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
-    }
-
-    public Integer getMemberId() {
-        return memberId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @OneToMany(targetEntity=MemberAddress.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    private List<MemberAddress> memberAddresses = new ArrayList<>();
 
     @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
     @Override
     public String getUsername() {
         return email;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public Date getRegDated() {
-        return regDated;
-    }
-
-    public void setRegDated(Date regDated) {
-        this.regDated = regDated;
-    }
-
-    public String getPhone() {
-        return Phone;
-    }
-
-    public void setPhone(String phone) {
-        Phone = phone;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Date getLastConnectDated() {
-        return lastConnectDated;
-    }
-
-    public void setLastConnectDated(Date lastConnectDated) {
-        this.lastConnectDated = lastConnectDated;
-    }
-
-    public Date getExpiredDated() {
-        return expiredDated;
-    }
-
-    public void setExpiredDated(Date expiredDated) {
-        this.expiredDated = expiredDated;
-    }
-
-    public String getExpired() {
-        return expired;
-    }
-
-    public void setExpired(String expired) {
-        this.expired = expired;
-    }
-
-    public String getEmailChecked() {
-        return emailChecked;
-    }
-
-    public void setEmailChecked(String emailChecked) {
-        this.emailChecked = emailChecked;
     }
 
     @JsonIgnore
