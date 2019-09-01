@@ -34,11 +34,7 @@ public class ArticleController {
     @Autowired
     private BoardCategoryService boardCategoryService;
 
-    private Article article;
-
     private Member member;
-
-    private static BoardCategory boardCategory;
 
     private static Member getMember(Principal principal){
         return (Member) PrincipalUtil.from(principal);

@@ -14,20 +14,14 @@ import java.util.Optional;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article,Integer> {
 
-//    @Query(value = "INSERT INTO article (content,board_id,member_id,title,update_dated,write_dated) VALUES (?,?,?,?,?,?)")
-//    Article save(Article article);
-
-//    //cnt를 제외한 ID로 찾기
-//    @Query(value = "SELECT article_id,board_id,member_id,write_dated,update_dated,title,content,is_deleted,delete_dated,is_hidden,password,views,product_id FROM todayart.article", nativeQuery = true)
-//    Optional<Article> findById(Integer articleId);
 
     //게시판 아이디가 ?인게시물만 가져오기(게시글에 달려있는
-   @Query(value = "SELECT a.* ,(SELECT ifnull(COUNT(*),0) FROM comments WHERE article_id = a.article_id) as cnt\n" +
-           "FROM article a \n" +
-           "WHERE a.board_id = ?1\n" +
-           "AND a.is_deleted = 'n'  \n" +
-           "ORDER BY a.write_dated DESC ", nativeQuery = true)
-   Page<Article> findByBoardId(Integer boardId , Pageable pageable);
+    @Query(value = "SELECT * " +
+            "FROM article \n" +
+            "WHERE board_id = ?1\n" +
+            "AND is_deleted = 'n'  \n" +
+            "ORDER BY write_dated DESC ", nativeQuery = true)
+    Page<Article> findByBoardId(Integer boardId , Pageable pageable);
 
    //title 검색
    @Query(value = "SELECT * FROM article WHERE board_id = ?2 AND is_deleted = 'n' AND title LIKE %?1% ORDER BY write_dated DESC", nativeQuery = true)
@@ -50,5 +44,17 @@ public interface ArticleRepository extends JpaRepository<Article,Integer> {
     @Query(value = "SELECT COUNT(article_id) FROM comments WHERE article_id = ?1", nativeQuery = true)
     List<Comments> numberOfComments(Integer articleId);
 
+//    @Query(value = "INSERT INTO article (content,board_id,member_id,title,update_dated,write_dated) VALUES (?,?,?,?,?,?)")
+//    Article save(Article article);
 
+//    //cnt를 제외한 ID로 찾기
+//    @Query(value = "SELECT article_id,board_id,member_id,write_dated,update_dated,title,content,is_deleted,delete_dated,is_hidden,password,views,product_id FROM todayart.article", nativeQuery = true)
+//    Optional<Article> findById(Integer articleId);
+
+//   @Query(value = "SELECT a.* ,(SELECT ifnull(COUNT(*),0) FROM comments WHERE article_id = a.article_id) as cnt\n" +
+//           "FROM article a \n" +
+//           "WHERE a.board_id = ?1\n" +
+//           "AND a.is_deleted = 'n'  \n" +
+//           "ORDER BY a.write_dated DESC ", nativeQuery = true)
+//   Page<Article> findByBoardId(Integer boardId , Pageable pageable);
 }
