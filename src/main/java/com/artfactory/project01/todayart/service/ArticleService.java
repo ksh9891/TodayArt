@@ -29,7 +29,7 @@ public class ArticleService {
        @return Article
     */
     @Transactional
-    public Article cretateArticle(Article article) {
+    public Article createArticle(Article article) {
 //        articleRepository.save(article);
 //        article.setBoardId(article.getBoardId());
         return articleRepository.save(article);

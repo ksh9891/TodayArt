@@ -34,8 +34,8 @@ public class Comments implements Serializable {
     @JsonIgnore
     private Member member;
 
-    @Column(name = "content")
-    private String comment;
+    @Column(name = "content", nullable = false, table = "comments")
+    private String content;
 
     @Column(name = "write_dated", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

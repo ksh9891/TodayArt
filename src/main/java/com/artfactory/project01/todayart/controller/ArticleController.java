@@ -57,7 +57,7 @@ public class ArticleController {
     public Article create(@RequestBody Article article, Principal principal) {
         article.setMember(getMember(principal));
 //        article.setBoardCategory(boardCategory);
-        return articleService.cretateArticle(article);
+        return articleService.createArticle(article);
     }
 
     /*
