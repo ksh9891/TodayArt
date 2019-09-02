@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface MemberAddressRepository extends JpaRepository<MemberAddress, Integer> {
     Optional<MemberAddress> findByMainAddress(String y);
     List<MemberAddress> findAllByMemberId(Integer userId);
+    List<MemberAddress> findAllByMemberIdAndIsDelete(Integer userId, String isDelete);
+    MemberAddress findByMemberIdAndMainAddressAndIsDelete(Integer memberId, String mainAddress, String isDelete);
+    MemberAddress findByMemberIdAndAddressId(Integer memberId, Integer addressId);
 }

@@ -36,4 +36,7 @@ public class MemberAddress implements Serializable {
 
     @Column(name="main_address")
     private String mainAddress;
+
+    @Column(name="is_delete")
+    private String isDelete;
 }
