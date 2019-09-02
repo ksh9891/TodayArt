@@ -3,6 +3,8 @@ package com.artfactory.project01.todayart.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 
 import javax.persistence.*;
@@ -10,6 +12,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="member_address")
+@DynamicInsert
+@DynamicUpdate
 @Getter
 @Setter
 public class MemberAddress implements Serializable {
@@ -32,10 +36,4 @@ public class MemberAddress implements Serializable {
 
     @Column(name="main_address")
     private String mainAddress;
-
-    @Column(name="consignee")
-    private String consignee;
-
-    @Column(name="consignee_phone")
-    private String consigneePhone;
 }
