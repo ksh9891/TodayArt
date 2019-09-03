@@ -25,6 +25,12 @@ public class MemberAddress implements Serializable {
     @Column(name="member_id")
     private Integer memberId;
 
+    @Column(name="consignee")
+    private String consignee;
+
+    @Column(name="consignee_phone")
+    private String consigneePhone;
+
     @Column(name="postal_number")
     private String postalNumber;
 
