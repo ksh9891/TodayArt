@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,6 +72,7 @@ public class Member implements UserDetails, Serializable {
 
     @OneToMany(targetEntity=MemberAddress.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    @Where(clause = "is_delete = 'n'")
     private List<MemberAddress> memberAddresses = new ArrayList<>();
 
     @Override

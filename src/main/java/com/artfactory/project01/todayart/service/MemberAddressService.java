@@ -38,11 +38,43 @@ public class MemberAddressService {
 
     public ResponseEntity retrieveMemberAddress(Member member){
         try {
-            List<MemberAddress> memberAddresses = memberAddressRepository.findAllByMemberId(member.getMemberId());
+            List<MemberAddress> memberAddresses = memberAddressRepository.findAllByMemberIdAndIsDelete(member.getMemberId(), "n");
             return new ResponseEntity(memberAddresses, HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+    }
 
+    public ResponseEntity updateMainAddress(Member member, Integer addressId) {
+        try {
+            MemberAddress oldMainMemberAddress =
+                    memberAddressRepository.findByMemberIdAndMainAddressAndIsDelete(
+                            member.getMemberId(), "y", "n");
+
+            if(oldMainMemberAddress != null) {
+                oldMainMemberAddress.setMainAddress("n");
+                memberAddressRepository.save(oldMainMemberAddress);
+            }
+
+            Optional<MemberAddress> newMainMemberAddress = memberAddressRepository.findById(addressId);
+            newMainMemberAddress.get().setMainAddress("y");
+            memberAddressRepository.save(newMainMemberAddress.get());
+
+            return new ResponseEntity(newMainMemberAddress, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity deleteAddress(Member member, Integer addressId) {
+        try {
+            MemberAddress memberAddress = memberAddressRepository.findByMemberIdAndAddressId(member.getMemberId(), addressId);
+            memberAddress.setIsDelete("y");
+            memberAddressRepository.save(memberAddress);
+
+            return new ResponseEntity(memberAddress, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 }
