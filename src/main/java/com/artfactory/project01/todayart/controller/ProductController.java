@@ -161,7 +161,7 @@ public class ProductController {
     */
     @PreAuthorize("hasAnyRole('ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/artistid",
+            path = "/artistId",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
