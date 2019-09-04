@@ -73,8 +73,7 @@ public class FileStorageService {
             fileEntity.setFileUploadIp(request.getRemoteAddr());
 
             // 실제 운용 시 위 코드로 전환 (아래 10001은 테스트용)
-            // fileEntity.setMemberId(member.getMemberId());
-            fileEntity.setMemberId(10001);
+            fileEntity.setMemberId(member.getMemberId());
 
             fileEntity.setFileContentType(file.getContentType());
 
