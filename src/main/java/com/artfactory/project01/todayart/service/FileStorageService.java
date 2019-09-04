@@ -43,7 +43,7 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file, HttpServletRequest request, Principal principal) {
+    public File storeFile(MultipartFile file, HttpServletRequest request, Principal principal) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -77,9 +77,9 @@ public class FileStorageService {
 
             fileEntity.setFileContentType(file.getContentType());
 
-            fileRepository.save(fileEntity);
+            return fileRepository.save(fileEntity);
 
-            return replaceFileName;
+
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
