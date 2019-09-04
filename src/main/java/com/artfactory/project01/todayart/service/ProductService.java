@@ -36,6 +36,11 @@ public class ProductService {
 
 
         product.setArtistName(member.getRealName());
+        Artist artist = new Artist();
+        artist = artistRepository.findByMemberId(member.getMemberId());
+        product.setArtist(artist);
+
+
         return productRepository.save(product);
     }
 
