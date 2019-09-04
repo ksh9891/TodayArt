@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface CommentRepository extends JpaRepository<Comments,Integer> {
 
     //게시물 아이디에 해당하는 댓글 목록 가져오기
-    @Query(value = "SELECT * FROM comments WHERE article_id = ?1 AND is_deleted = 'n' ORDER BY create_dated ASC ", nativeQuery = true)
+    @Query(value = "SELECT * FROM comments WHERE article_id = ?1 AND is_deleted = 'n' ORDER BY reply_order,reply_group,reply_depth ", nativeQuery = true)
     Page<Comments> findByArticleId(Integer articleId , Pageable pageable);
 
 

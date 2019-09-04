@@ -11,7 +11,7 @@ public class CommentForm implements Serializable {
     private Integer commentId;
     private Integer articleId;
     private Integer memberId;
-    private String comment;
+    private String content;
     private Date createDated;
     private Date updateDated;
     private Date deleteDated;
@@ -46,11 +46,11 @@ public class CommentForm implements Serializable {
     }
 
     public String getComment() {
-        return comment;
+        return content;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComment(String content) {
+        this.content = content;
     }
 
     public Date getCreateDated() {
@@ -125,8 +125,8 @@ public class CommentForm implements Serializable {
         if (memberId != null) {
             comments.setMemberId(this.memberId);
         }
-        if (comment != null) {
-            comments.setComment(this.comment);
+        if (content != null) {
+            comments.setReplyContent(this.content);
         }
         if (createDated != null) {
             comments.setWriteDated(this.createDated);
