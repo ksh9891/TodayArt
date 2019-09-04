@@ -26,16 +26,28 @@ public class CommentService {
     */
     @Transactional
     public Comments createComments(Comments comments) {
-        comments.setGroup(comments.getArticleId());
+        commentRepository.save(comments);
+        //DB기본값인 1을 피하기위해 세이브후 값을 바꿔줌
+        comments.setGroup(comments.getCommentId());
+
         return commentRepository.save(comments);
     }
 
+    /*
+       작성자: 진표
+       기능 : 새로운 답글 생성
+       @param Comments
+       @return Comments
+    */
     @Transactional
     public Comments replyComments(Integer id,Comments comments) {
         Comments temp = commentRepository.findById(id).get();
-        comments.setGroup(temp.getGroup());
-        comments.setOrder(temp.getOrder()+1);
-        comments.setDepth(temp.getDepth()+1);
+
+            comments.setGroup(temp.getGroup());
+            comments.setOrder(temp.getOrder()+1);
+            comments.setDepth(temp.getDepth()+1);
+
+
         return commentRepository.save(comments);
     }
     /*
