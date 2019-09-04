@@ -297,30 +297,6 @@ public class OrderService {
         orderedRepository.save(ordered);
     }
 
-    /**
-     * author: 국화
-     * @param artist : 찾고자하는 판매자 객체
-     * @return
-     */
-    public ResponseEntity retreiveOrders(Artist artist){
-        List<OrderForSeller> orderForSellers = new ArrayList<>();
-        List<OrderedDetail> orderedDetails =orderedDetailRepository.findAllByProduct_ArtistOrderByOrderIdDesc(artist);
-        for(OrderedDetail item : orderedDetails){
-            OrderForSeller order = new OrderForSeller();
-            order.setOrderId(item.getOrderId());
-            order.setImage(item.getProduct().getThumbnail().getFileName());
-            order.setPaymentMethod(paymentRepository.findByOrderIdAndOrderedDetailId(item.getOrderId(), item.getOrderDetailId()).getPayMethod());
-            order.setOrderStatus(item.getStatus());
-            order.setDate(orderedRepository.findByOrderId(item.getOrderId()).getOrderDate());
-            order.setProductPrice(item.getTotalProductPrice());
-            order.setShippingFee(item.getShippingFee());
-            order.setTotalPrice(item.getTotalPrice());
-
-            orderForSellers.add(order);
-        }
-        return new ResponseEntity(orderForSellers, HttpStatus.OK);
-    }
-
 
     /**
      * author : 국화
@@ -360,5 +336,40 @@ public class OrderService {
         Artist artist = artistRepository.findByMemberId(artistId);
         return retreiveOrders(artist);
     }
+
+    public ResponseEntity retreiveOrdersAdmin(){
+        List<OrderedDetail> orderDetails = orderedDetailRepository.findAll();
+        return retreiveOrders(orderDetails);
+    }
+
+
+    /**
+     * author: 국화
+     * @param artist : 찾고자하는 판매자 객체
+     * @return
+     */
+    public ResponseEntity retreiveOrders(Artist artist){
+        List<OrderedDetail> orderedDetails =orderedDetailRepository.findAllByProduct_ArtistOrderByOrderIdDesc(artist);
+        return retreiveOrders(orderedDetails);
+    }
+
+    public ResponseEntity retreiveOrders(List<OrderedDetail> orderedDetails){
+        List<OrderForSeller> orderForSellers = new ArrayList<>();
+        for(OrderedDetail item : orderedDetails){
+            OrderForSeller order = new OrderForSeller();
+            order.setOrderId(item.getOrderId());
+            order.setImage(item.getProduct().getThumbnail().getFileName());
+            order.setPaymentMethod(paymentRepository.findByOrderIdAndOrderedDetailId(item.getOrderId(), item.getOrderDetailId()).getPayMethod());
+            order.setOrderStatus(item.getStatus());
+            order.setDate(orderedRepository.findByOrderId(item.getOrderId()).getOrderDate());
+            order.setProductPrice(item.getTotalProductPrice());
+            order.setShippingFee(item.getShippingFee());
+            order.setTotalPrice(item.getTotalPrice());
+
+            orderForSellers.add(order);
+        }
+        return new ResponseEntity(orderForSellers, HttpStatus.OK);
+    }
+
 
 }

@@ -14,7 +14,7 @@ public class OrderForSeller implements Serializable {
     private String paymentMethod;// by payment
     private String orderStatus; //by orderedDetail
     private Date date; // by ordered
-    private Integer ProductPrice;// by orderedDetail totalProductPrice
+    private Integer productPrice;// by orderedDetail totalProductPrice
     private Integer shippingFee; // by orderedDetail shippingFee
     private Integer totalPrice; // by totalPrice
 }

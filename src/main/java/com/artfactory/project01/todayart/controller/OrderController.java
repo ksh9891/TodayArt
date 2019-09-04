@@ -110,9 +110,14 @@ public class OrderController {
     @GetMapping("/artist")
     public ResponseEntity retrieveOrders(@RequestParam(value="seller", required = false)Integer artistId, Principal principal){
         member = getMember(principal);
-        ResponseEntity result = member.getRole().equals("ROLE_ADMIN")?
-                orderService.retreiveOrdersAdmin(artistId):(artistId==null?
-                orderService.retreiveOrdersArtist(member):orderService.retreiveOrdersArtist(member, artistId));
+        ResponseEntity result = artistId==null?
+                (member.getRole().equals("ROLE_ADMIN")?
+                        orderService.retreiveOrdersAdmin():
+                        orderService.retreiveOrdersArtist(member)):
+                (member.getRole().equals("ROLE_ADMIN")?
+                        orderService.retreiveOrdersAdmin(artistId):
+                        orderService.retreiveOrdersArtist(member, artistId));
+
         return result;
     }
 
