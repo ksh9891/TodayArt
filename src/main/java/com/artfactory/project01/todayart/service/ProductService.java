@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,12 +35,9 @@ public class ProductService {
     @Transactional
     public Product createProduct(Member member, Product product) {
 
-
         product.setArtistName(member.getRealName());
-        Artist artist = new Artist();
-        artist = artistRepository.findByMemberId(member.getMemberId());
+        Artist artist = artistRepository.findByMemberId(member.getMemberId());
         product.setArtist(artist);
-
 
         return productRepository.save(product);
     }
@@ -182,11 +180,14 @@ public class ProductService {
     @return Product 객체
     */
     @Transactional
-    public void deleteProduct(Integer id, ProductForm productForm) {
+    public boolean deleteProduct(Integer id) {
         Product product = productRepository.findById(id).get();
-        productForm.setDelete(product);
-
+        product.setIsDelete("y");
+        product.setDeleteDated(new Date());
         productRepository.save(product);
+
+
+        return true;
     }
 
 
