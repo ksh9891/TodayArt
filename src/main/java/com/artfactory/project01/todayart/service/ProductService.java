@@ -185,14 +185,8 @@ public class ProductService {
         Product product = productRepository.findById(id).get();
         product.setIsDelete("y");
         product.setDeleteDated(new Date());
-<<<<<<< HEAD
         productRepository.save(product);
 
-
-=======
-
-        productRepository.save(product);
->>>>>>> bd70a0b3f40902f8143319aec95bdd84255534ae
         return true;
     }
 
