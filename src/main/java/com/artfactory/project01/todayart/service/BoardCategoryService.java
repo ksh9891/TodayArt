@@ -2,6 +2,7 @@ package com.artfactory.project01.todayart.service;
 
 import com.artfactory.project01.todayart.entity.BoardCategory;
 import com.artfactory.project01.todayart.model.BoardCategoryForm;
+import com.artfactory.project01.todayart.repository.ArticleRepository;
 import com.artfactory.project01.todayart.repository.BoardCategoryRepository;
 import com.artfactory.project01.todayart.util.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import java.util.Optional;
 @Service
 public class BoardCategoryService {
 
+    @Autowired
+    private ArticleRepository articleRepository;
     @Autowired
     private BoardCategoryRepository boardCategoryRepository;
 

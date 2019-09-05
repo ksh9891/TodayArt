@@ -34,11 +34,7 @@ public class ArticleController {
     @Autowired
     private BoardCategoryService boardCategoryService;
 
-    private Article article;
-
     private Member member;
-
-    private static BoardCategory boardCategory;
 
     private static Member getMember(Principal principal){
         return (Member) PrincipalUtil.from(principal);
@@ -52,7 +48,6 @@ public class ArticleController {
      */
     @PreAuthorize("hasAnyRole('CUSTOMER','ARTIST', 'ADMIN')")
     @RequestMapping(
-            path = "/create",
             method = RequestMethod.POST,
             produces = {
                     MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -61,7 +56,8 @@ public class ArticleController {
     )
     public Article create(@RequestBody Article article, Principal principal) {
         article.setMember(getMember(principal));
-        return articleService.cretateArticle(article);
+//        article.setBoardCategory(boardCategory);
+        return articleService.createArticle(article);
     }
 
     /*
@@ -107,7 +103,7 @@ public class ArticleController {
     )
 
     public Article retrieve(@PathVariable("article_id") Integer id,Principal principal){
-        member = getMember(principal);
+//        member = getMember(principal);
         return articleService.itemOfArticle(id).get();
     }
 
@@ -201,7 +197,6 @@ public class ArticleController {
             @RequestParam (name = "page", defaultValue = "1", required = false) int page,
             @RequestParam (name = "size", defaultValue = "10", required = false) int size,
             @RequestParam (name = "where") String where) {
-
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Article> articleList = articleService.search(value,boardId,where,pageable);
         return new ResultItems<Article>(articleList.stream().collect(Collectors.toList()), page, size, articleList.getTotalElements(),boardCategoryService.itemOfBoardCategory(boardId));
