@@ -35,12 +35,9 @@ public class ProductService {
     @Transactional
     public Product createProduct(Member member, Product product) {
 
-
         product.setArtistName(member.getRealName());
-        Artist artist = new Artist();
-        artist = artistRepository.findByMemberId(member.getMemberId());
+        Artist artist = artistRepository.findByMemberId(member.getMemberId());
         product.setArtist(artist);
-
 
 
         return productRepository.save(product);
@@ -188,8 +185,8 @@ public class ProductService {
         Product product = productRepository.findById(id).get();
         product.setIsDelete("y");
         product.setDeleteDated(new Date());
-
         productRepository.save(product);
+
         return true;
     }
 
